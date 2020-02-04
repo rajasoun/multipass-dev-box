@@ -23,5 +23,10 @@ brew cask install multipass
 
 On Windows, download the installer [from GitHub](https://github.com/canonical/multipass/releases)
 
+### Mac Users
+Workaround of [Issue](https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901) 
+through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml through script
+Refer [cloud-init](config/cloud-init-template.yaml) Template file
+
 
 
