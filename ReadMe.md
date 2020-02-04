@@ -52,5 +52,11 @@ With Defaults
  * 2 - SSH - SSH to the VM
  * 3 - Destroy - Destroy the VM
 
+ Next Steps 
+ 
+ 1. Connect VM via Bastion Host
+ 2. Configure VM through Ansible
+ 3. Add Automated Verification
+
 
 
