@@ -58,5 +58,24 @@ With Defaults
  2. Configure VM through Ansible
  3. Add Automated Verification
 
+ ## Flow 
 
+SSH Key Setup Overview 
 
+| S.No | HOST                          | VM                                   |
+|------|-------------------------------|--------------------------------------|
+| 1.   | Generate the SSH Key Pair     | Provision VM with the Public Key     |
+|      | [ssh-keygen]                  | [cloud-int] or [Vagrant] or [Packer] |
+|      |                               |                                      |
+| 2    | Start SSH Agent               |                                      |
+|      | [eval "$(ssh-agent -s)"]      |                                      |
+|      |                               |                                      |
+| 3    | Load Private Key to SSH Agent |                                      |
+|      | [ssh-add -K private_key]      |                                      |
+|      | or                            |                                      |
+|      | [Create ~/.ssh.config] File   |                                      |
+|      |                               |                                      |
+| 4    | ssh host or ssh user@VM       |                                      |
+
+Quick Reference: 
+![alt text](docs/images/ssh_connection_explained.jpg "Quick Reference")
