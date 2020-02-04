@@ -48,8 +48,9 @@ ssh_config_agent_on_host(){
 
     # rescan the Host and add it to the known_hosts
     ssh-keyscan -t rsa $IP >> ~/.ssh/known_hosts
-    echo "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile ~/.ssh/multipass/id_rsa_$VM_NAME" >> ~/.ssh/config
+    echo "\nHost $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile ~/.ssh/multipass/id_rsa_$VM_NAME" >> ~/.ssh/config
     echo "SSH Agemnt Configured Successfully"
+
 }
 
 setup(){
