@@ -113,7 +113,8 @@ help(){
             provision 
             ;;
         2) 
-            ssh bizapps
+            #ssh bizapps # For Understanding SSH Configuration
+            multipass shell $VM_NAME
             ;;
         3) destroy
             ;;

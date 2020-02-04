@@ -25,8 +25,32 @@ On Windows, download the installer [from GitHub](https://github.com/canonical/mu
 
 ### Mac Users
 Workaround of [Issue](https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901) 
-through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml through script
+through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml through script.
+
 Refer [cloud-init](config/cloud-init-template.yaml) Template file
+
+### Getting Started
+In Terminal Window
+
+```SHELL
+$ ./multipass.sh
+```
+
+You will get a menu 
+
+  Multipass Manager   
+                
+        1. Provision
+        2. SSH 
+        3. Destroy
+
+ Enter your choice [1-3] 
+
+With Defaults
+
+ * 1 - Provision Ubuntu VM 
+ * 2 - SSH - SSH to the VM
+ * 3 - Destroy - Destroy the VM
 
 
 
