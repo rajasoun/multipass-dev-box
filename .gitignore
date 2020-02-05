@@ -70,3 +70,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/macos,windows,visualstudiocode
 
 config/*-cloud-init.yaml
+keys/multipass

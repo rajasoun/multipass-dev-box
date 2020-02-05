@@ -2,6 +2,15 @@
 
 Eases Dev Box Setup with Multipass compatible to both Windows and MacOS
 
+Limitations: 
+Multipass will not work on Mac when connected to Cisco Any Connect. 
+Refer:
+1. https://github.com/canonical/multipass/issues/961
+2. https://multipass.run/docs/troubleshooting-networking-on-macos
+3. https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
+
+
+
 ### Multipass
 
 Multipass is a lightweight VM manager for Linux, Windows and macOS. 
