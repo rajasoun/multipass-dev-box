@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 #References:
 # https://linuxize.com/post/how-to-set-dns-nameservers-on-ubuntu-18-04/

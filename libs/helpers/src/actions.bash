@@ -82,3 +82,17 @@ function menu() {
     read -p "Enter your choice [1-$i] " choice
     return $choice
 }
+
+function comment_line(){
+    pattern=$1
+    file_to_edit=$2
+    sed -i '' -e "/$pattern/ s/^#*/#/g"  file_to_edit
+}
+
+function uncomment_line(){
+    pattern=$1
+    file_to_edit=$2
+    sed -i '' -e "/$pattern/s/^#//g"  file_to_edit
+}
+
+sed -i '/<pattern>/s/^#//g' file #uncomment
