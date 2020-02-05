@@ -8,18 +8,11 @@
 source "workspace.env"
 source "$WORKSPACE/libs/helpers/load"
 
-
 ### Arguments with Default Values
 VM_NAME=${1:-"bizapps"}
 CPU=${2:-"1"}
 MEMORY=${3:-"2G"}
 DISK=${4:-"5G"}
-
-SSH_CONFIG="config/ssh-config"
-SSH_KEY_PATH="$HOME/.ssh/multipass"
-SSH_KEY="id_rsa_${VM_NAME}"
-CLOUD_INIT_TEMPLATE="config/cloud-init-template.yaml"
-CLOUD_INIT_FILE="config/${VM_NAME}-cloud-init.yaml"
 
 function menu() {
     tput clear

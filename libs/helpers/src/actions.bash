@@ -5,40 +5,43 @@ function generate_ssh_key() {
     if [ ! -d $SSH_KEY_PATH ]; then
       mkdir -p $SSH_KEY_PATH
     fi
-    echo -e 'y\n' | ssh-keygen -q -t rsa -C "$(whoami)@bizapps.cisco.com" -N "" \
-                    -f $SSH_KEY_PATH/${SSH_KEY} 2>&1 > /dev/null
+    echo -e 'y\n' | ssh-keygen -q -t rsa -C \
+                            "$(whoami)@bizapps.cisco.com" -N "" \
+                            -f $SSH_KEY_PATH/${SSH_KEY} 2>&1 > /dev/null
 }
 
 function update_cloud_init_template() {
     cp $CLOUD_INIT_TEMPLATE $CLOUD_INIT_FILE
-    sed -i '' "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" $CLOUD_INIT_FILE
+    docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" /config/${VM_NAME}-cloud-init.yaml
 }
 
 
 function ssh_config_agent_on_host(){
     # Ensure SSH Agent Is Running in Background
     eval "$(ssh-agent -s)"
+    ssh-add -K $SSH_KEY_PATH/${SSH_KEY} 
 
     #              Changes Host Settings               #
     #+++++++++++++++++++++++++++++++++++++++++++++++++ #
     # Automatically load keys into the ssh-agent
-    yes | cp -rf ~/.ssh/config ~/.ssh/config.bak
-    cat $SSH_CONFIG > ~/.ssh/config
+    # yes | cp -rf ~/.ssh/config ~/.ssh/config.bak
+    # cat $SSH_CONFIG > ~/.ssh/config
     # Add your SSH private key to the ssh-agent and store your passphrase in the keychain
-    ssh-add -K ~/.ssh/id_rsa
-    ssh-add -K ~/.ssh/multipass/id_rsa_$VM_NAME
+    # ssh-add -K ~/.ssh/id_rsa
     #+++++++++++++++++++++++++++++++++++++++++++++++++ #
 
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
-    sed -i '' "/${IP}/d" ~/.ssh/known_hosts
-
+    docker_sed "/${IP}/d"   /ssh/known_hosts
     # rescan the Host and add it to the known_hosts
     ssh-keyscan -t rsa $IP >> ~/.ssh/known_hosts
+
     # updating local ssh configuration.
-    echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile ~/.ssh/multipass/id_rsa_$VM_NAME\n" >> ~/.ssh/config 
+    echo -e "#start"
+    echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile $SSH_KEY_PATH/id_rsa_$VM_NAME\n" > $SSH_CONFIG 
+    echo -e "#end"
     echo "SSH Agent Configured Successfully"
-    echo "Next: ssh $VM_NAME or ssh ubuntu@$IP"
+    echo "Next: ssh -F $SSH_CONFIG $VM_NAME or ssh -F $SSH_CONFIG ubuntu@$IP"
 }
 
 
@@ -54,25 +57,27 @@ function provision(){
 function destroy(){
     rm -fr $CLOUD_INIT_FILE
     rm -fr $SSH_KEY_PATH
-    rm -fr $PWD/.bastion_keys
+
+    docker_sed '1,/#start/p;/#end/,$p' $SSH_CONFIG
 
     # Reset with Defaults
     cat $SSH_CONFIG > ~/.ssh/config
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
-    sed -i '' "/${IP}/d" ~/.ssh/known_hosts
+    # ~/.ssh mounted on /ssh in docker
+    docker_sed "/${IP}/d" /ssh/known_hosts
+
     multipass delete $VM_NAME && multipass purge
-
 }
 
-function comment_line(){
-    pattern=$1
-    file_to_edit=$2
-    sed -i '' -e "/$pattern/ s/^#*/#/g"  file_to_edit
-}
-
-function uncomment_line(){
-    pattern=$1
-    file_to_edit=$2
-    sed -i '' -e "/$pattern/s/^#//g"  file_to_edit
+function docker_sed(){
+    SED_STRING=$1
+    FILE=$2
+    docker run --rm \
+            -v "${HOME}/.ssh":/ssh \
+            -v "${PWD}/keys/multipass":/keys \
+            -v "${PWD}/config":/config \
+            hairyhenderson/sed -i \
+            -e "$SED_STRING" \
+            $FILE
 }
