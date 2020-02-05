@@ -71,3 +71,4 @@ $RECYCLE.BIN/
 
 config/*-cloud-init.yaml
 keys/multipass
+config/ssh-config
