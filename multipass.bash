@@ -27,6 +27,7 @@ help(){
             provision 
             ;;
         2) 
+            # Commented out Line is for self learning in configuring ssh
             # ssh_config_agent_on_host && ssh bizapps # For Understanding SSH Configuration
             multipass shell $VM_NAME
             ;;

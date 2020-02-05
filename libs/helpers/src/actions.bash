@@ -33,6 +33,7 @@ function ssh_config_agent_on_host(){
     ssh-keyscan -t rsa $IP >> ~/.ssh/known_hosts
     echo "\nHost $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile ~/.ssh/multipass/id_rsa_$VM_NAME" >> ~/.ssh/config
     echo "SSH Agemnt Configured Successfully"
+    echo "Next: ssh $VM_NAME or ssh $VM_NAME@$IP"
 }
 
 
@@ -42,7 +43,7 @@ function provision(){
     multipass launch -c$CPU -m$MEMORY -d$DISK -n $VM_NAME lts --cloud-init $CLOUD_INIT_FILE || exit
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')  
     echo "$VM_NAME Created with IP: $IP"
-    echo "Run: ssh bizapps or ssh ubuntu@$IP"
+    echo "Next: Select 2 from the Menu to ssh to the $VM_NAME"
 }
 
 function destroy(){
