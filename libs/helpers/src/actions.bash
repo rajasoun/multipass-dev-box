@@ -25,8 +25,8 @@ function ssh_config_agent_on_host(){
     yes | cp -rf ~/.ssh/config ~/.ssh/config.bak
     cat $SSH_CONFIG > ~/.ssh/config
     # Add your SSH private key to the ssh-agent and store your passphrase in the keychain
-    ssh-add -k ~/.ssh/id_rsa
-    ssh-add -k ~/.ssh/multipass/id_rsa_$VM_NAME
+    ssh-add -K ~/.ssh/id_rsa
+    ssh-add -K ~/.ssh/multipass/id_rsa_$VM_NAME
     #+++++++++++++++++++++++++++++++++++++++++++++++++ #
 
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
