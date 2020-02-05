@@ -47,25 +47,18 @@ $ ./multipass.sh
 
 You will get a menu 
 
-  Multipass Manager   
-                
-        1. Provision
-        2. SSH 
-        3. Destroy
+  Multipass Manager   1. Provision
+                      2. SSH-Multipass
+                      3. SSH-Host
+                      4. Destroy
 
- Enter your choice [1-3] 
-
-With Defaults
-
- * 1 - Provision Ubuntu VM 
- * 2 - SSH - SSH to the VM
- * 3 - Destroy - Destroy the VM
+ Enter your choice [1-4] 
 
  Next Steps 
- 
- 1. Connect VM via Bastion Host
- 2. Configure VM through Ansible
- 3. Add Automated Verification
+ 1. Explore Limitations of Multipass + Anyconnect Issue
+ 2. Connect VM via Bastion Host
+ 3. Configure VM through Ansible
+ 4. Add Automated Verification
 
  ## Flow 
 
