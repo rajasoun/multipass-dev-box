@@ -58,6 +58,9 @@ function destroy(){
 
     # Reset with Defaults
     cat $SSH_CONFIG > ~/.ssh/config
+    IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
+    # delete old key from known_hosts
+    sed -i '' "/${IP}/d" ~/.ssh/known_hosts
     multipass delete $VM_NAME && multipass purge
 
 }
