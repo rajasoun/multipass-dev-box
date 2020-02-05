@@ -60,8 +60,6 @@ function destroy(){
 
     docker_sed '1,/#start/p;/#end/,$p' $SSH_CONFIG
 
-    # Reset with Defaults
-    cat $SSH_CONFIG > ~/.ssh/config
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
     # ~/.ssh mounted on /ssh in docker
