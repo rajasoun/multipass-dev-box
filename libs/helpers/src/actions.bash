@@ -41,7 +41,7 @@ function ssh_config_agent_on_host(){
     echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile $SSH_KEY_PATH/id_rsa_$VM_NAME\n" > $SSH_CONFIG 
     echo -e "#end"
     echo "SSH Agent Configured Successfully"
-    echo "Next: ssh -F $SSH_CONFIG $VM_NAME or ssh -i $SSH_KEY_PATH/id_rsa_$VM_NAME ubuntu@$IP"
+    echo "Next: ssh -F $SSH_CONFIG $VM_NAME or ssh -i keys/multipass/id_rsa_$VM_NAME ubuntu@$IP"
 }
 
 
