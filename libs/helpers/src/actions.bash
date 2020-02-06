@@ -58,6 +58,15 @@ function destroy(){
     #docker_sed '1,/#start/p;/#end/,$p' $SSH_CONFIG
 }
 
+function clear_workspace(){
+    rm -fr $CLOUD_INIT_FILE
+    rm -fr $SSH_KEY_PATH
+}
+
+function list_vms(){
+    multipass ls
+}
+
 # Workaround as sed differs from windows and mac
 # so using linux sed in a docker :-)
 function docker_sed(){
