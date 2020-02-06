@@ -55,6 +55,7 @@ help(){
         3) 
             multipass info $VM_NAME || exit 1 #Exit if VM Not Running
             ssh_config_agent_on_host
+            eval "$(ssh-agent -s)"
             ;;
         4) 
             multipass info $VM_NAME || exit 1 #Exit if VM Not Running
