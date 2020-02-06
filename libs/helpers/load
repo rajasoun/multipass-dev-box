@@ -1,1 +1,3 @@
 source "$(dirname "${BASH_SOURCE[0]}")/src/actions.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/src/log.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/src/os.bash"
