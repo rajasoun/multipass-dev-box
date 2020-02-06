@@ -19,7 +19,9 @@ function update_cloud_init_template() {
 function ssh_config_agent_on_host(){
     # Ensure SSH Agent Is Running in Background
     eval "$(ssh-agent -s)"
-    ssh-add -K $SSH_KEY_PATH/${SSH_KEY} 
+    SSH_OPTS=$(get_ssh_opts)
+    #echo "ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} "
+    ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} 
 
     #              Changes Host Settings               #
     #+++++++++++++++++++++++++++++++++++++++++++++++++ #
@@ -37,9 +39,7 @@ function ssh_config_agent_on_host(){
     ssh-keyscan -t rsa $IP >> ~/.ssh/known_hosts
 
     # updating local ssh configuration.
-    echo -e "#start"
     echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile $SSH_KEY_PATH/id_rsa_$VM_NAME\n" > $SSH_CONFIG 
-    echo -e "#end"
     echo "SSH Agent Configured Successfully"
     echo "Next: ssh -F $SSH_CONFIG $VM_NAME or ssh -i keys/multipass/id_rsa_$VM_NAME ubuntu@$IP"
 }
@@ -50,7 +50,8 @@ function provision(){
     update_cloud_init_template $VM_NAME
     multipass launch -c$CPU -m$MEMORY -d$DISK -n $VM_NAME lts --cloud-init $CLOUD_INIT_FILE || exit
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')  
-    echo "$VM_NAME Created with IP: $IP"
+    echo "VM Creation Sucessfull"
+    echo "VM Name : $VM_NAME |  IP: $IP "
     echo "Next: Select 2 from the Menu to ssh to the $VM_NAME"
 }
 
@@ -71,11 +72,20 @@ function destroy(){
 function docker_sed(){
     SED_STRING=$1
     FILE=$2
-    docker run --rm \
+    MSYS_NO_PATHCONV=1 docker run --rm \
             -v "${HOME}/.ssh":/ssh \
             -v "${PWD}/keys/multipass":/keys \
             -v "${PWD}/config":/config \
             hairyhenderson/sed -i \
             -e "$SED_STRING" \
             $FILE
+}
+
+# Workaround for ssh on Windows 
+function get_ssh_opts(){
+    case "$OSTYPE" in
+        msys* | cygwin* | linux*) echo "-k" ;;
+        darwin*) echo "-K"  ;;
+        *) echo "unknown: $OSTYPE";exit  ;;
+    esac 
 }
