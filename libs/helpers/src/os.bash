@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck source=./libs/helpers/src/log.bash
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/log.bash"
 # ls, with chmod-like permissions and more.
 # @param $1 The directory to ls
 function lls() {

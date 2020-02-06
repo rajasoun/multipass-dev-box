@@ -43,7 +43,11 @@ help(){
     choice=$?
     case $choice in 
         1) 
+            start=`date +%s`
             provision 
+            end=`date +%s`
+            runtime=$((end-start))
+            echo "Time Taken: $runtime" |  awk '{print int($1/60)" min:"int($1%60)" sec"}'
             ;;
         2) 
             multipass shell $VM_NAME
