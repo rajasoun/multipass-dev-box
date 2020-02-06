@@ -47,17 +47,15 @@ function provision(){
 }
 
 function destroy(){
-    rm -fr $CLOUD_INIT_FILE
-    rm -fr $SSH_KEY_PATH
-
-    docker_sed '1,/#start/p;/#end/,$p' $SSH_CONFIG
-
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
     # ~/.ssh mounted on /ssh in docker
     docker_sed "/${IP}/d" /ssh/known_hosts
 
     multipass delete $VM_NAME && multipass purge
+    rm -fr $CLOUD_INIT_FILE
+    rm -fr $SSH_KEY_PATH
+    #docker_sed '1,/#start/p;/#end/,$p' $SSH_CONFIG
 }
 
 # Workaround as sed differs from windows and mac
