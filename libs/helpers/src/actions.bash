@@ -12,9 +12,9 @@ function generate_ssh_key() {
 
 function update_cloud_init_template() {
     cp $CLOUD_INIT_TEMPLATE $CLOUD_INIT_FILE
-    docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" /config/${VM_NAME}-cloud-init.yaml
+    docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" \
+            /config/${VM_NAME}-cloud-init.yaml
 }
-
 
 function ssh_config_agent_on_host(){
     # Ensure SSH Agent Is Running in Background
@@ -22,15 +22,6 @@ function ssh_config_agent_on_host(){
     SSH_OPTS=$(get_ssh_opts)
     #echo "ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} "
     ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} 
-
-    #              Changes Host Settings               #
-    #+++++++++++++++++++++++++++++++++++++++++++++++++ #
-    # Automatically load keys into the ssh-agent
-    # yes | cp -rf ~/.ssh/config ~/.ssh/config.bak
-    # cat $SSH_CONFIG > ~/.ssh/config
-    # Add your SSH private key to the ssh-agent and store your passphrase in the keychain
-    # ssh-add -K ~/.ssh/id_rsa
-    #+++++++++++++++++++++++++++++++++++++++++++++++++ #
 
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
@@ -69,10 +60,12 @@ function destroy(){
     multipass delete $VM_NAME && multipass purge
 }
 
+# Workaround as sed differs from windows and mac
+# so using linux sed in a docker :-)
 function docker_sed(){
     SED_STRING=$1
     FILE=$2
-    MSYS_NO_PATHCONV=1 docker run --rm \
+    _docker run --rm \
             -v "${HOME}/.ssh":/ssh \
             -v "${PWD}/keys/multipass":/keys \
             -v "${PWD}/config":/config \
@@ -88,4 +81,9 @@ function get_ssh_opts(){
         darwin*) echo "-K"  ;;
         *) echo "unknown: $OSTYPE";exit  ;;
     esac 
+}
+
+# Workaround for Path Limitations in Windows 
+function _docker(){
+    MSYS_NO_PATHCONV=1 docker "$@"
 }
