@@ -39,10 +39,16 @@ function ssh_config_agent_on_host(){
 function provision(){
     generate_ssh_key
     update_cloud_init_template $VM_NAME
+
+    start=`date +%s`
     multipass launch -c$CPU -m$MEMORY -d$DISK -n $VM_NAME lts --cloud-init $CLOUD_INIT_FILE || exit
+    end=`date +%s`
+    runtime=$((end-start))
+   
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')  
     echo "VM Creation Sucessfull"
     echo "VM Name : $VM_NAME |  IP: $IP "
+    echo "Time Taken: $runtime" |  awk '{print int($1/60)" min:"int($1%60)" sec"}'
     echo "Next: Select 2 from the Menu to ssh to the $VM_NAME"
 }
 
