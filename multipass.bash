@@ -47,7 +47,7 @@ help(){
             provision 
             end=`date +%s`
             runtime=$((end-start))
-            echo "Time Taken: $runtime" |  awk '{print int($1/60)" min:"int($1%60)" sec"}'
+            display_time $runtime
             ;;
         2) 
             multipass shell $VM_NAME
