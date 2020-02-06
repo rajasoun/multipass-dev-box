@@ -49,10 +49,10 @@ You will get a menu
 
   Multipass Manager   
   
-                      1. Provision                  
-                      2. SSH-Multipass                  
-                      3. SSH-Host                   
-                      4. Destroy
+          1. Provision                  
+          2. SSH-Multipass                  
+          3. SSH-Host                   
+          4. Destroy
 
  Enter your choice [1-4] 
 
