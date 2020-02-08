@@ -102,3 +102,27 @@ function get_ssh_opts(){
 function _docker(){
     MSYS_NO_PATHCONV=1 docker "$@"
 }
+
+function run_main(){
+    get_ssh_opts
+    _docker
+    docker_sed
+
+    generate_ssh_key
+    update_cloud_init_template
+    start_ssh_agent_add_public_key
+    ssh_config_agent_on_host
+    provision
+    list_vms
+    clear_workspace
+    destroy
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
+then
+  run_main
+  if [ $? -gt 0 ]
+  then
+    exit 1
+  fi
+fi

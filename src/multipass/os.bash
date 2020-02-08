@@ -27,3 +27,19 @@ function display_time {
     (( $D > 0 || $H > 0 || $M > 0 )) && printf 'and '
     printf '%d seconds\n' $S
 }
+
+
+function run_main() {
+    lls
+    os_command_is_installed
+    display_time
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
+then
+  run_main
+  if [ $? -gt 0 ]
+  then
+    exit 1
+  fi
+fi

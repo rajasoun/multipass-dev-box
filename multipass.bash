@@ -6,13 +6,8 @@
 # https://github.com/lucaswhitaker22/bash_menus/blob/master/bash_menus/demo.sh
 
 source "workspace.env"
+source "instance.env"
 source "$WORKSPACE/libs/helpers/load"
-
-### Arguments with Default Values
-VM_NAME=${1:-$VM_NAME}
-CPU=${2:-"1"}
-MEMORY=${3:-"2G"}
-DISK=${4:-"5G"}
 
 function menu() {
     tput clear
@@ -38,11 +33,11 @@ function menu() {
     return $choice
 }
 
-help(){
+choose_action_from_menu(){
     menu "Multipass Manager" "Provision,SSH-Multipass,SSH-Host, Destroy"
     choice=$?
     case $choice in 
-        1) 
+        1) .
             start=`date +%s`
             provision 
             end=`date +%s`
@@ -68,8 +63,8 @@ help(){
     esac
 }
 
-
-help
+check_vm_name_required || exit 1
+choose_action_from_menu
 
 
 
