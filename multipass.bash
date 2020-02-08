@@ -9,7 +9,7 @@ source "workspace.env"
 source "$WORKSPACE/libs/helpers/load"
 
 ### Arguments with Default Values
-VM_NAME=${1:-"bizapps"}
+VM_NAME=${1:-$VM_NAME}
 CPU=${2:-"1"}
 MEMORY=${3:-"2G"}
 DISK=${4:-"5G"}

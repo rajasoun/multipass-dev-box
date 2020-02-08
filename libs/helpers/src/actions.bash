@@ -6,23 +6,28 @@ function generate_ssh_key() {
       mkdir -p $SSH_KEY_PATH
     fi
     echo -e 'y\n' | ssh-keygen -q -t rsa -C \
-                            "$(whoami)@bizapps.cisco.com" -N "" \
+                            "$(whoami)@$DOMAIN" -N "" \
                             -f $SSH_KEY_PATH/${SSH_KEY} 2>&1 > /dev/null
 }
 
 function update_cloud_init_template() {
     cp $CLOUD_INIT_TEMPLATE $CLOUD_INIT_FILE
+    #@ToDo: Optimize Edits
     docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" \
             /config/${VM_NAME}-cloud-init.yaml
+    docker_sed  "s,hostname:.*$,"hostname:\ $VM_NAME",g" /config/${VM_NAME}-cloud-init.yaml
 }
 
-function ssh_config_agent_on_host(){
+function start_ssh_agent_add_public_key(){
+    #@FixMe : Creates Problem in Windows
     # Ensure SSH Agent Is Running in Background
     eval "$(ssh-agent -s)"
     SSH_OPTS=$(get_ssh_opts)
     #echo "ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} "
     ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} 
+}
 
+function ssh_config_agent_on_host(){
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
     docker_sed "/${IP}/d"   /ssh/known_hosts
@@ -33,6 +38,7 @@ function ssh_config_agent_on_host(){
     echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile $SSH_KEY_PATH/id_rsa_$VM_NAME\n" > $SSH_CONFIG 
     echo "SSH Agent Configured Successfully"
     echo "Next: ssh -F $SSH_CONFIG $VM_NAME or ssh -i keys/multipass/id_rsa_$VM_NAME ubuntu@$IP"
+    start_ssh_agent_add_public_key
 }
 
 
@@ -40,24 +46,24 @@ function provision(){
     generate_ssh_key
     update_cloud_init_template $VM_NAME
 
-    multipass launch -c$CPU -m$MEMORY -d$DISK -n $VM_NAME lts --cloud-init $CLOUD_INIT_FILE || exit
-   
+    ## Exit if Launch Fails
+    multipass launch -c$CPU -m$MEMORY -d$DISK -n $VM_NAME lts --cloud-init $CLOUD_INIT_FILE || exit 
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')  
+
     echo "VM Creation Sucessfull"
     echo "VM Name : $VM_NAME |  IP: $IP "
-    echo "Next: Select 2 from the Menu to ssh to the $VM_NAME"
+    echo "Next: SSH to $VM_NAME through Nuktipass or Configure Host to do SSH"
 }
 
 function destroy(){
     IP=$(multipass info $VM_NAME | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
-    # ~/.ssh mounted on /ssh in docker
+    # ~/.ssh of host mounted on /ssh in docker
     docker_sed "/${IP}/d" /ssh/known_hosts
 
     multipass delete $VM_NAME && multipass purge
     rm -fr $CLOUD_INIT_FILE
     rm -fr $SSH_KEY_PATH
-    #docker_sed '1,/#start/p;/#end/,$p' $SSH_CONFIG
 }
 
 function clear_workspace(){

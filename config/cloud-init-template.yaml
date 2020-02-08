@@ -1,14 +1,13 @@
 #cloud-config
 # vim: syntax=yaml
 
-hostname: bizapps
+hostname: AAA..
 manage_etc_hosts: true
 
 # Update our packages on first boot, saves us some time
-package_update: true
-package_upgrade: true
-package_reboot_if_required: true
-
+# package_update: true
+# package_upgrade: true
+# package_reboot_if_required: true
 
 # Set the locale of the system
 locale: "en_US.UTF-8"
