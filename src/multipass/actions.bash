@@ -75,15 +75,15 @@ function destroy(){
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
     # ~/.ssh of host mounted on /ssh in docker
-    docker_sed "/${IP}/d" /ssh/known_hosts
+    #docker_sed "/${IP}/d" /known_hosts
 
     multipass delete "$VM_NAME" && multipass purge
-    rm -fr "$CLOUD_INIT_FILE"
+    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     rm -fr "$SSH_KEY_PATH"
 }
 
 function clear_workspace(){
-    rm -fr "$CLOUD_INIT_FILE"
+    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     rm -fr "$SSH_KEY_PATH"
 }
 
