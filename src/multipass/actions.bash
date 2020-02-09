@@ -46,8 +46,30 @@ function provision(){
     echo "Next: SSH to $VM_NAME via Multipass or Bastion Host"
 }
 
+function create_ssh_connect_script(){
+    local SSH_KEY="id_rsa_${VM_NAME}"
+    cp "$CLOUD_INIT_BASE_PATH/ssh-connect-template.sh" "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    chmod a+x "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+
+    IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
+    #@ToDo: Optimize Edits
+    docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-ssh-connect.sh"
+    docker_sed "s,_vm_name_,${VM_NAME},g" "/config/${VM_NAME}-ssh-connect.sh"
+    docker_sed "s,_ssh_config_,${VM_NAME}-ssh-config,g" "/config/${VM_NAME}-ssh-connect.sh"
+    docker_sed "s,_ip_,${IP},g" "/config/${VM_NAME}-ssh-connect.sh"
+
+    echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
+}
+
 function ssh_via_bastion(){
-    _docker run
+  create_ssh_connect_script
+  local SSH_KEY="id_rsa_${VM_NAME}"
+  local SSH_CONFIG="$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-config"
+  echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
+  _docker run --rm -it \
+            -v "${PWD}/$SSH_KEY_PATH":/keys \
+            -v "${PWD}/$CLOUD_INIT_BASE_PATH":/config \
+            kroniak/ssh-client bash -c "source /config/${VM_NAME}-ssh-connect.sh && bash"
 }
 
 function destroy(){
@@ -62,6 +84,8 @@ function destroy(){
 
 function clear_workspace(){
     rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    rm -fr "$CLOUD_INIT_BASE_PATH/*-ssh-config"
+    rm -fr "$CLOUD_INIT_BASE_PATH/*-ssh-connect.sh"
     rm -fr "$SSH_KEY_PATH"
 }
 
