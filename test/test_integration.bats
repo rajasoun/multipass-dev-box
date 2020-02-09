@@ -40,23 +40,29 @@ teardown() {
   assert_output --partial "VM_NAME"
 }
 
-@test ".generate_ssh_key - Validate ssk-keygen Available and Generate key" {
+@test ".generate_ssh_key - validate ssk-keygen command available and generate keys" {
     source ${os_profile_script}
     run os_command_is_installed "ssh-keygen"
     assert_success
 
     source ${checks_profile_script}
+    source ${instance_env}
+    run check_required_instance_env_vars
+    assert_success 
     source ${workspace_env}
     run check_required_workspace_env_vars
     assert_success 
 
-    # assert_success  
-    # unset SSH_KEY_PATH
-    # assert_empty "${SSH_KEY_PATH}"
-    # SSH_KEY_PATH="$WORKSPACE/$TEST_DATA/keys/multipass"
-    # source ${actions_profile_script}
-    # run create_directory_if_not_exists $SSH_KEY_PATH
-    # assert_success   
-    # run generate_ssh_key
-    # assert_success
+    source ${actions_profile_script}
+    unset SSH_KEY_PATH
+    assert_empty "${SSH_KEY_PATH}"
+    SSH_KEY_PATH="$WORKSPACE/$TEST_DATA/keys/multipass"
+    run create_directory_if_not_exists $SSH_KEY_PATH
+    assert_success   
+    
+    unset VM_NAME
+    assert_empty "${VM_NAME}"
+    VM_NAME="TEST_VM"
+    run generate_ssh_key
+    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
 }

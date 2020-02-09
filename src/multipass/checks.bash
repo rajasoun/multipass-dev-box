@@ -6,7 +6,7 @@ function check_vm_name_required() {
 }
 
 function check_required_workspace_env_vars() {
-  local required_env="WORKSPACE SSH_CONFIG SSH_KEY_PATH SSH_KEY CLOUD_INIT_TEMPLATE CLOUD_INIT_FILE"
+  local required_env="WORKSPACE SSH_CONFIG SSH_KEY_PATH CLOUD_INIT_TEMPLATE "
   local missing_env_vars=""
   for reqvar in $required_env
   do

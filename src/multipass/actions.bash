@@ -9,12 +9,16 @@ function create_directory_if_not_exists(){
 }
 
 function generate_ssh_key() {
+    local SSH_KEY="id_rsa_${VM_NAME}"
     echo -e 'y\n' | ssh-keygen -q -t rsa -C \
                             "$(whoami)@$DOMAIN" -N "" \
                             -f $SSH_KEY_PATH/${SSH_KEY} 2>&1 > /dev/null
+    echo "${SSH_KEY} & ${SSH_KEY}.pub keys generated successfully"
 }
 
 function update_cloud_init_template() {
+    local SSH_KEY="id_rsa_${VM_NAME}"
+    local CLOUD_INIT_FILE="config/${VM_NAME}-cloud-init.yaml"
     cp $CLOUD_INIT_TEMPLATE $CLOUD_INIT_FILE
     #@ToDo: Optimize Edits
     docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" \
@@ -23,6 +27,7 @@ function update_cloud_init_template() {
 }
 
 function start_ssh_agent_add_public_key(){
+    local SSH_KEY="id_rsa_${VM_NAME}"
     #@FixMe : Creates Problem in Windows
     # Ensure SSH Agent Is Running in Background
     eval "$(ssh-agent -s)"

@@ -5,8 +5,8 @@
 # https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
 # https://github.com/lucaswhitaker22/bash_menus/blob/master/bash_menus/demo.sh
 
-source "workspace.env"
 source "instance.env"
+source "workspace.env"
 source "$WORKSPACE/src/multipass/load"
 
 function menu() {
