@@ -6,7 +6,6 @@
 # https://github.com/lucaswhitaker22/bash_menus/blob/master/bash_menus/demo.sh
 
 source "instance.env"
-source "workspace.env"
 
 # shellcheck disable=SC1090
 source "$WORKSPACE/src/load"
@@ -42,7 +41,7 @@ choose_action_from_menu(){
     menu "Multipass Manager" "Provision,SSH-Multipass,SSH-Host, Destroy"
     choice=$?
     case $choice in 
-        1) .
+        1)
             start=$(date +%s)
             provision 
             end=$(date +%s)

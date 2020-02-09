@@ -16,7 +16,7 @@ function generate_ssh_key() {
     echo "${SSH_KEY} & ${SSH_KEY}.pub keys generated successfully"
 }
 
-function update_cloud_init_template() {
+function create_cloud_init_config_from_template() {
     local SSH_KEY="id_rsa_${VM_NAME}"
     local CLOUD_INIT_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     cp "$CLOUD_INIT_TEMPLATE" "$CLOUD_INIT_FILE"
@@ -59,8 +59,9 @@ function provision(){
 
     create_directory_if_not_exists "$SSH_KEY_PATH"
     generate_ssh_key
-    update_cloud_init_template "$VM_NAME"
+    create_cloud_init_config_from_template "$VM_NAME"
 
+    local CLOUD_INIT_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     ## Exit if Launch Fails
     multipass launch -c"$CPU" -m"$MEMORY" -d"$DISK" -n "$VM_NAME" lts --cloud-init "$CLOUD_INIT_FILE" || exit
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
@@ -130,7 +131,7 @@ function run_main(){
 
     create_directory_if_not_exists
     generate_ssh_key
-    update_cloud_init_template
+    create_cloud_init_config_from_template
     start_ssh_agent_add_public_key
     ssh_config_agent_on_host
     provision

@@ -79,7 +79,7 @@ teardown() {
     assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
 }
 
-@test ".update_cloud_init_template - create and update cloud-init file" {
+@test ".create_cloud_init_config_from_template - create and update cloud-init file" {
     # shellcheck disable=SC1090
     source ${os_profile_script}
     run os_command_is_installed "docker"
@@ -118,7 +118,7 @@ teardown() {
     run create_directory_if_not_exists "$CLOUD_INIT_BASE_PATH"
 
     local SSH_KEY_PATH="$TEST_DATA/keys/multipass"
-    run update_cloud_init_template
+    run create_cloud_init_config_from_template
     assert_output -p "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml Generated for $VM_NAME"
 
     run file_contains_text "$VM_NAME" "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
