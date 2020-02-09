@@ -21,9 +21,9 @@ function update_cloud_init_template() {
     local CLOUD_INIT_FILE="config/${VM_NAME}-cloud-init.yaml"
     cp $CLOUD_INIT_TEMPLATE $CLOUD_INIT_FILE
     #@ToDo: Optimize Edits
-    docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" \
-            /config/${VM_NAME}-cloud-init.yaml
-    docker_sed  "s,hostname:.*$,"hostname:\ $VM_NAME",g" /config/${VM_NAME}-cloud-init.yaml
+    docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" $CLOUD_INIT_FILE
+    docker_sed  "s,hostname:.*$,"hostname:\ $VM_NAME",g" $CLOUD_INIT_FILE
+    echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
 }
 
 function start_ssh_agent_add_public_key(){
