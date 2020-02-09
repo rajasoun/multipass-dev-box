@@ -18,7 +18,7 @@ function generate_ssh_key() {
 
 function update_cloud_init_template() {
     local SSH_KEY="id_rsa_${VM_NAME}"
-    local CLOUD_INIT_FILE="config/${VM_NAME}-cloud-init.yaml"
+    local CLOUD_INIT_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     cp $CLOUD_INIT_TEMPLATE $CLOUD_INIT_FILE
     #@ToDo: Optimize Edits
     docker_sed "s,ssh-rsa.*$,$(cat $SSH_KEY_PATH/${SSH_KEY}.pub),g" $CLOUD_INIT_FILE

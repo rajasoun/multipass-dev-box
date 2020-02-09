@@ -66,3 +66,38 @@ teardown() {
     run generate_ssh_key
     assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
 }
+
+@test ".update_cloud_init_template - create and update cloud-init file" {
+    source ${os_profile_script}
+    run os_command_is_installed "docker"
+    assert_success
+
+    source ${checks_profile_script}
+    source ${instance_env}
+    run check_required_instance_env_vars
+    assert_success 
+    source ${workspace_env}
+    run check_required_workspace_env_vars
+    assert_success 
+
+    source ${actions_profile_script}
+    unset SSH_KEY_PATH
+    assert_empty "${SSH_KEY_PATH}"
+    SSH_KEY_PATH="$WORKSPACE/$TEST_DATA/keys/multipass"
+    run create_directory_if_not_exists $SSH_KEY_PATH
+    assert_success   
+    
+    unset VM_NAME
+    assert_empty "${VM_NAME}"
+    VM_NAME="TEST_VM"
+    run generate_ssh_key
+    assert_success 
+
+    unset CLOUD_INIT_BASE_PATH
+    assert_empty "${CLOUD_INIT_BASE_PATH}"
+    CLOUD_INIT_BASE_PATH="$WORKSPACE/$TEST_DATA/config"
+    run create_directory_if_not_exists $CLOUD_INIT_BASE_PATH
+    run update_cloud_init_template
+    assert_output -p "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml Generated for $VM_NAME"
+}
+
