@@ -113,8 +113,20 @@ function docker_sed(){
 }
 
 # Workaround for Path Limitations in Windows 
-function _docker(){
-    MSYS_NO_PATHCONV=1 docker "$@"
+#function _docker(){
+#    MSYS_NO_PATHCONV=1 docker "$@"
+#}
+
+
+function _docker() {
+  if [[ "$(os)" == "windows" ]]; then
+    realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
+    export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*"
+    printf "%s\0" "$@" > /tmp/args.txt
+    winpty bash -c "xargs -0a /tmp/args.txt '$realdocker'"
+    return 0
+  fi
+  docker "$@"
 }
 
 function run_main(){
