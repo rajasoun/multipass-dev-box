@@ -72,6 +72,8 @@ $RECYCLE.BIN/
 config/*-cloud-init.yaml
 keys/multipass
 config/ssh-config
+dev.*.env
+
+test/.test_data/
 .idea
 *.iml
-test/.test_data/

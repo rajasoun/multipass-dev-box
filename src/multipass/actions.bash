@@ -28,31 +28,6 @@ function create_cloud_init_config_from_template() {
     echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
 }
 
-function start_ssh_agent_add_public_key(){
-    local SSH_KEY="id_rsa_${VM_NAME}"
-    #@FixMe : Creates Problem in Windows
-    # Ensure SSH Agent Is Running in Background
-    eval "$(ssh-agent -s)"
-    SSH_OPTS=$(get_ssh_opts)
-    #echo "ssh-add $SSH_OPTS $SSH_KEY_PATH/${SSH_KEY} "
-    ssh-add "$SSH_OPTS $SSH_KEY_PATH/${SSH_KEY}"
-}
-
-function ssh_config_agent_on_host(){
-    IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
-    # delete old key from known_hosts
-    docker_sed "/${IP}/d"   /ssh/known_hosts
-    # rescan the Host and add it to the known_hosts
-    ssh-keyscan -t rsa "$IP" >> ~/.ssh/known_hosts
-
-    # updating local ssh configuration.
-    echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile $SSH_KEY_PATH/id_rsa_$VM_NAME\n" > "$SSH_CONFIG"
-    echo "SSH Agent Configured Successfully"
-    echo "Next: ssh -F $SSH_CONFIG $VM_NAME or ssh -i keys/multipass/id_rsa_$VM_NAME ubuntu@$IP"
-    start_ssh_agent_add_public_key
-}
-
-
 function provision(){
     check_required_workspace_env_vars
     check_required_instance_env_vars
@@ -68,13 +43,16 @@ function provision(){
 
     echo "VM Creation Sucessfull"
     echo "VM Name : $VM_NAME |  IP: $IP "
-    echo "Next: SSH to $VM_NAME through Nuktipass or Configure Host to do SSH"
+    echo "Next: SSH to $VM_NAME via Multipass or Bastion Host"
+}
+
+function ssh_via_bastion(){
+    _docker run
 }
 
 function destroy(){
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
     # delete old key from known_hosts
-    # ~/.ssh of host mounted on /ssh in docker
     #docker_sed "/${IP}/d" /known_hosts
 
     multipass delete "$VM_NAME" && multipass purge
@@ -110,22 +88,12 @@ function docker_sed(){
             "$FILE"
 }
 
-# Workaround for ssh on Windows 
-function get_ssh_opts(){
-    case "$OSTYPE" in
-        msys* | cygwin* | linux*) echo "-k" ;;
-        darwin*) echo "-K"  ;;
-        *) echo "unknown: $OSTYPE";exit  ;;
-    esac 
-}
-
 # Workaround for Path Limitations in Windows 
 function _docker(){
     MSYS_NO_PATHCONV=1 docker "$@"
 }
 
 function run_main(){
-    get_ssh_opts
     _docker
     docker_sed
 

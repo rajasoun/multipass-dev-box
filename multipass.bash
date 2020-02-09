@@ -5,10 +5,15 @@
 # https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
 # https://github.com/lucaswhitaker22/bash_menus/blob/master/bash_menus/demo.sh
 
-source "instance.env"
-
-# shellcheck disable=SC1090
-source "$WORKSPACE/src/load"
+include () {
+    if [[ -f "dev.$1" ]]; then
+        source "dev.$1"  #source from custom env file if present
+    else
+        source "$1" #source from deafult env file
+    fi
+    # shellcheck source=$pwd/src/load
+    source "$WORKSPACE/src/load"
+}
 
 function menu() {
     tput clear
@@ -38,7 +43,7 @@ function menu() {
 }
 
 choose_action_from_menu(){
-    menu "Multipass Manager" "Provision,SSH-Multipass,SSH-Host, Destroy"
+    menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion, Destroy"
     choice=$?
     case $choice in 
         1)
@@ -53,8 +58,7 @@ choose_action_from_menu(){
             ;;
         3) 
             multipass info "$VM_NAME" || exit 1 #Exit if VM Not Running
-            ssh_config_agent_on_host
-            eval "$(ssh-agent -s)"
+            ssh_via_bastion
             ;;
         4) 
             multipass info "$VM_NAME" || exit 1 #Exit if VM Not Running
@@ -67,6 +71,7 @@ choose_action_from_menu(){
     esac
 }
 
+include "instance.env"
 check_vm_name_required || exit 1
 choose_action_from_menu
 
