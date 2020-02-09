@@ -7,7 +7,7 @@
 
 source "workspace.env"
 source "instance.env"
-source "$WORKSPACE/libs/helpers/load"
+source "$WORKSPACE/src/multipass/load"
 
 function menu() {
     tput clear

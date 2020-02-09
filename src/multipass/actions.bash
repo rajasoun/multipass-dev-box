@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-function generate_ssh_key() {
+function create_directory_if_not_exists(){
+    DIR_NAME=$1
     ## Create Directory If Not Exists
-    if [ ! -d $SSH_KEY_PATH ]; then
-      mkdir -p $SSH_KEY_PATH
+    if [ ! -d $DIR_NAME  ]; then
+      mkdir -p $DIR_NAME
     fi
+}
+
+function generate_ssh_key() {
     echo -e 'y\n' | ssh-keygen -q -t rsa -C \
                             "$(whoami)@$DOMAIN" -N "" \
                             -f $SSH_KEY_PATH/${SSH_KEY} 2>&1 > /dev/null
@@ -43,6 +47,13 @@ function ssh_config_agent_on_host(){
 
 
 function provision(){
+    WORKSPACE_ENV="WORKSPACE SSH_CONFIG SSH_KEY_PATH SSH_KEY CLOUD_INIT_TEMPLATE CLOUD_INIT_FILE"
+    check_required_environment_vars $WORKSPACE_ENV
+
+    INSTANCE_ENV="VM_NAME DOMAIN CPU MEMORY DISK"
+    check_required_environment_vars $INSTANCE_ENV
+
+    create_directory_if_not_exists $SSH_KEY_PATH
     generate_ssh_key
     update_cloud_init_template $VM_NAME
 
@@ -108,6 +119,7 @@ function run_main(){
     _docker
     docker_sed
 
+    create_directory_if_not_exists
     generate_ssh_key
     update_cloud_init_template
     start_ssh_agent_add_public_key
