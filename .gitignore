@@ -74,3 +74,4 @@ keys/multipass
 config/ssh-config
 .idea
 *.iml
+test/.test_data/

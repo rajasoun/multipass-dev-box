@@ -2,6 +2,7 @@
 
 # ls, with chmod-like permissions and more.
 # @param $1 The directory to ls
+# shellcheck disable=SC2120
 function lls() {
   LLS_PATH=$1
   ls -AHl $LLS_PATH | awk "{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/) \
@@ -28,12 +29,25 @@ function display_time {
     printf '%d seconds\n' $S
 }
 
+# Returns true (0) if the given file exists and is a file and false (1) otherwise
+function file_exists() {
+  local -r file="$1"
+  [[ -f "$file" ]]
+}
 
+# Returns true (0) if the given file exists contains the given text and false (1) otherwise. The given text is a
+# regular expression.
+function file_contains_text {
+  local -r text="$1"
+  local -r file="$2"
+  grep -q "$text" "$file"
+}
 
 function run_main() {
     lls
     os_command_is_installed
     display_time
+    file_exists
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
