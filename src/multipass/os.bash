@@ -29,6 +29,7 @@ function display_time {
 }
 
 
+
 function run_main() {
     lls
     os_command_is_installed
