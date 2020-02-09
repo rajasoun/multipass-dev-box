@@ -56,8 +56,9 @@ teardown() {
     source ${actions_profile_script}
     unset SSH_KEY_PATH
     assert_empty "${SSH_KEY_PATH}"
+
     SSH_KEY_PATH="$WORKSPACE/$TEST_DATA/keys/multipass"
-    run create_directory_if_not_exists $SSH_KEY_PATH
+    run create_directory_if_not_exists "$SSH_KEY_PATH"
     assert_success   
     
     unset VM_NAME

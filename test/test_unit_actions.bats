@@ -19,13 +19,7 @@ teardown() {
 @test ".create_directory_if_not_exists For Empty Directory Name" {
   source ${actions_profile_script} 
   run create_directory_if_not_exists ""
-  assert_success   
-}
-
-@test ".create_directory_if_not_exists For valid Directory Name" {
-  source ${actions_profile_script} 
-  run create_directory_if_not_exists "${SSH_TEST_KEY_PATH}"
-  assert_success   
+  assert_failure
 }
 
 @test ".generate_ssh_key (Mock) - generate keys based on VM_NAME varaible" {    
