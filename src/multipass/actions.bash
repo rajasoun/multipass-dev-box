@@ -47,11 +47,8 @@ function ssh_config_agent_on_host(){
 
 
 function provision(){
-    WORKSPACE_ENV="WORKSPACE SSH_CONFIG SSH_KEY_PATH SSH_KEY CLOUD_INIT_TEMPLATE CLOUD_INIT_FILE"
-    check_required_environment_vars $WORKSPACE_ENV
-
-    INSTANCE_ENV="VM_NAME DOMAIN CPU MEMORY DISK"
-    check_required_environment_vars $INSTANCE_ENV
+    check_required_workspace_env_vars
+    check_required_instance_env_vars
 
     create_directory_if_not_exists $SSH_KEY_PATH
     generate_ssh_key

@@ -12,13 +12,11 @@ function check_required_workspace_env_vars() {
   do
     if [ -z ${!reqvar} ]
     then
-      # raise "missing ENVIRONMENT ${reqvar}!"
-      # return 1
+      raise "missing ENVIRONMENT ${reqvar}!"
+      return 1
       missing_env_vars="${missing_env_vars} ${reqvar}"
     fi
   done
-  raise "missing ENVIRONMENT ${missing_env_vars}!"
-  return 1 
 }
 
 function check_required_instance_env_vars() {
@@ -28,13 +26,11 @@ function check_required_instance_env_vars() {
   do
     if [ -z ${!reqvar} ]
     then
-      # raise "missing ENVIRONMENT ${reqvar}!"
-      # return 1
+      raise "missing ENVIRONMENT ${reqvar}!"
+      return 1
       missing_env_vars="${missing_env_vars} ${reqvar}"
     fi
   done
-  raise "missing ENVIRONMENT ${missing_env_vars}!"
-  return 1 
 }
 
 

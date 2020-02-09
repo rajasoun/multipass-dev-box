@@ -27,6 +27,12 @@ teardown() {
     assert_success
 }
 
+@test ".os_command_is_installed - check for ssh-keygen" {
+    source ${profile_script}
+    run os_command_is_installed brew
+    assert_success
+}
+
 @test ".os_command_is_installed - check for InValid_Command" {
     source ${profile_script}
     run os_command_is_installed InValid_Command
@@ -37,6 +43,12 @@ teardown() {
     source ${profile_script}
     run display_time 60
     assert_output --partial "1 minutes and 0 seconds"
+}
+
+@test ".display_time - diaplays 0 seconds in mins and seconds" {
+    source ${profile_script}
+    run display_time 0
+    assert_output --partial "0 seconds"
 }
 
 

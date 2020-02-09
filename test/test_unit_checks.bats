@@ -38,7 +38,7 @@ teardown() {
   source ${profile_script}
   run check_required_workspace_env_vars
   assert_failure
-  assert_output --partial "SSH_CONFIG"
+  assert_output --partial "missing"
 }
 
 @test ".check_required_instance_env_vars - when environment variables not set for VM_NAME" {

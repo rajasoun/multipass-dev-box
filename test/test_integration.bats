@@ -5,20 +5,20 @@ load 'helpers'
 
 checks_profile_script="./src/multipass/checks.bash"
 actions_profile_script="./src/multipass/actions.bash"
+os_profile_script="./src/multipass/os.bash"
 
 workspace_env="workspace.env"
 instance_env="instance.env"
 
 setup() {
     echo "SetUp"
-    DIR_NAME="keys/multipass"
+    TEST_DATA="test/.test_data"
 }
 
 teardown() {
   echo "teardown"
-  rm -fr $DIR_NAME #Remove Directory created during Test
-
-}
+  rm -fr $TEST_DATA #Remove Directory created during Test
+} 
 
 @test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
   source ${checks_profile_script}
@@ -40,15 +40,23 @@ teardown() {
   assert_output --partial "VM_NAME"
 }
 
-@test ".create_directory_if_not_exists For Empty Directory Name" {
-  source ${actions_profile_script} 
-  run create_directory_if_not_exists ""
-  assert_success   
-}
+@test ".generate_ssh_key - Validate ssk-keygen Available and Generate key" {
+    source ${os_profile_script}
+    run os_command_is_installed "ssh-keygen"
+    assert_success
 
-@test ".create_directory_if_not_exists For valid Directory Name" {
-  DIR_NAME="keys/multipass"
-  source ${actions_profile_script} 
-  run create_directory_if_not_exists "${DIR_NAME}"
-  assert_success   
+    source ${checks_profile_script}
+    source ${workspace_env}
+    run check_required_workspace_env_vars
+    assert_success 
+
+    # assert_success  
+    # unset SSH_KEY_PATH
+    # assert_empty "${SSH_KEY_PATH}"
+    # SSH_KEY_PATH="$WORKSPACE/$TEST_DATA/keys/multipass"
+    # source ${actions_profile_script}
+    # run create_directory_if_not_exists $SSH_KEY_PATH
+    # assert_success   
+    # run generate_ssh_key
+    # assert_success
 }
