@@ -2,10 +2,11 @@
 
 # ls, with chmod-like permissions and more.
 # @param $1 The directory to ls
-# shellcheck disable=SC2120
 function lls() {
-  LLS_PATH=$1
-  ls -AHl $LLS_PATH | awk "{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/) \
+  #If Not Paramter is Passed assumes current directory
+  local LLS_PATH=${1:-"."}
+  # shellcheck disable=SC2012 # Reason: This is for human consumption
+  ls -AHl "$LLS_PATH" | awk "{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/) \
                             *2^(8-i));if(k)printf(\"%0o \",k);print}"
 }
 
@@ -15,17 +16,17 @@ function os_command_is_installed {
   command -v "$name" > /dev/null
 }
 
-
+# Displays Time in misn and seconds
 function display_time {
     local T=$1
     local D=$((T/60/60/24))
     local H=$((T/60/60%24))
     local M=$((T/60%60))
     local S=$((T%60))
-    (( $D > 0 )) && printf '%d days ' $D
-    (( $H > 0 )) && printf '%d hours ' $H
-    (( $M > 0 )) && printf '%d minutes ' $M
-    (( $D > 0 || $H > 0 || $M > 0 )) && printf 'and '
+    (( D > 0 )) && printf '%d days ' $D
+    (( H > 0 )) && printf '%d hours ' $H
+    (( M > 0 )) && printf '%d minutes ' $M
+    (( D > 0 || H > 0 || M > 0 )) && printf 'and '
     printf '%d seconds\n' $S
 }
 
@@ -43,6 +44,7 @@ function file_contains_text {
   grep -q "$text" "$file"
 }
 
+# Returns os name windows, mac, linux or unknown
 function os(){
   UNAME=$( command -v uname)
   case $( "${UNAME}" | tr '[:upper:]' '[:lower:]') in
@@ -66,17 +68,17 @@ function os(){
 }
 
 function run_main() {
-    lls
-    os_command_is_installed
-    display_time
-    file_exists
+    lls "$@"
+    os_command_is_installed "$@"
+    display_time "$@"
+    file_exists "$@"
+    file_contains_text "$@"
     os
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-  run_main
-  if [ $? -gt 0 ]
+  if ! run_main "$@"
   then
     exit 1
   fi
