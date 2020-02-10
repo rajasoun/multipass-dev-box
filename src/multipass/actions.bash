@@ -104,7 +104,7 @@ function docker_sed(){
 #    echo "-e "$SED_STRING" "
 #    echo "$FILE"
 
-    _docker run --rm \
+     MSYS_NO_PATHCONV=1  docker run --rm \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$CLOUD_INIT_BASE_PATH":/config \
             hairyhenderson/sed -i \
@@ -134,6 +134,7 @@ function _docker() {
       # --tty or -t requires winpty
       if grep -ZE '^--tty|^-[^-].*t|^-t.*' /tmp/args.txt; then
           exec winpty /bin/bash -c "xargs -0a /tmp/args.txt '$realdocker'"
+          return 0
       fi
   fi
   exec docker "$@"
