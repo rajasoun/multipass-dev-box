@@ -120,14 +120,23 @@ function docker_sed(){
 
 # Workaround for Path Limitations in Windows
 function _docker() {
-  if [[ "$(os)" == "windows" ]]; then
-    realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
-    export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*"
-    printf "%s\0" "$@" > /tmp/args.txt
-    winpty bash -c "xargs -0a /tmp/args.txt '$realdocker'"
-    return 0
+  export MSYS_NO_PATHCONV=1
+  export MSYS2_ARG_CONV_EXCL='*' 
+
+  case "$OSTYPE" in
+      *msys*|*cygwin*) os="$(uname -o)" ;;
+      *) os="$(uname)";;
+  esac
+
+  if [[ "$os" == "Msys" ]] || [[ "$os" == "Cygwin" ]]; then
+      realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
+      printf "%s\0" "$@" > /tmp/args.txt
+      # --tty or -t requires winpty
+      if grep -ZE '^--tty|^-[^-].*t|^-t.*' /tmp/args.txt; then
+          exec winpty /bin/bash -c "xargs -0a /tmp/args.txt '$realdocker'"
+      fi
   fi
-  docker "$@"
+  exec docker "$@"
 }
 
 function run_main(){
