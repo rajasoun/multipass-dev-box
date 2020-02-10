@@ -78,14 +78,13 @@ function destroy(){
     #docker_sed "/${IP}/d" /known_hosts
 
     multipass delete "$VM_NAME" && multipass purge
-    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    rm -fr "$SSH_KEY_PATH"
+    clear_workspace
 }
 
 function clear_workspace(){
     rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    rm -fr "$CLOUD_INIT_BASE_PATH/*-ssh-config"
-    rm -fr "$CLOUD_INIT_BASE_PATH/*-ssh-connect.sh"
+    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-config"
+    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
     rm -fr "$SSH_KEY_PATH"
 }
 
