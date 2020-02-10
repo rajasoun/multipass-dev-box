@@ -118,6 +118,7 @@ function docker_sed(){
 #}
 
 
+# Workaround for Path Limitations in Windows
 function _docker() {
   if [[ "$(os)" == "windows" ]]; then
     realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
@@ -146,9 +147,7 @@ function run_main(){
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-  run_main
-  # shellcheck disable=SC2181
-  if [ $? -gt 0 ]
+  if ! run_main
   then
     exit 1
   fi

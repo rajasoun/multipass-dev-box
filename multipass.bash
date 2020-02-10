@@ -5,7 +5,7 @@
 # https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
 # https://github.com/lucaswhitaker22/bash_menus/blob/master/bash_menus/demo.sh
 
-include () {
+function include () {
     if [[ -f "dev.$1" ]]; then
         source "dev.$1"  #source from custom env file if present
     else
@@ -42,7 +42,11 @@ function menu() {
     return "$choice"
 }
 
-choose_action_from_menu(){
+function check_vm_running(){
+  multipass info "$VM_NAME" || raise_error "Exiting.. "
+}
+
+function choose_action_from_menu(){
     menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion, Destroy"
     choice=$?
     case $choice in 
@@ -53,15 +57,16 @@ choose_action_from_menu(){
             runtime=$((end-start))
             display_time $runtime
             ;;
-        2) 
+        2)
+            check_vm_running
             multipass shell "$VM_NAME"
             ;;
         3) 
-            multipass info "$VM_NAME" || exit 1 #Exit if VM Not Running
+            check_vm_running
             ssh_via_bastion
             ;;
         4) 
-            multipass info "$VM_NAME" || exit 1 #Exit if VM Not Running
+            check_vm_running
             destroy
             echo "$VM_NAME Destroyed"
             ;;

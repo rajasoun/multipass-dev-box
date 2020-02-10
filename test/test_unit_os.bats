@@ -23,13 +23,19 @@ teardown() {
 
 @test ".os_command_is_installed - check for cd" {
     source ${profile_script}
-    run os_command_is_installed brew
+    run os_command_is_installed cd
     assert_success
 }
 
 @test ".os_command_is_installed - check for ssh-keygen" {
     source ${profile_script}
-    run os_command_is_installed brew
+    run os_command_is_installed ssh-keygen
+    assert_success
+}
+
+@test ".os_command_is_installed - check for docker" {
+    source ${profile_script}
+    run os_command_is_installed docker
     assert_success
 }
 
