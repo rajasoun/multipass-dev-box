@@ -41,6 +41,11 @@ function raise(){
   echo "${1}" >&2
 }
 
+function raise_error(){
+  echo "${1}" >&2
+  exit 1
+}
+
 # Wrapper To Aid TDD
 function run_main(){
     check_vm_name_required

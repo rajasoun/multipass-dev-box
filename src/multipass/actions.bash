@@ -118,6 +118,7 @@ function docker_sed(){
 #}
 
 
+# Workaround for Path Limitations in Windows
 function _docker() {
   if [[ "$(os)" == "windows" ]]; then
     realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
