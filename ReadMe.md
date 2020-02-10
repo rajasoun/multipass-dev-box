@@ -4,12 +4,12 @@ Eases Dev Box Setup with Multipass compatible to both Windows and MacOS
 
 Limitations: 
 Multipass will not work on Mac when connected to Cisco Any Connect. 
-Refer:
-1. https://github.com/canonical/multipass/issues/961
-2. https://multipass.run/docs/troubleshooting-networking-on-macos
-3. https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
 
-
+References:
+---
+    1. https://github.com/canonical/multipass/issues/961
+    2. https://multipass.run/docs/troubleshooting-networking-on-macos
+    3. https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
 
 ### Multipass
 
@@ -32,12 +32,6 @@ brew cask install multipass
 
 On Windows, download the installer [from GitHub](https://github.com/canonical/multipass/releases)
 
-### Mac Users
-Workaround of [Issue](https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901) 
-through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml through script.
-
-Refer [cloud-init](config/cloud-init-template.yaml) Template file
-
 ### Getting Started
 In Terminal Window
 
@@ -50,19 +44,34 @@ You will get a menu
   Multipass Manager   
   
           1. Provision                  
-          2. SSH-Multipass                  
-          3. SSH-Host                   
+          2. SSH-viaMultipass                 
+          3. SSH-viaBastion                   
           4. Destroy
 
  Enter your choice [1-4] 
 
- Next Steps 
- 1. Explore Limitations of Multipass + Anyconnect Issue
- 2. Connect VM via Bastion Host
- 3. Configure VM through Ansible
- 4. Add Automated Verification
+*ToDo*
 
- ## Flow 
+     1. Explore Limitations of Multipass + Anyconnect Issue
+     2. Configure VM through Ansible
+     3. Add Automated Verification
+     4. Support for ADR
+     5. Adoption of Git Flow
+
+### What does the Script Do
+Automates - Automates - Automates !!!
+
+1. Provides Workaround of [Issue](https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901) 
+through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml through script.
+    * Refer [cloud-init](config/cloud-init-template.yaml) Template file
+2. Configuration driven provisioning to destroy of VM
+3. Ability to connect and configure VM via Bastion Host - Making the experience seamless between Windows & Mac 
+4. Test Driven Development for entire suite
+5. Modularization of Code for Easy Refactoring
+6. Workaround to invoke docker in a common way through wrapper both for windows and mac
+
+
+### SSH Setup Flow 
 
 SSH Key Setup Overview 
 
@@ -70,16 +79,15 @@ SSH Key Setup Overview
 |------|-------------------------------|--------------------------------------|
 | 1.   | Generate the SSH Key Pair     | Provision VM with the Public Key     |
 |      | [ssh-keygen]                  | [cloud-int] or [Vagrant] or [Packer] |
-|      |                               |                                      |
 | 2    | Start SSH Agent               |                                      |
 |      | [eval "$(ssh-agent -s)"]      |                                      |
-|      |                               |                                      |
 | 3    | Load Private Key to SSH Agent |                                      |
 |      | [ssh-add -K private_key]      |                                      |
-|      | or                            |                                      |
-|      | [Create ~/.ssh.config] File   |                                      |
-|      |                               |                                      |
-| 4    | ssh host or ssh user@VM       |                                      |
+| 4    | ssh -F <ssh-config> host or   |                                      |
+|      | ssh -i <private-key>user@ip   |                                      |
 
-Quick Reference: 
+### Quick Reference: 
+
+#### SSH Keys 
+
 ![alt text](docs/images/ssh_connection_explained.jpg "Quick Reference")
