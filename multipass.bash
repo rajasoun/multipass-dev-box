@@ -50,7 +50,7 @@ function choose_action_from_menu(){
     menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion, Destroy"
     choice=$?
     case $choice in 
-        1)
+        1)  [ $( multipass list | grep -c "$VM_NAME")   -ne 0  ] && raise_error "VM Exists. Exiting..."
             start=$(date +%s)
             provision 
             end=$(date +%s)
