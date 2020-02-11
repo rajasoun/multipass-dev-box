@@ -15,10 +15,10 @@ teardown() {
 }
 
 
-@test ".lls List multipass.bash with Permission" {
+@test ".lls List with Permission for ReadMe.md" {
   source ${profile_script}
-  run lls 
-  assert_output --partial "755 -rwxr-xr-x"
+  run lls
+  assert_output --partial "644 -rw-r--r--"
 }
 
 @test ".os_command_is_installed - check for cd" {

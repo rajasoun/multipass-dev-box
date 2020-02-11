@@ -44,7 +44,7 @@ teardown() {
   assert_output --partial "VM_NAME"
 }
 
-@test ".generate_ssh_key - validate ssk-keygen command available and generate keys" {
+@test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
     # shellcheck disable=SC1090
     source ${os_profile_script}
     run os_command_is_installed "ssh-keygen"
@@ -70,13 +70,18 @@ teardown() {
     SSH_KEY_PATH="$TEST_DATA/keys/multipass"
     run create_directory_if_not_exists "$SSH_KEY_PATH"
     assert_success   
-    
+
+    # Check Key are Generated
     unset VM_NAME
     assert_empty "${VM_NAME}"
     # shellcheck disable=SC2030
     VM_NAME="TEST_VM"
     run generate_ssh_key
     assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
+
+    # Check Private Key Permission is Right
+    run lls "$SSH_KEY_PATH/id_rsa_$VM_NAME"
+    assert_output -p "400 -r--------"
 }
 
 @test ".create_cloud_init_config_from_template - create and update cloud-init file" {
@@ -131,6 +136,24 @@ teardown() {
     assert_success
 
 }
+
+
+@test "docker wrapper -  interactive mode, print current release" {
+    source ${actions_profile_script}
+    _docker run --rm -it kroniak/ssh-client bash -c "cat /etc/alpine-release"
+    assert_success
+}
+
+@test "._docker - docker wrapper - with Mount Points -  interactive mode, ls mount points and exit" {
+    source ${actions_profile_script}
+    _docker run --rm -it \
+            -v "${PWD}/config":/config \
+            kroniak/ssh-client bash -c "ls -asl /config"
+   assert_success
+}
+
+
+
 
 
 

@@ -13,6 +13,8 @@ function generate_ssh_key() {
     echo -e 'y\n' | ssh-keygen -q -t rsa -C \
                             "$(whoami)@$DOMAIN" -N "" \
                             -f "$SSH_KEY_PATH/${SSH_KEY}" 2>&1 > /dev/null 2>&1
+    # Fix Permission For Private Key
+    chmod 400 "$SSH_KEY_PATH"/"${SSH_KEY}"
     echo "${SSH_KEY} & ${SSH_KEY}.pub keys generated successfully"
 }
 
@@ -78,14 +80,13 @@ function destroy(){
     #docker_sed "/${IP}/d" /known_hosts
 
     multipass delete "$VM_NAME" && multipass purge
-    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    rm -fr "$SSH_KEY_PATH"
+    clear_workspace
 }
 
 function clear_workspace(){
     rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    rm -fr "$CLOUD_INIT_BASE_PATH/*-ssh-config"
-    rm -fr "$CLOUD_INIT_BASE_PATH/*-ssh-connect.sh"
+    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-config"
+    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
     rm -fr "$SSH_KEY_PATH"
 }
 
@@ -104,7 +105,7 @@ function docker_sed(){
 #    echo "-e "$SED_STRING" "
 #    echo "$FILE"
 
-    _docker run --rm \
+     MSYS_NO_PATHCONV=1  docker run --rm \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$CLOUD_INIT_BASE_PATH":/config \
             hairyhenderson/sed -i \
@@ -120,14 +121,26 @@ function docker_sed(){
 
 # Workaround for Path Limitations in Windows
 function _docker() {
-  if [[ "$(os)" == "windows" ]]; then
-    realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
-    export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*"
-    printf "%s\0" "$@" > /tmp/args.txt
-    winpty bash -c "xargs -0a /tmp/args.txt '$realdocker'"
-    return 0
+  export MSYS_NO_PATHCONV=1
+  export MSYS2_ARG_CONV_EXCL='*' 
+
+  case "$OSTYPE" in
+      *msys*|*cygwin*) os="$(uname -o)" ;;
+      *) os="$(uname)";;
+  esac
+
+  if [[ "$os" == "Msys" ]] || [[ "$os" == "Cygwin" ]]; then
+      realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
+      printf "%s\0" "$@" > /tmp/args.txt
+      # --tty or -t requires winpty
+      if grep -ZE '^--tty|^-[^-].*t|^-t.*' /tmp/args.txt; then
+          exec winpty /bin/bash -c "xargs -0a /tmp/args.txt '$realdocker'"
+          return 0
+      fi
   fi
+  #exec docker "$@"
   docker "$@"
+  return 0
 }
 
 function run_main(){
