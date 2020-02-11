@@ -13,6 +13,8 @@ function generate_ssh_key() {
     echo -e 'y\n' | ssh-keygen -q -t rsa -C \
                             "$(whoami)@$DOMAIN" -N "" \
                             -f "$SSH_KEY_PATH/${SSH_KEY}" 2>&1 > /dev/null 2>&1
+    # Fix Permission For Private Key
+    chmod 400 "$SSH_KEY_PATH"/"${SSH_KEY}"
     echo "${SSH_KEY} & ${SSH_KEY}.pub keys generated successfully"
 }
 

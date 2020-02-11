@@ -70,13 +70,18 @@ teardown() {
     SSH_KEY_PATH="$TEST_DATA/keys/multipass"
     run create_directory_if_not_exists "$SSH_KEY_PATH"
     assert_success   
-    
+
+    # Check Key are Generated
     unset VM_NAME
     assert_empty "${VM_NAME}"
     # shellcheck disable=SC2030
     VM_NAME="TEST_VM"
     run generate_ssh_key
     assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
+
+    # Check Private Key Permission is Right
+    run lls "$SSH_KEY_PATH/id_rsa_$VM_NAME"
+    assert_output -p "400 -r--------"
 }
 
 @test ".create_cloud_init_config_from_template - create and update cloud-init file" {
