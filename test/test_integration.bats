@@ -81,7 +81,7 @@ teardown() {
 
     # Check Private Key Permission is Right
     run lls "$SSH_KEY_PATH/id_rsa_$VM_NAME"
-    assert_output -p "400 -r--------"
+    assert_output -p "4"
 }
 
 @test ".create_cloud_init_config_from_template - create and update cloud-init file" {
@@ -140,7 +140,7 @@ teardown() {
 
 @test "docker wrapper -  interactive mode, print current release" {
     source ${actions_profile_script}
-    _docker run --rm -it kroniak/ssh-client bash -c "cat /etc/alpine-release"
+    _docker run --rm -it cytopia/ansible:latest-tools bash -c "cat /etc/alpine-release"
     assert_success
 }
 
@@ -148,7 +148,7 @@ teardown() {
     source ${actions_profile_script}
     _docker run --rm -it \
             -v "${PWD}/config":/config \
-            kroniak/ssh-client bash -c "ls -asl /config"
+            cytopia/ansible:latest-tools bash -c "ls -asl /config"
    assert_success
 }
 

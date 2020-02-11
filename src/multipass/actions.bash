@@ -68,10 +68,10 @@ function ssh_via_bastion(){
   local SSH_KEY="id_rsa_${VM_NAME}"
   local SSH_CONFIG="$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-config"
   echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
-  _docker run --rm -it \
+  _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$CLOUD_INIT_BASE_PATH":/config \
-            kroniak/ssh-client bash -c "source /config/${VM_NAME}-ssh-connect.sh && bash"
+            cytopia/ansible:latest-tools bash -c "source /config/${VM_NAME}-ssh-connect.sh && bash"
 }
 
 function destroy(){
