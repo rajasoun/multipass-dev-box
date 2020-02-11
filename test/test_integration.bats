@@ -44,7 +44,7 @@ teardown() {
   assert_output --partial "VM_NAME"
 }
 
-@test ".generate_ssh_key - validate ssk-keygen command available and generate keys" {
+@test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
     # shellcheck disable=SC1090
     source ${os_profile_script}
     run os_command_is_installed "ssh-keygen"
@@ -136,6 +136,24 @@ teardown() {
     assert_success
 
 }
+
+
+@test "docker wrapper -  interactive mode, print current release" {
+    source ${actions_profile_script}
+    _docker run --rm -it kroniak/ssh-client bash -c "cat /etc/alpine-release"
+    assert_success
+}
+
+@test "._docker - docker wrapper - with Mount Points -  interactive mode, ls mount points and exit" {
+    source ${actions_profile_script}
+    _docker run --rm -it \
+            -v "${PWD}/config":/config \
+            kroniak/ssh-client bash -c "ls -asl /config"
+   assert_success
+}
+
+
+
 
 
 

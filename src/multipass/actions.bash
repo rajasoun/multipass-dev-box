@@ -138,7 +138,9 @@ function _docker() {
           return 0
       fi
   fi
-  exec docker "$@"
+  #exec docker "$@"
+  docker "$@"
+  return 0
 }
 
 function run_main(){

@@ -53,23 +53,6 @@ teardown() {
     assert_output --partial "config/$VM_NAME-cloud-init.yaml Generated for $VM_NAME"
 }
 
-@test "._docker - Launch interactive mode, print current release  and exit" {
-    source ${actions_profile_script}
-    _docker run --rm -it kroniak/ssh-client bash -c "cat /etc/alpine-release && exit 0"
-    assert_success
-}
-
-@test "._docker with Mount Points - Launch interactive mode, ls mount points and exit" {
-    source ${actions_profile_script}
-    _docker run --rm -it \
-            -v "${PWD}/keys":/keys \
-            -v "${PWD}/config":/config \
-            kroniak/ssh-client bash -c "ls -al /keys && ls -asl /config && exit 0"
-    assert_success
-}
-
-
-
 
 
 
