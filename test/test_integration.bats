@@ -167,6 +167,20 @@ function common_steps() {
    assert_success
 }
 
+@test ".docker_sed - Check sed in docker works" {
+    common_steps
+    local SSH_KEY="id_rsa_${VM_NAME}"
+    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
+    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
+
+    docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-temp-ssh-connect.sh"
+    assert_success
+
+    run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
+    assert_success
+    rm -fr $SSH_CONNECT_FILE
+}
+
 
 
 
