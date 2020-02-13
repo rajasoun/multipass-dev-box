@@ -61,7 +61,7 @@ function create_ssh_connect_script(){
     docker_sed "s,_ssh_config_,${VM_NAME}-ssh-config,g" "/config/${VM_NAME}-ssh-connect.sh"
     docker_sed "s,_ip_,${IP},g" "/config/${VM_NAME}-ssh-connect.sh"
 
-    echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
+    echo "$SSH_CONNECTY_FILE Generated for $VM_NAME that is Provisioned with $IP"
 }
 
 function ssh_via_bastion(){

@@ -41,7 +41,9 @@ teardown() {
     source ${instance_env}
     source ${workspace_env}
     unset VM_NAME
+    # shellcheck disable=SC2031
     assert_empty "${VM_NAME}"
+    # shellcheck disable=SC2030
     VM_NAME="TEST_VM"
     function create_cloud_init_config_from_template() { ##Mock To Validate Varibale substitution
         local SSH_KEY="id_rsa_${VM_NAME}"
@@ -53,6 +55,32 @@ teardown() {
     assert_output --partial "config/$VM_NAME-cloud-init.yaml Generated for $VM_NAME"
 }
 
+@test ".create_ssh_connect_script - Validate SSH Connect Script Generation" {
+  echo -e "Yet To Implement"
+  unset VM_NAME
+  unset IP
+  unset SSH_CONNECTY_FILE
+  # shellcheck disable=SC2031
+  assert_empty "${VM_NAME}"
+  assert_empty "${IP}"
+  assert_empty "${SSH_CONNECTY_FILE}"
+
+  VM_NAME="TEST_VM"
+  IP="1.1.1.1"
+  SSH_CONNECTY_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+
+  function create_ssh_connect_script(){
+      local VM_NAME="TEST_VM"
+      local IP="1.1.1.1"
+      local SSH_CONNECTY_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+      echo "$SSH_CONNECTY_FILE Generated for $VM_NAME that is Provisioned with $IP"
+  }
+  export -f create_ssh_connect_script
+  run create_ssh_connect_script
+  # shellcheck disable=SC2031
+  assert_output --partial "$SSH_CONNECTY_FILE Generated for $VM_NAME that is Provisioned with $IP"
+
+}
 
 
 

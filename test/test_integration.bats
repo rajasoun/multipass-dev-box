@@ -62,6 +62,9 @@ function common_steps() {
     run generate_ssh_key
     assert_success
     assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
+
+    unset CONFIG_BASE_PATH
+    assert_empty "${CONFIG_BASE_PATH}"
 }
 
 @test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
@@ -97,8 +100,6 @@ function common_steps() {
 
 @test ".create_cloud_init_config_from_template - create and update cloud-init file - validate text replacements" {
     common_steps
-    unset CONFIG_BASE_PATH
-    assert_empty "${CONFIG_BASE_PATH}"
 
     local CONFIG_BASE_PATH="$TEST_DATA/config"
     run create_directory_if_not_exists "$CONFIG_BASE_PATH"
@@ -115,6 +116,22 @@ function common_steps() {
 
     run file_contains_text "$(whoami)@$DOMAIN" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     assert_success
+
+}
+
+@test ".create_ssh_connect_script - Validate SSH Connect Script Generation with multipass (mock)" {
+  common_steps
+
+  local CONFIG_BASE_PATH="$TEST_DATA/config"
+  run create_directory_if_not_exists "$CONFIG_BASE_PATH"
+  ## Mocking Multipass info
+  function multipass(){
+    echo "IPv4:           192.168.64.9"
+  }
+  export -f multipass
+  run create_ssh_connect_script
+  assert_success
+  assert_output --partial "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh Generated for $VM_NAME that is Provisioned with $IP"
 
 }
 
