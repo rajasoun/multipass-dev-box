@@ -50,8 +50,9 @@ function provision(){
 
 function create_ssh_connect_script(){
     local SSH_KEY="id_rsa_${VM_NAME}"
-    cp "$CLOUD_INIT_BASE_PATH/ssh-connect-template.sh" "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
-    chmod a+x "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    local SSH_CONNECTY_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECTY_FILE"
+    chmod a+x "$SSH_CONNECTY_FILE"
 
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
     #@ToDo: Optimize Edits
