@@ -65,20 +65,18 @@ teardown() {
   assert_empty "${IP}"
   assert_empty "${SSH_CONNECTY_FILE}"
 
-  VM_NAME="TEST_VM"
-  IP="1.1.1.1"
-  SSH_CONNECTY_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
-
+  local VM_NAME="TEST_VM"
+  local IP="1.1.1.1"
+  local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+  local SSH_KEY="id_rsa_${VM_NAME}"
+  local SSH_CONFIG="$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
   function create_ssh_connect_script(){
-      local VM_NAME="TEST_VM"
-      local IP="1.1.1.1"
-      local SSH_CONNECTY_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
-      echo "$SSH_CONNECTY_FILE Generated for $VM_NAME that is Provisioned with $IP"
+       echo "$SSH_CONNECT_FILE & $SSH_CONFIG Generated for $VM_NAME that is Provisioned with $IP"
   }
   export -f create_ssh_connect_script
   run create_ssh_connect_script
   # shellcheck disable=SC2031
-  assert_output --partial "$SSH_CONNECTY_FILE Generated for $VM_NAME that is Provisioned with $IP"
+  assert_output --partial "$SSH_CONNECT_FILE & $SSH_CONFIG Generated for $VM_NAME that is Provisioned with $IP"
 
 }
 
