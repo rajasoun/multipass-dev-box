@@ -13,10 +13,20 @@ instance_env="instance.env"
 setup() {
     echo "SetUp"
     TEST_DATA="test/.test_data"
+    # This block will run only for the first test in this file.
+    # Usefull for setting up resources that should last for all tests.
+    if [[ "$BATS_TEST_NUMBER" -eq 1 ]]; then
+        echo "SetUp Once - For Entire Test Suite At the Begining"
+    fi
 }
 
 teardown() {
   echo "teardown"
+  # This block will run only for the last test case in this file.
+  # Usefull for tearing down global resources.
+  if [[ "${#BATS_TEST_NAMES[@]}" -eq "$BATS_TEST_NUMBER" ]]; then
+    echo "Teardown Once for Entire Test Suite at the End"
+  fi
   rm -fr $TEST_DATA #Remove Directory created during Test
 } 
 
