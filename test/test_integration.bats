@@ -27,7 +27,7 @@ teardown() {
   if [[ "${#BATS_TEST_NAMES[@]}" -eq "$BATS_TEST_NUMBER" ]]; then
     echo "Teardown Once for Entire Test Suite at the End"
   fi
-  rm -fr $TEST_DATA #Remove Directory created during Test
+  #rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
 function common_steps() {
@@ -121,18 +121,18 @@ function common_steps() {
 
 @test ".create_ssh_connect_script - Validate SSH Connect Script Generation with multipass (mock)" {
   common_steps
-
+  multipass_vm_mock_ip="192.168.64.9"
   local CONFIG_BASE_PATH="$TEST_DATA/config"
   run create_directory_if_not_exists "$CONFIG_BASE_PATH"
   ## Mocking Multipass info
   function multipass(){
-    echo "IPv4:           192.168.64.9"
+    echo "IPv4:           $multipass_vm_mock_ip"
   }
   export -f multipass
   run create_ssh_connect_script
   assert_success
-  assert_output --partial "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh Generated for $VM_NAME that is Provisioned with $IP"
-
+  assert_output --partial "Generated for $VM_NAME that is Provisioned with $multipass_vm_mock_ip"
+  assert_output --partial "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh & $CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
 }
 
 @test "docker wrapper -  interactive mode, print current release" {

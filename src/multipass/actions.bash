@@ -50,9 +50,9 @@ function provision(){
 
 function create_ssh_connect_script(){
     local SSH_KEY="id_rsa_${VM_NAME}"
-    local SSH_CONNECTY_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
-    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECTY_FILE"
-    chmod a+x "$SSH_CONNECTY_FILE"
+    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
+    chmod a+x "$SSH_CONNECT_FILE"
 
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
     #@ToDo: Optimize Edits
@@ -61,14 +61,16 @@ function create_ssh_connect_script(){
     docker_sed "s,_ssh_config_,${VM_NAME}-ssh-config,g" "/config/${VM_NAME}-ssh-connect.sh"
     docker_sed "s,_ip_,${IP},g" "/config/${VM_NAME}-ssh-connect.sh"
 
-    echo "$SSH_CONNECTY_FILE Generated for $VM_NAME that is Provisioned with $IP"
+    local SSH_KEY="id_rsa_${VM_NAME}"
+    local SSH_CONFIG="$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
+    ## create ssh-config
+    echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
+
+    echo "$SSH_CONNECT_FILE & $SSH_CONFIG Generated for $VM_NAME that is Provisioned with $IP"
 }
 
 function ssh_via_bastion(){
   create_ssh_connect_script
-  local SSH_KEY="id_rsa_${VM_NAME}"
-  local SSH_CONFIG="$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
-  echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \
