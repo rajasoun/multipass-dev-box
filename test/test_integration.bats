@@ -118,7 +118,6 @@ function common_steps() {
 
 }
 
-
 @test "docker wrapper -  interactive mode, print current release" {
     source ${actions_profile_script}
     _docker run --rm -it cytopia/ansible:latest-tools bash -c "cat /etc/alpine-release"
