@@ -28,7 +28,41 @@ teardown() {
     echo "Teardown Once for Entire Test Suite at the End"
   fi
   rm -fr $TEST_DATA #Remove Directory created during Test
-} 
+}
+
+function common_steps() {
+  # shellcheck disable=SC1090
+    source ${os_profile_script}
+    run os_command_is_installed "docker"
+    assert_success
+
+    # shellcheck disable=SC1090
+    source ${checks_profile_script}
+    # shellcheck disable=SC1090
+    source ${instance_env}
+    run check_required_instance_env_vars
+    assert_success
+    # shellcheck disable=SC1090
+    source ${workspace_env}
+    run check_required_workspace_env_vars
+    assert_success
+
+    # shellcheck disable=SC1090
+    source ${actions_profile_script}
+    unset SSH_KEY_PATH
+    assert_empty "${SSH_KEY_PATH}"
+    # shellcheck disable=SC2030
+    SSH_KEY_PATH="$TEST_DATA/keys/multipass"
+    run create_directory_if_not_exists "$SSH_KEY_PATH"
+    assert_success
+
+    unset VM_NAME
+    assert_empty "${VM_NAME}"
+    VM_NAME="TEST_VM"
+    run generate_ssh_key
+    assert_success
+    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
+}
 
 @test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
   # shellcheck disable=SC1090
@@ -55,39 +89,40 @@ teardown() {
 }
 
 @test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
-    # shellcheck disable=SC1090
-    source ${os_profile_script}
-    run os_command_is_installed "ssh-keygen"
-    assert_success
-
-    # shellcheck disable=SC1090
-    source ${checks_profile_script}
-    # shellcheck disable=SC1090
-    source ${instance_env}
-    run check_required_instance_env_vars
-    assert_success 
-    # shellcheck disable=SC1090
-    source ${workspace_env}
-    run check_required_workspace_env_vars
-    assert_success 
-
-    # shellcheck disable=SC1090
-    source ${actions_profile_script}
-    unset SSH_KEY_PATH
-    assert_empty "${SSH_KEY_PATH}"
-
-    # shellcheck disable=SC2030
-    SSH_KEY_PATH="$TEST_DATA/keys/multipass"
-    run create_directory_if_not_exists "$SSH_KEY_PATH"
-    assert_success   
-
-    # Check Key are Generated
-    unset VM_NAME
-    assert_empty "${VM_NAME}"
-    # shellcheck disable=SC2030
-    VM_NAME="TEST_VM"
-    run generate_ssh_key
-    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
+  common_steps
+#    # shellcheck disable=SC1090
+#    source ${os_profile_script}
+#    run os_command_is_installed "ssh-keygen"
+#    assert_success
+#
+#    # shellcheck disable=SC1090
+#    source ${checks_profile_script}
+#    # shellcheck disable=SC1090
+#    source ${instance_env}
+#    run check_required_instance_env_vars
+#    assert_success
+#    # shellcheck disable=SC1090
+#    source ${workspace_env}
+#    run check_required_workspace_env_vars
+#    assert_success
+#
+#    # shellcheck disable=SC1090
+#    source ${actions_profile_script}
+#    unset SSH_KEY_PATH
+#    assert_empty "${SSH_KEY_PATH}"
+#
+#    # shellcheck disable=SC2030
+#    SSH_KEY_PATH="$TEST_DATA/keys/multipass"
+#    run create_directory_if_not_exists "$SSH_KEY_PATH"
+#    assert_success
+#
+#    # Check Key are Generated
+#    unset VM_NAME
+#    assert_empty "${VM_NAME}"
+#    # shellcheck disable=SC2030
+#    VM_NAME="TEST_VM"
+#    run generate_ssh_key
+#    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
 
     # Check Private Key Permission is Right
     run lls "$SSH_KEY_PATH/id_rsa_$VM_NAME"
@@ -95,36 +130,37 @@ teardown() {
 }
 
 @test ".create_cloud_init_config_from_template - create and update cloud-init file" {
-    # shellcheck disable=SC1090
-    source ${os_profile_script}
-    run os_command_is_installed "docker"
-    assert_success
-
-    # shellcheck disable=SC1090
-    source ${checks_profile_script}
-    # shellcheck disable=SC1090
-    source ${instance_env}
-    run check_required_instance_env_vars
-    assert_success 
-    # shellcheck disable=SC1090
-    source ${workspace_env}
-    run check_required_workspace_env_vars
-    assert_success 
-
-    # shellcheck disable=SC1090
-    source ${actions_profile_script}
-    unset SSH_KEY_PATH
-    assert_empty "${SSH_KEY_PATH}"
-    # shellcheck disable=SC2030
-    SSH_KEY_PATH="$TEST_DATA/keys/multipass"
-    run create_directory_if_not_exists "$SSH_KEY_PATH"
-    assert_success   
-    
-    unset VM_NAME
-    assert_empty "${VM_NAME}"
-    VM_NAME="TEST_VM"
-    run generate_ssh_key
-    assert_success 
+  common_steps
+#    # shellcheck disable=SC1090
+#    source ${os_profile_script}
+#    run os_command_is_installed "docker"
+#    assert_success
+#
+#    # shellcheck disable=SC1090
+#    source ${checks_profile_script}
+#    # shellcheck disable=SC1090
+#    source ${instance_env}
+#    run check_required_instance_env_vars
+#    assert_success
+#    # shellcheck disable=SC1090
+#    source ${workspace_env}
+#    run check_required_workspace_env_vars
+#    assert_success
+#
+#    # shellcheck disable=SC1090
+#    source ${actions_profile_script}
+#    unset SSH_KEY_PATH
+#    assert_empty "${SSH_KEY_PATH}"
+#    # shellcheck disable=SC2030
+#    SSH_KEY_PATH="$TEST_DATA/keys/multipass"
+#    run create_directory_if_not_exists "$SSH_KEY_PATH"
+#    assert_success
+#
+#    unset VM_NAME
+#    assert_empty "${VM_NAME}"
+#    VM_NAME="TEST_VM"
+#    run generate_ssh_key
+#    assert_success
 
     unset CLOUD_INIT_BASE_PATH
     assert_empty "${CLOUD_INIT_BASE_PATH}"
