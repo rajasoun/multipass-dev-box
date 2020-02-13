@@ -11,7 +11,7 @@ function create_directory_if_not_exists(){
 function generate_ssh_key() {
     local SSH_KEY="id_rsa_${VM_NAME}"
     echo -e 'y\n' | ssh-keygen -q -t rsa -C \
-                            "$(whoami)@$DOMAIN" -N "" \
+                            "$(id -un)@$DOMAIN" -N "" \
                             -f "$SSH_KEY_PATH/${SSH_KEY}" 2>&1 > /dev/null 2>&1
     # Fix Permission For Private Key
     chmod 400 "$SSH_KEY_PATH"/"${SSH_KEY}"
