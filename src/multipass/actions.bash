@@ -20,7 +20,7 @@ function generate_ssh_key() {
 
 function create_cloud_init_config_from_template() {
     local SSH_KEY="id_rsa_${VM_NAME}"
-    local CLOUD_INIT_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    local CLOUD_INIT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     cp "$CLOUD_INIT_TEMPLATE" "$CLOUD_INIT_FILE"
 
     #@ToDo: Optimize Edits
@@ -38,7 +38,7 @@ function provision(){
     generate_ssh_key
     create_cloud_init_config_from_template "$VM_NAME"
 
-    local CLOUD_INIT_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    local CLOUD_INIT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     ## Exit if Launch Fails
     multipass launch -c"$CPU" -m"$MEMORY" -d"$DISK" -n "$VM_NAME" lts --cloud-init "$CLOUD_INIT_FILE" || exit
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
@@ -50,9 +50,9 @@ function provision(){
 
 function create_ssh_connect_script(){
     local SSH_KEY="id_rsa_${VM_NAME}"
-    local SSH_CONNECTY_FILE="$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
-    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECTY_FILE"
-    chmod a+x "$SSH_CONNECTY_FILE"
+    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
+    chmod a+x "$SSH_CONNECT_FILE"
 
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
     #@ToDo: Optimize Edits
@@ -61,17 +61,19 @@ function create_ssh_connect_script(){
     docker_sed "s,_ssh_config_,${VM_NAME}-ssh-config,g" "/config/${VM_NAME}-ssh-connect.sh"
     docker_sed "s,_ip_,${IP},g" "/config/${VM_NAME}-ssh-connect.sh"
 
-    echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
+    local SSH_KEY="id_rsa_${VM_NAME}"
+    local SSH_CONFIG="$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
+    ## create ssh-config
+    echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
+
+    echo "$SSH_CONNECT_FILE & $SSH_CONFIG Generated for $VM_NAME that is Provisioned with $IP"
 }
 
 function ssh_via_bastion(){
   create_ssh_connect_script
-  local SSH_KEY="id_rsa_${VM_NAME}"
-  local SSH_CONFIG="$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-config"
-  echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
-            -v "${PWD}/$CLOUD_INIT_BASE_PATH":/config \
+            -v "${PWD}/$CONFIG_BASE_PATH":/config \
             cytopia/ansible:latest-tools bash -c "source /config/${VM_NAME}-ssh-connect.sh && bash"
 }
 
@@ -85,9 +87,9 @@ function destroy(){
 }
 
 function clear_workspace(){
-    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-config"
-    rm -fr "$CLOUD_INIT_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
+    rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
     rm -fr "$SSH_KEY_PATH"
 }
 
@@ -102,13 +104,13 @@ function docker_sed(){
     local FILE=$2
 
 #    echo "-v "${PWD}/$SSH_KEY_PATH":/keys"
-#    echo "-v "${PWD}/$CLOUD_INIT_BASE_PATH":/config"
+#    echo "-v "${PWD}/$CONFIG_BASE_PATH":/config"
 #    echo "-e "$SED_STRING" "
 #    echo "$FILE"
 
      MSYS_NO_PATHCONV=1  docker run --rm \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
-            -v "${PWD}/$CLOUD_INIT_BASE_PATH":/config \
+            -v "${PWD}/$CONFIG_BASE_PATH":/config \
             hairyhenderson/sed -i \
             -e "$SED_STRING" \
             "$FILE"
