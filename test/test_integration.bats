@@ -27,7 +27,7 @@ teardown() {
   if [[ "${#BATS_TEST_NAMES[@]}" -eq "$BATS_TEST_NUMBER" ]]; then
     echo "Teardown Once for Entire Test Suite at the End"
   fi
-  #rm -fr $TEST_DATA #Remove Directory created during Test
+  rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
 function common_steps() {
