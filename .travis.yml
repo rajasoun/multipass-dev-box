@@ -10,7 +10,6 @@ before_install:
 jobs:
   include:
     - name: "Unit Test"
-      python: "3.5"
       env: TEST_SUITE=ci/check_bats.bash unit
     - name: "Integration Tests"
       env: TEST_SUITE=ci/check_bats.bash integration
