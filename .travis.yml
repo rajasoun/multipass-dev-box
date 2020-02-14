@@ -7,7 +7,7 @@ services:
   - docker
 
 before_install:
-  - snap install multipass
+  - sudo snap install multipass --classic
 
 jobs:
   include:
