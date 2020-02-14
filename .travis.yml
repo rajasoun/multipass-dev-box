@@ -1,6 +1,6 @@
 os:
   - linux
-  - osx
+#  - osx
 
 language: bash
 
@@ -9,7 +9,7 @@ services:
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap install multipass --classic ; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ];   then brew cask install multipass  ; fi
+#  - if [ "$TRAVIS_OS_NAME" = "osx" ];   then brew cask install multipass  ; fi
 
 jobs:
   include:
