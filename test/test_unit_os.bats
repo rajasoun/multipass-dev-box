@@ -18,7 +18,7 @@ teardown() {
 
 @test ".lls List with Permission for ReadMe.md" {
   run lls
-  assert_output --partial "644 -rw-r--r--"
+  assert_output --partial "r--"
 }
 
 @test ".os_command_is_installed - check for cd" {
