@@ -1,5 +1,6 @@
 os:
   - linux
+  - windows
 
 language: bash
 
@@ -7,7 +8,8 @@ services:
   - docker
 
 before_install:
-  - sudo snap install multipass --classic
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap install multipass --classic ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco install multipass --version=0.9.0 ; fi
 
 jobs:
   include:
