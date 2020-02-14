@@ -1,11 +1,13 @@
-os: osx
+os:
+  - linux
+
 language: bash
 
 services:
   - docker
 
 before_install:
-  - brew cask install multipass
+  - snap install multipass
 
 jobs:
   include:
