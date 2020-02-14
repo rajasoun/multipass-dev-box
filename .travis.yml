@@ -1,0 +1,18 @@
+os: osx
+language: bash
+
+services:
+  - docker
+
+before_install:
+  - brew install multipass
+
+jobs:
+  include:
+    - name: "Unit Test"
+      python: "3.5"
+      env: TEST_SUITE=ci/check_bats.bash unit
+    - name: "Integration Tests"
+      env: TEST_SUITE=ci/check_bats.bash integration
+
+script: ci/check_bats.bash
