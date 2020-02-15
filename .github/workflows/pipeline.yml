@@ -17,9 +17,7 @@ jobs:
         run: brew cask install multipass
       
       - name: Run Unit Tests
-        run: |
-          echo UnitTests,
-          ci/check_bats.bash unit
+        run: ci/check_bats.bash unit
 
       - name: Run Integration Tests
         run: |
