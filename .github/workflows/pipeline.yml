@@ -18,6 +18,8 @@ jobs:
         run: git submodule update --init --recursive --remote
       - name: Unit Test
         run:  bash -c "ci/check_bats.bash unit"
+      - name: Integration Test
+        run:  bash -c "ci/check_bats.bash  integration"
 
   # macos:
   #   runs-on: macos-latest
