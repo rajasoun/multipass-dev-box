@@ -4,6 +4,25 @@ name: CI
 on: [push]
 
 jobs:
+
+  install_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Multipass
+        run: sudo snap install multipass --classic
+
+  #  install_windows:
+  #    runs-on: windows-latest
+  #    steps:
+  #      - name: Install Multipass
+  #        run: choco install multipass --version=0.9.0
+
+  install_macos:
+    runs-on: macos-latest
+    steps:
+      - name: Install Multipass
+        run: brew cask install multipass
+
   checkout:
     strategy:
       matrix:
@@ -18,34 +37,10 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
 
-  install_linux:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Multipass
-        run: sudo snap install multipass --classic
-
-#  install_windows:
-#    runs-on: windows-latest
-#    steps:
-#      - name: Install Multipass
-#        run: choco install multipass --version=0.9.0
-
-  install_macos:
-    runs-on: macos-latest
-    steps:
-      - name: Install Multipass
-        run: brew cask install multipass
-
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest,macos-latest]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
       - name: Test
         uses: actions/github-script@0.5.0
         with:
           script: ci/check_bats.bash
+
+
 
