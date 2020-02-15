@@ -23,7 +23,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Install Multipass
-        run: brew cask install multipass docker
+        run: brew cask install multipass 
+      - name: Install Docker
+        run: brew cask install docker
       - name: Install BATS
         run: brew  install bats
       - name: Checkout
