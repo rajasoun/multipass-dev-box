@@ -28,7 +28,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Install Multipass
-        run: choco install windows
+        run: choco install multipass --version=0.9.0
 
   install_macos:
     runs-on: macos-latest
