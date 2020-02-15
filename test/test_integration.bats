@@ -155,13 +155,14 @@ function common_steps() {
 
 @test "._docker wrapper -  interactive mode, print current release" {
     source ${actions_profile_script}
-    _docker run --rm -it cytopia/ansible:latest-tools bash -c "cat /etc/alpine-release"
+    test -t 1 && USE_TTY="-t" 
+    _docker run ${USE_TTY} --rm -it cytopia/ansible:latest-tools bash -c "cat /etc/alpine-release"
     assert_success
 }
 
 @test "._docker - docker wrapper - with Mount Points -  interactive mode, ls mount points and exit" {
-    source ${actions_profile_script}
-    _docker run --rm -it \
+    test -t 1 && USE_TTY="-t" 
+    _docker run ${USE_TTY} --rm -it \
             -v "${PWD}/config":/config \
             cytopia/ansible:latest-tools bash -c "ls -asl /config"
    assert_success
