@@ -17,19 +17,22 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
       - name: Test
-        run:  bash -c "ci/check_bats.bash"
+        run:  bash -c "ci/check_bats.bash unit"
 
   macos:
     runs-on: macos-latest
     steps:
       - name: Install Multipass
         run: brew cask install multipass
+      - name: Install BATS
+        run: brew  install bats
       - name: Checkout
         uses: actions/checkout@v1
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
       - name: Test
-        run: bash -c " function readlink() { DIR="${1%/*}"; (cd "$DIR" && echo "$(pwd -P)") } && ci/check_bats.bash"
+        #run: bash -c " function readlink() { DIR="${1%/*}"; (cd "$DIR" && echo "$(pwd -P)") } && ci/check_bats.bash"
+        run:  bats test/test_unit*.bats
 
   install_windows:
     runs-on: windows-latest
@@ -41,7 +44,7 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
       - name: Test
-        run: bash -c "ci/check_bats.bash"
+        run: bash -c "ci/check_bats.bash unit"
 
 
 
