@@ -18,14 +18,6 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
 
-      - name: Wait for Checkout to succeed
-        uses: fountainhead/action-wait-for-check@v1.0.0
-        id: wait-for-build
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: checkout
-          ref: github.event.pull_request.head.sha || github.sha
-
   install_linux:
     runs-on: ubuntu-latest
     steps:
@@ -53,7 +45,6 @@ jobs:
 
     steps:
       - name: Test
-        if: steps.wait-for-build.outputs.conclusion == 'success'
         uses: skx/github-action-tester@master
         with:
           script: ci/check_bats.bash
