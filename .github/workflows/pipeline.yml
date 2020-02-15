@@ -7,18 +7,24 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Checkout submodules
+          uses: textbook/git-checkout-submodule-action@master
+          with:
+            remote: true
+
+      - name: Install Multipass
+        run: brew cask install multipass
       
-    - name: Run a one-line script
-      run: brew cask install multipass
-      
-    - name: Run Unit Tests
-      run: |
-        echo UnitTests,
-        ci/check_bats.bash unit
-        
-    - name: Run Integration Tests
-      run: |
-        echo Integration Test,
-        ci/check_bats.bash integration
+      - name: Run Unit Tests
+        run: |
+          echo UnitTests,
+          ci/check_bats.bash unit
+
+      - name: Run Integration Tests
+        run: |
+          echo Integration Test,
+          ci/check_bats.bash integration
         
