@@ -12,7 +12,7 @@ jobs:
 
       - name: Checkout submodules
         uses: textbook/git-checkout-submodule-action@master
-          with:
+        with:
             remote: true
 
       - name: Install Multipass
