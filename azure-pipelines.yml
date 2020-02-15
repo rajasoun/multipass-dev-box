@@ -7,6 +7,7 @@ jobs:
   steps:
   - script: echo "ubuntu-latest"
   - script: sudo snap install multipass --classic
+  - script: ci/check_bats.bash
 
 - job: macOS
   pool:
@@ -14,10 +15,12 @@ jobs:
   steps:
   - script: echo "macOS-latest"
   - script: brew cask install multipass 
+  - script: ci/check_bats.bash
 
 - job: Windows
   pool:
     vmImage: 'windows-latest'
   steps:
   - script: echo "windows-latest"
-  - script: choco install multipass --version=0.9.0
+  - script: choco install multipass 
+  - script: ci/check_bats.bash
