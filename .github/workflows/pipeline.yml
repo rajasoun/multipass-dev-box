@@ -16,6 +16,6 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Checkout Submodules
-        uses: git submodule update --init --recursive --remote
+        run: git submodule update --init --recursive --remote
 
         
