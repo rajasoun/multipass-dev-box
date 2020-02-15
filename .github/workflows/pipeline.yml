@@ -14,7 +14,9 @@ jobs:
         run: git submodule update --init --recursive --remote
 
       - name: Install Multipass and bats-core
-        run: brew cask install multipass bats-core
+        run: |
+          brew cask install multipass,
+          brew install bats-core
       
       - name: Run Unit Tests
         run: ci/check_bats.bash unit
