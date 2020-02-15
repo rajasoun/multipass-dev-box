@@ -1,0 +1,19 @@
+os:
+  - linux
+
+language: bash
+
+services:
+  - docker
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap install multipass --classic ; fi
+
+jobs:
+  include:
+    - name: "Unit Test"
+      env: TEST_SUITE="unit"
+    - name: "Integration Tests"
+      env: TEST_SUITE="integration"
+
+script: ci/check_bats.bash $TEST_SUITE
