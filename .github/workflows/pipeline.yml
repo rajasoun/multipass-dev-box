@@ -23,7 +23,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Install Multipass
-        run: brew cask install multipass
+        run: brew cask install multipass docker
       - name: Install BATS
         run: brew  install bats
       - name: Checkout
@@ -31,14 +31,15 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
       - name: Test
-        #run: bash -c " function readlink() { DIR="${1%/*}"; (cd "$DIR" && echo "$(pwd -P)") } && ci/check_bats.bash"
-        run:  bats test/test_unit*.bats
+        run:  bats test/test_*.bats
 
   install_windows:
     runs-on: windows-latest
     steps:
-      - name: Install Multipass
+      - name: Install Git Bash
         run: choco install git.portable
+      - name: Install Docker
+        run: choco install docker
       - name: Checkout
         uses: actions/checkout@v1
       - name: Checkout Submodules
