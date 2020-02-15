@@ -17,7 +17,7 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
       - name: Test
-        run: ci/check_bats.bash
+        run:  bash -c "ci/check_bats.bash"
 
   macos:
     runs-on: macos-latest
@@ -29,7 +29,7 @@ jobs:
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
       - name: Test
-        run: ci/check_bats.bash
+        run: bash -c "ci/check_bats.bash"
 
   install_windows:
     runs-on: windows-latest
