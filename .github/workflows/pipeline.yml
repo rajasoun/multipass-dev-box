@@ -5,11 +5,20 @@ on: [push]
 jobs:
   build:
     runs-on: macos-latest
+    
     steps:
     - uses: actions/checkout@v2
+      
     - name: Run a one-line script
       run: brew cask install multipass
-    - name: Run a multi-line script
+      
+    - name: Run Unit Tests
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        echo UnitTests,
+        ci/check_bats.bash unit
+        
+    - name: Run Integration Tests
+      run: |
+        echo Integration Test,
+        ci/check_bats.bash integration
+        
