@@ -24,11 +24,11 @@ jobs:
       - name: Install Multipass
         run: sudo snap install multipass --classic
 
-  install_windows:
-    runs-on: windows-latest
-    steps:
-      - name: Install Multipass
-        run: choco install multipass --version=0.9.0
+#  install_windows:
+#    runs-on: windows-latest
+#    steps:
+#      - name: Install Multipass
+#        run: choco install multipass --version=0.9.0
 
   install_macos:
     runs-on: macos-latest
@@ -36,4 +36,17 @@ jobs:
       - name: Install Multipass
         run: brew cask install multipass
 
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Test
+        uses: skx/github-action-tester@master
+        with:
+          script: ci/check_bats.bash
 
