@@ -13,14 +13,14 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive --remote
 
-      - name: Install Multipass
-        run: brew cask install multipass
+      - name: Install Multipass and bats-core
+        run: brew cask install multipass bats-core
       
       - name: Run Unit Tests
-        run: ./test/libs/bats/bin/bats test/test_unit_*.bats
+        run: ci/check_bats.bash unit
 
       - name: Run Integration Tests
         run: |
           echo Integration Test,
-          test/test_integ*.bats
+          ci/check_bats.bash integration
         
