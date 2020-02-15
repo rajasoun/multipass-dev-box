@@ -6,15 +6,18 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps:
   - script: echo "ubuntu-latest"
+  - script: sudo snap install multipass --classic
 
 - job: macOS
   pool:
     vmImage: 'macOS-latest'
   steps:
   - script: echo "macOS-latest"
+  - script: brew cask install multipass 
 
 - job: Windows
   pool:
     vmImage: 'windows-latest'
   steps:
   - script: echo "windows-latest"
+  - script: choco install multipass --version=0.9.0
