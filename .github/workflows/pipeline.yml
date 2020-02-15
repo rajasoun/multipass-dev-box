@@ -27,4 +27,16 @@ jobs:
       - name: Install Multipass
         run: sudo snap install multipass --classic
 
+  install_windows:
+    runs-on: windows-latest
+    steps:
+      - name: Install Multipass
+        run: choco install windows
+
+  install_macos:
+    runs-on: macos-latest
+    steps:
+      - name: Install Multipass
+        run: brew cask install multipass
+
 
