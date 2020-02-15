@@ -5,13 +5,13 @@ on: [push]
 jobs:
   build:
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Checkout submodules
-          uses: textbook/git-checkout-submodule-action@master
+        uses: textbook/git-checkout-submodule-action@master
           with:
             remote: true
 
