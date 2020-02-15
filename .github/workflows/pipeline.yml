@@ -17,7 +17,7 @@ jobs:
         run: brew cask install multipass
       
       - name: Run Unit Tests
-        run: test/test_unit*.bats
+        run: ./test/libs/bats/bin/bats test/test_unit_*.bats
 
       - name: Run Integration Tests
         run: |
