@@ -4,7 +4,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  checkout:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -17,9 +17,6 @@ jobs:
 
       - name: Checkout Submodules
         run: git submodule update --init --recursive --remote
-
-      - name: List Files
-        run: ls -asl
 
   install_linux:
     runs-on: ubuntu-latest
