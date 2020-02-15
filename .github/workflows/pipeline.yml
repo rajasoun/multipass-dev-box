@@ -21,5 +21,10 @@ jobs:
       - name: List Files
         run: ls -asl
 
-      - name: Run Test
-        run: ci/check_bats.bash
+  install_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Multipass
+        run: sudo snap install multipass --classic
+
+
