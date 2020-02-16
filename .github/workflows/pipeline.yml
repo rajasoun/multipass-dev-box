@@ -28,7 +28,6 @@ jobs:
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
-          sudo snap install bats
 
       - name: Windows
         if: startsWith(runner.os, 'Windows')
@@ -38,11 +37,15 @@ jobs:
           scoop install git
           scoop install docker
 
-      - name: Unit Test
-        run: bats test/test_unit*.bats
+      - name: Test
+        if: startsWith(runner.os, 'Windows')
+        run: |
+          bats test/test_unit*.bats
+          bats test/test_integ*.bats
 
-      - name: Integration Test
-        run: bats test/test_integ*.bats
-
+      - name: Test (Linux & macOs)
+        run: |
+          bash -c "ci/check_bats.bash unit"
+          bash -c "ci/check_bats.bash  integration"
 
 
