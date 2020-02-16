@@ -3,32 +3,25 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  validate:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-
     runs-on: ${{ matrix.os }}
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v1
-
       - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
-
       - name: Install Pre-Requisites macOS
         if: startsWith(runner.os, 'macOS')
         run: |
-          brew cask install docker
-          brew install bats
-
+          brew cask install multipass
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
-
       - name: Install Pre-Requisites Windows
         if: startsWith(runner.os, 'Windows')
         run: |
@@ -37,7 +30,6 @@ jobs:
           scoop install git
           scoop install docker
 
-
       - name: Test (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
@@ -45,17 +37,18 @@ jobs:
           bash -c "ci/check_bats.bash  integration"
           bash -c "ci/check_bats.bash   -f .docker"
 
-      ### bash -c "ci/check_bats.bash  integration"
-        # bash -c "ci/check_bats.bash   -f .docker"
-      ### Two test (Integration & Docker) suites yet to be ported for Mac & Windows
+      ### Test suite for  Docker yet to be ported for Mac & Windows
+      ### bash -c "ci/check_bats.bash   -f .docker"
+      - name: Test (Windows)
+        if: startsWith(runner.os, 'Windows')
+        run: |
+          bash -c "ci/check_bats.bash  unit"
+          bash -c "ci/check_bats.bash  integration"
+
       - name: Test (macOS)
         if: startsWith(runner.os, 'macOS')
         run: |
           bats test/test_unit*.bats
-
-      - name: Test (Windows)
-        if: startsWith(runner.os, 'Windoews')
-        run: |
-          bash -c "ci/check_bats.bash  unit"
+          bats test/test_integ*.bats
 
 

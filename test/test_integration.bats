@@ -36,17 +36,13 @@ function common_steps() {
     # shellcheck disable=SC1090
     source ${instance_env}
     # shellcheck disable=SC1090
+    source ${workspace_env}
+    # shellcheck disable=SC1090
     source ${os_profile_script}
     # shellcheck disable=SC1090
     source ${checks_profile_script}
     # shellcheck disable=SC1090
     source ${actions_profile_script}
-
-    run check_required_instance_env_vars
-    assert_success
-
-    run check_required_workspace_env_vars
-    assert_success
 
     unset SSH_KEY_PATH
     assert_empty "${SSH_KEY_PATH}"
