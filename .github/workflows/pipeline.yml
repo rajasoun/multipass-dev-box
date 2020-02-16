@@ -1,0 +1,61 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+
+      - name: Init & Update Submodules
+        run: git submodule update --init --recursive --remote
+
+      - name: Install Pre-Requisites macOS
+        if: startsWith(runner.os, 'macOS')
+        run: |
+          brew cask install docker
+          brew install bats
+
+      - name: Install Pre-Requisites Linux
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          sudo snap install multipass --classic
+          sudo snap install docker
+
+      - name: Install Pre-Requisites Windows
+        if: startsWith(runner.os, 'Windows')
+        run: |
+          iwr -useb get.scoop.sh | iex
+          echo "::add-path::C:\Users\runneradmin\scoop\shims"
+          scoop install git
+          scoop install docker
+
+
+      - name: Test (Linux)
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          bash -c "ci/check_bats.bash  unit"
+          bash -c "ci/check_bats.bash  integration"
+          bash -c "ci/check_bats.bash   -f .docker"
+
+      ### bash -c "ci/check_bats.bash  integration"
+        # bash -c "ci/check_bats.bash   -f .docker"
+      ### Two test (Integration & Docker) suites yet to be ported for Mac & Windows
+      - name: Test (macOS)
+        if: startsWith(runner.os, 'macOS')
+        run: |
+          bats test/test_unit*.bats
+
+      - name: Test (Windows)
+        if: startsWith(runner.os, 'Windoews')
+        run: |
+          bash -c "ci/check_bats.bash  unit"
+
+

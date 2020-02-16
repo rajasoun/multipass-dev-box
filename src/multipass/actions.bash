@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1090
+source "$(dirname "${BASH_SOURCE[0]}")/os.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/wrapper.bash"
+
 function create_directory_if_not_exists(){
     DIR_NAME=$1
     ## Create Directory If Not Exists
@@ -24,8 +28,11 @@ function create_cloud_init_config_from_template() {
     cp "$CLOUD_INIT_TEMPLATE" "$CLOUD_INIT_FILE"
 
     #@ToDo: Optimize Edits
-    docker_sed "s,ssh-rsa.*$,$(cat "$SSH_KEY_PATH"/"${SSH_KEY}".pub),g" "/config/${VM_NAME}-cloud-init.yaml"
-    docker_sed  "s,hostname:.*$,hostname:\ $VM_NAME,g" "/config/${VM_NAME}-cloud-init.yaml"
+    #docker_sed "s,ssh-rsa.*$,$(cat "$SSH_KEY_PATH"/"${SSH_KEY}".pub),g" "/config/${VM_NAME}-cloud-init.yaml"
+    #docker_sed  "s,hostname:.*$,hostname:\ $VM_NAME,g" "/config/${VM_NAME}-cloud-init.yaml"
+
+    file_replace_text "ssh-rsa.*$" "$(cat "$SSH_KEY_PATH"/"${SSH_KEY}".pub)" "$CLOUD_INIT_FILE"
+    file_replace_text "hostname:.*$" "hostname:\ $VM_NAME" "$CLOUD_INIT_FILE"
 
     echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
 }
@@ -56,10 +63,15 @@ function create_ssh_connect_script(){
 
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
     #@ToDo: Optimize Edits
-    docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-ssh-connect.sh"
-    docker_sed "s,_vm_name_,${VM_NAME},g" "/config/${VM_NAME}-ssh-connect.sh"
-    docker_sed "s,_ssh_config_,${VM_NAME}-ssh-config,g" "/config/${VM_NAME}-ssh-connect.sh"
-    docker_sed "s,_ip_,${IP},g" "/config/${VM_NAME}-ssh-connect.sh"
+    #docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-ssh-connect.sh"
+    #docker_sed "s,_vm_name_,${VM_NAME},g" "/config/${VM_NAME}-ssh-connect.sh"
+    #docker_sed "s,_ssh_config_,${VM_NAME}-ssh-config,g" "/config/${VM_NAME}-ssh-connect.sh"
+    #docker_sed "s,_ip_,${IP},g" "/config/${VM_NAME}-ssh-connect.sh"
+
+    file_replace_text "_private_key_" "/keys/${SSH_KEY}"       "$SSH_CONNECT_FILE"
+    file_replace_text "_vm_name_"     "${VM_NAME}"            "$SSH_CONNECT_FILE"
+    file_replace_text "_ssh_config_"  "${VM_NAME}-ssh-config" "$SSH_CONNECT_FILE"
+    file_replace_text "_ip_"          "${IP}"                 "$SSH_CONNECT_FILE"
 
     local SSH_KEY="id_rsa_${VM_NAME}"
     local SSH_CONFIG="$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
@@ -97,59 +109,7 @@ function list_vms(){
     multipass ls
 }
 
-# Workaround as sed differs from windows and mac
-# so using linux sed in a docker :-)
-function docker_sed(){
-    local SED_STRING=$1
-    local FILE=$2
-
-#    echo "-v "${PWD}/$SSH_KEY_PATH":/keys"
-#    echo "-v "${PWD}/$CONFIG_BASE_PATH":/config"
-#    echo "-e "$SED_STRING" "
-#    echo "$FILE"
-
-     MSYS_NO_PATHCONV=1  docker run --rm \
-            -v "${PWD}/$SSH_KEY_PATH":/keys \
-            -v "${PWD}/$CONFIG_BASE_PATH":/config \
-            hairyhenderson/sed -i \
-            -e "$SED_STRING" \
-            "$FILE"
-}
-
-# Workaround for Path Limitations in Windows 
-#function _docker(){
-#    MSYS_NO_PATHCONV=1 docker "$@"
-#}
-
-
-# Workaround for Path Limitations in Windows
-function _docker() {
-  export MSYS_NO_PATHCONV=1
-  export MSYS2_ARG_CONV_EXCL='*' 
-
-  case "$OSTYPE" in
-      *msys*|*cygwin*) os="$(uname -o)" ;;
-      *) os="$(uname)";;
-  esac
-
-  if [[ "$os" == "Msys" ]] || [[ "$os" == "Cygwin" ]]; then
-      realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
-      printf "%s\0" "$@" > /tmp/args.txt
-      # --tty or -t requires winpty
-      if grep -ZE '^--tty|^-[^-].*t|^-t.*' /tmp/args.txt; then
-          exec winpty /bin/bash -c "xargs -0a /tmp/args.txt '$realdocker'"
-          return 0
-      fi
-  fi
-  #exec docker "$@"
-  docker "$@"
-  return 0
-}
-
 function run_main(){
-    _docker
-    docker_sed
-
     create_directory_if_not_exists
     generate_ssh_key
     create_cloud_init_config_from_template

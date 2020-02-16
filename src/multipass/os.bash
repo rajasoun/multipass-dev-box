@@ -44,13 +44,41 @@ function file_contains_text {
   grep -q "$text" "$file"
 }
 
+# Replace a line of text that matches the given regular expression in a file with the given replacement.
+# Only works for single-line replacements.
+function file_replace_text {
+  local -r original_text_regex="$1"
+  local -r replacement_text="$2"
+  local -r file="$3"
+
+  local args=()
+  args+=("-i")
+
+  if os_is_darwin; then
+    # OS X requires an extra argument for the -i flag (which we set to empty string) which Linux does no:
+    # https://stackoverflow.com/a/2321958/483528
+    args+=("")
+  fi
+
+  args+=("s|$original_text_regex|$replacement_text|")
+  args+=("$file")
+
+  sed "${args[@]}" > /dev/null
+}
+
+# Returns true (0) if this is an OS X server or false (1) otherwise.
+function os_is_darwin {
+  [[ $(uname -s) == "Darwin" ]]
+}
+
 function run_main() {
     lls "$@"
     os_command_is_installed "$@"
     display_time "$@"
     file_exists "$@"
     file_contains_text "$@"
-    os
+    file_replace_text "$@"
+    os_is_darwin
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]

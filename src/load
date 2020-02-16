@@ -1,3 +1,4 @@
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/actions.bash"
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/checks.bash"
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/os.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/multipass/wrapper.bash"

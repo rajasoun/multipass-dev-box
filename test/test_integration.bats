@@ -33,14 +33,14 @@ teardown() {
 }
 
 function common_steps() {
-  # shellcheck disable=SC1090
-   source ${instance_env}
+    # shellcheck disable=SC1090
+    source ${instance_env}
+    # shellcheck disable=SC1090
     source ${os_profile_script}
+    # shellcheck disable=SC1090
     source ${checks_profile_script}
+    # shellcheck disable=SC1090
     source ${actions_profile_script}
-
-    run os_command_is_installed "docker"
-    assert_success
 
     run check_required_instance_env_vars
     assert_success
@@ -153,34 +153,19 @@ function common_steps() {
 
 }
 
-@test "._docker wrapper -  interactive mode, print current release" {
-    source ${actions_profile_script}
-    _docker run --rm -it cytopia/ansible:latest-tools bash -c "cat /etc/alpine-release"
-    assert_success
-}
-
-@test "._docker - docker wrapper - with Mount Points -  interactive mode, ls mount points and exit" {
-    source ${actions_profile_script}
-    _docker run --rm -it \
-            -v "${PWD}/config":/config \
-            cytopia/ansible:latest-tools bash -c "ls -asl /config"
-   assert_success
-}
-
-@test ".docker_sed - Check sed in docker works" {
+@test ".sed - check sed works" {
     common_steps
     local SSH_KEY="id_rsa_${VM_NAME}"
     local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
     cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
 
-    docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-temp-ssh-connect.sh"
+    run file_replace_text "_private_key_" "keys/${SSH_KEY}" "$SSH_CONNECT_FILE"
     assert_success
 
     run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
     assert_success
     rm -fr $SSH_CONNECT_FILE
 }
-
 
 
 

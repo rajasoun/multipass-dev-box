@@ -1,5 +1,7 @@
 # Local Dev Box Setup with Multipass 
 
+[![Build Status](https://travis-ci.org/rajasoun/multipass-dev-box.svg?branch=master)](https://travis-ci.org/rajasoun/multipass-dev-box)
+
 Eases Dev Box Setup with Multipass compatible to both Windows and MacOS
 
 Limitations: 
