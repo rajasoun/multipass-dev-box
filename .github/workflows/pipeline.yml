@@ -11,33 +11,29 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: macOS - Setup Prerequisites
+      - name: macOS
         if: startsWith(runner.os, 'macOS')
+        uses: actions/checkout@v1
         run: |
           brew cask install docker
           brew  install bats
+          git submodule update --init --recursive --remote
 
-      - name: Linux - Setup Prerequisites
+      - name: Linux
         if: startsWith(runner.os, 'Linux')
+        uses: actions/checkout@v1
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
+          git submodule update --init --recursive --remote
 
-      - name: Windows - Setup Prerequisites
+      - name: Windows
         if: startsWith(runner.os, 'Windows')
+        uses: actions/checkout@v1
         run: |
           iwr -useb get.scoop.sh | iex
           echo "::add-path::C:\Users\runneradmin\scoop\shims"
           scoop install git
           scoop install docker
+          git submodule update --init --recursive --remote
 
-      - name: Checkout Repository
-        uses: actions/checkout@v1
-
-      - name: Init & Update Submodules
-        run: git submodule update --init --recursive --remote
-
-      - name: Unit Test
-        run:  bash -c "ci/check_bats.bash unit"
-      - name: Integration Test
-        run:  bash -c "ci/check_bats.bash  integration"
