@@ -36,6 +36,11 @@ teardown() {
     assert_success
 }
 
+@test ".os_command_is_installed - check for sed" {
+    run os_command_is_installed sed
+    assert_success
+}
+
 @test ".os_command_is_installed - check for InValid_Command" {
     run os_command_is_installed InValid_Command
     assert_failure

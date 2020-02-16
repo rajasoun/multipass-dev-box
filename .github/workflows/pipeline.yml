@@ -5,21 +5,21 @@ on: [push]
 
 jobs:
 
-  linux:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Multipass
-        run: sudo snap install multipass --classic
-      - name: Install Docker
-        run: sudo snap install docker
-      - name: Checkout Repository
-        uses: actions/checkout@v1
-      - name: Init & Update Submodules
-        run: git submodule update --init --recursive --remote
-      - name: Unit Test
-        run:  bash -c "ci/check_bats.bash unit"
-      - name: Integration Test
-        run:  bash -c "ci/check_bats.bash  integration"
+#  linux:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Install Multipass
+#        run: sudo snap install multipass --classic
+#      - name: Install Docker
+#        run: sudo snap install docker
+#      - name: Checkout Repository
+#        uses: actions/checkout@v1
+#      - name: Init & Update Submodules
+#        run: git submodule update --init --recursive --remote
+#      - name: Unit Test
+#        run:  bash -c "ci/check_bats.bash unit"
+#      - name: Integration Test
+#        run:  bash -c "ci/check_bats.bash  integration"
 
   # macos:
   #   runs-on: macos-latest
@@ -40,18 +40,20 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - name: Install Git Bash
-        run: choco install git.portable
-      - name: Install Docker
-        run: choco install docker
-      - name: Checkout Repository
-        uses: actions/checkout@v1
-      - name: Init & Update Submodules
-        run: git submodule update --init --recursive --remote
-      - name: Unit Test
-        run: bash -c "ci/check_bats.bash unit"
-      - name: Integration Test
-        run:  bash -c "ci/check_bats.bash  integration"
+      - name: Install SCOOP
+        run: iwr -useb get.scoop.sh | iex
+#      - name: Install Git Bash
+#        run: choco install git.portable
+#      - name: Install Docker
+#        run: choco install docker
+#      - name: Checkout Repository
+#        uses: actions/checkout@v1
+#      - name: Init & Update Submodules
+#        run: git submodule update --init --recursive --remote
+#      - name: Unit Test
+#        run: bash -c "ci/check_bats.bash unit"
+#      - name: Integration Test
+#        run:  bash -c "ci/check_bats.bash  integration"
 
 
 
