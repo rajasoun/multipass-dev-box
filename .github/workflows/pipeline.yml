@@ -49,6 +49,8 @@ jobs:
           bash -c "ci/check_bats.bash  integration"
 
       ### 3 Tests Runs only on Linux - To be Validated for Linux & Mac
+      ### Docker Installation on Mac - 1 Test
+      ### Running Linux Docker on Windows -2  Tests
       - name: Test Docker (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
