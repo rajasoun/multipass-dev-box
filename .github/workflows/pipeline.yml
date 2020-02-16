@@ -54,7 +54,7 @@ jobs:
           bats test/test_unit*.bats
 
       - name: Test (Windows)
-        if: startsWith(runner.os, 'Windoews')
+        if: startsWith(runner.os, 'Windows')
         run: |
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash   -f .docker"
