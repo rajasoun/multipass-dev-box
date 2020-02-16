@@ -71,4 +71,73 @@ teardown() {
     assert_failure
 }
 
+@test "file_replace_text empty file" {
+  local readonly tmp_file=$(mktemp)
+  local readonly original_regex="foo"
+  local readonly replacement="bar"
+
+  run file_replace_text "$original_regex" "$replacement" "$tmp_file"
+  assert_success
+
+  local readonly actual=$(cat "$tmp_file")
+  local readonly expected=""
+  assert_equal "$expected" "$actual"
+
+  rm -f "$tmp_file"
+}
+
+@test "file_replace_text non empty file, no match" {
+  local readonly tmp_file=$(mktemp)
+  local readonly original_regex="foo"
+  local readonly replacement="bar"
+  local readonly file_contents="not a match"
+
+  echo "$file_contents" > "$tmp_file"
+
+  run file_replace_text "$original_regex" "$replacement" "$tmp_file"
+  assert_success
+
+  local readonly actual=$(cat "$tmp_file")
+  local readonly expected="$file_contents"
+  assert_equal "$expected" "$actual"
+
+  rm -f "$tmp_file"
+}
+
+@test "file_replace_text non empty file, exact match" {
+  local readonly tmp_file=$(mktemp)
+  local readonly original_regex="abc foo def"
+  local readonly replacement="bar"
+  local readonly file_contents="abc foo def"
+
+  echo "$file_contents" > "$tmp_file"
+
+  run file_replace_text "$original_regex" "$replacement" "$tmp_file"
+  assert_success
+
+  local readonly actual=$(cat "$tmp_file")
+  local readonly expected="$replacement"
+  assert_equal "$expected" "$actual"
+
+  rm -f "$tmp_file"
+}
+
+@test "file_replace_text non empty file, regex match" {
+  local readonly tmp_file=$(mktemp)
+  local readonly original_regex=".*foo.*"
+  local readonly replacement="bar"
+  local readonly file_contents="abc foo def"
+
+  echo "$file_contents" > "$tmp_file"
+
+  run file_replace_text "$original_regex" "$replacement" "$tmp_file"
+  assert_success
+
+  local readonly actual=$(cat "$tmp_file")
+  local readonly expected="$replacement"
+  assert_equal "$expected" "$actual"
+
+  rm -f "$tmp_file"
+}
+
 

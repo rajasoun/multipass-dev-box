@@ -175,14 +175,14 @@ function common_steps() {
     local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
     cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
 
-    docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-temp-ssh-connect.sh"
+    #docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-temp-ssh-connect.sh"
+    run file_replace_text "_private_key_" "keys/${SSH_KEY}" "$SSH_CONNECT_FILE"
     assert_success
 
     run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
     assert_success
     rm -fr $SSH_CONNECT_FILE
 }
-
 
 
 

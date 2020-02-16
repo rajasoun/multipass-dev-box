@@ -44,9 +44,9 @@ jobs:
         run: choco install git.portable
       - name: Install Docker
         run: choco install docker
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v1
-      - name: Checkout Submodules
+      - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
       - name: Unit Test
         run: bash -c "ci/check_bats.bash unit"
