@@ -57,5 +57,6 @@ jobs:
         if: startsWith(runner.os, 'Windoews')
         run: |
           bash -c "ci/check_bats.bash  unit"
+          bash -c "ci/check_bats.bash   -f .docker"
 
 
