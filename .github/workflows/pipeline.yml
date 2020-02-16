@@ -10,11 +10,11 @@ jobs:
     steps:
       - name: Install Multipass
         run: sudo snap install multipass --classic
-      - name: Install Multipass
+      - name: Install Docker
         run: sudo snap install docker
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v1
-      - name: Checkout Submodules
+      - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
       - name: Unit Test
         run:  bash -c "ci/check_bats.bash unit"
