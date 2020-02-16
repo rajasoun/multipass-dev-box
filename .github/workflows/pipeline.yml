@@ -37,7 +37,7 @@ jobs:
           bash -c "ci/check_bats.bash  integration"
           bash -c "ci/check_bats.bash   -f .docker"
 
-      ### Test suite for  Docker yet to be ported for Mac & Windows
+      ### @TODO: Test suite for  Docker yet to be ported for Mac & Windows
       ### bash -c "ci/check_bats.bash   -f .docker"
       - name: Test (Windows)
         if: startsWith(runner.os, 'Windows')
