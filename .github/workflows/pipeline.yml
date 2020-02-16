@@ -2,158 +2,20 @@ name: CI
 
 on: [push]
 
-
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
-      ## Linux
-      steps:
-        - name: Install Multipass
-          run: sudo snap install multipass --classic
-          if: matrix.os == 'linux'
-        - name: Install Docker
-          run: sudo snap install docker
-          if: matrix.os == 'linux'
+    runs-on: ${{ matrix.os }}
 
-     ## Windows
-        - name: Install SCOOP
-          run: iwr -useb get.scoop.sh | iex
-          if: matrix.os == 'windows'
-        - name: Add SCOOP to the PATH
-          run: echo "::add-path::C:\Users\runneradmin\scoop\shims"
-          if: matrix.os == 'windows'
-        - name: Install Git Bash
-          run : scoop install git
-          if: matrix.os == 'windows'
-        - name: Install Docker
-          run: scoop install docker
-          if: matrix.os == 'windows'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
 
-     ## MacOS
-        - name: Install Docker
-          run: brew cask install docker
-          if: matrix.os == 'macos'
-        - name: Install BATS
-          run: brew  install bats
-          if: matrix.os == 'macos'
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive --remote
 
-        - name: Checkout Repository
-          uses: actions/checkout@v1
-        - name: Init & Update Submodules
-          run: git submodule update --init --recursive --remote
-
-        - name: Unit Test
-          run:  bash -c "ci/check_bats.bash unit"
-        - name: Integration Test
-          run:  bash -c "ci/check_bats.bash  integration"
-
-
-#jobs:
-#  strategy:
-#    matrix:
-#      os: [ubuntu-latest, windows-latest, macos-latest]
-#
-#    runs-on: ${{ matrix.os }}
-#
-#    ## Linux
-#    steps:
-#      - name: Install Multipass
-#        run: sudo snap install multipass --classic
-#        if: matrix.os == 'linux'
-#      - name: Install Docker
-#        run: sudo snap install docker
-#        if: matrix.os == 'linux'
-#
-#   ## Windows
-#      - name: Install SCOOP
-#        run: iwr -useb get.scoop.sh | iex
-#        if: matrix.os == 'windows'
-#      - name: Add SCOOP to the PATH
-#        run: echo "::add-path::C:\Users\runneradmin\scoop\shims"
-#        if: matrix.os == 'windows'
-#      - name: Install Git Bash
-#        run : scoop install git
-#        if: matrix.os == 'windows'
-#      - name: Install Docker
-#        run: scoop install docker
-#        if: matrix.os == 'windows'
-#
-#   ## MacOS
-#      - name: Install Docker
-#        run: brew cask install docker
-#        if: matrix.os == 'macos'
-#      - name: Install BATS
-#        run: brew  install bats
-#        if: matrix.os == 'macos'
-#
-#      - name: Checkout Repository
-#        uses: actions/checkout@v1
-#      - name: Init & Update Submodules
-#        run: git submodule update --init --recursive --remote
-#
-#      - name: Unit Test
-#        run:  bash -c "ci/check_bats.bash unit"
-#      - name: Integration Test
-#        run:  bash -c "ci/check_bats.bash  integration"
-
-
-#  linux:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Install Multipass
-#        run: sudo snap install multipass --classic
-#      - name: Install Docker
-#        run: sudo snap install docker
-#      - name: Checkout Repository
-#        uses: actions/checkout@v1
-#      - name: Init & Update Submodules
-#        run: git submodule update --init --recursive --remote
-#      - name: Unit Test
-#        run:  bash -c "ci/check_bats.bash unit"
-#      - name: Integration Test
-#        run:  bash -c "ci/check_bats.bash  integration"
-
-  # macos:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Install Multipass
-  #       run: brew cask install multipass 
-  #     - name: Install Docker
-  #       run: brew cask install docker
-  #     - name: Install BATS
-  #       run: brew  install bats
-  #     - name: Checkout
-  #       uses: actions/checkout@v1
-  #     - name: Checkout Submodules
-  #       run: git submodule update --init --recursive --remote
-  #     - name: Unit Test
-  #       run:  bats test/test_unit*.bats
-
-#  windows:
-#    runs-on: windows-latest
-#    steps:
-#      - name: Install SCOOP
-#        run: iwr -useb get.scoop.sh | iex
-#      - name: Add SCOOP to the PATH
-#        run: echo "::add-path::C:\Users\runneradmin\scoop\shims"
-#        #if: matrix.os == 'windows'
-#      - name: Install Git Bash
-#        run : scoop install git
-#      - name: Install Docker
-#        run: scoop install docker
-#      - name: Checkout Repository
-#        uses: actions/checkout@v1
-#      - name: Init & Update Submodules
-#        run: git submodule update --init --recursive --remote
-#      - name: Unit Test
-#        run: bash -c "ci/check_bats.bash unit"
-#      - name: Integration Test
-#        run:  bash -c "ci/check_bats.bash  integration"
-
-
-
-
+      - name: List Files
+        run: ls -asl
