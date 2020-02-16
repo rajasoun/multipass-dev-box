@@ -28,6 +28,7 @@ jobs:
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
+          sudo snap install bats
 
       - name: Windows
         if: startsWith(runner.os, 'Windows')
