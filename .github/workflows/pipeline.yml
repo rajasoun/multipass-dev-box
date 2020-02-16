@@ -52,6 +52,7 @@ jobs:
         if: startsWith(runner.os, 'macOS')
         run: |
           bats test/test_unit*.bats
+          bats test/test_integ*.bats
 
       - name: Test (Windows)
         if: startsWith(runner.os, 'Windows')
