@@ -52,6 +52,6 @@ jobs:
       - name: Test Docker (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
-          bash -c "ci/check_bats.bash  -f [docker]"
+          bash -c "ci/check_bats.bash  -f .docker"
 
 

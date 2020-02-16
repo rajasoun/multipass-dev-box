@@ -31,11 +31,6 @@ teardown() {
     assert_success
 }
 
-@test ".os_command_is_installed - check for docker" {
-    run os_command_is_installed docker
-    assert_success
-}
-
 @test ".os_command_is_installed - check for sed" {
     run os_command_is_installed sed
     assert_success

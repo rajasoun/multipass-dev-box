@@ -5,7 +5,7 @@ load 'libs/bats-assert/load'
 load 'helpers'
 
 actions_profile_script="./src/multipass/actions.bash"
-os_profile_script="/src/multipass/os.bash"
+os_profile_script="./src/multipass/os.bash"
 
 setup() {
     echo "SetUp"
@@ -15,7 +15,7 @@ teardown() {
   echo "teardown"
 }
 
-@test ".os_command_is_installed - check for [docker]" {
+@test ".os_command_is_installed - check for .docker" {
     # shellcheck disable=SC1090
     source ${os_profile_script}
     run os_command_is_installed docker
@@ -23,7 +23,7 @@ teardown() {
 }
 
 
-@test "._docker - [docker] wrapper - interactive mode (conditional tty), with Mount Points - ls mount points" {
+@test "._docker - docker wrapper - interactive mode (conditional tty), with Mount Points - ls mount points" {
     # shellcheck disable=SC1090
     source ${actions_profile_script}
      test -t 1 && USE_TTY="-t" && echo "Input Devise is TTY"  ||  echo "Input Device is Not TTY"
@@ -31,7 +31,7 @@ teardown() {
     assert_success
 }
 
-@test "._docker - [docker] wrapper - with Mount Points -  interactive mode (conditional tty), ls mount points " {
+@test "._docker - docker wrapper - with Mount Points -  interactive mode (conditional tty), ls mount points " {
     # shellcheck disable=SC1090
     source ${actions_profile_script}
     test -t 1 && USE_TTY="-t" && echo "Input Devise is TTY"  ||  echo "Input Device is Not TTY"
