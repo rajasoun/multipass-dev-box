@@ -42,9 +42,6 @@ function common_steps() {
     # shellcheck disable=SC1090
     source ${actions_profile_script}
 
-    run os_command_is_installed "docker"
-    assert_success
-
     run check_required_instance_env_vars
     assert_success
 
