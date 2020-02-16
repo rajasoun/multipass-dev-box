@@ -156,24 +156,6 @@ function common_steps() {
 
 }
 
-@test "._docker - docker wrapper - interactive mode (conditional tty), with Mount Points - ls mount points" {
-    # shellcheck disable=SC1090
-    source ${actions_profile_script}
-     test -t 1 && USE_TTY="-t" && echo "Input Devise is TTY"  ||  echo "Input Device is Not TTY"
-    _docker run  --rm -i ${USE_TTY} cytopia/ansible:latest-tools bash -c "cat /etc/alpine-release"
-    assert_success
-}
-
-@test "._docker - docker wrapper - with Mount Points -  interactive mode (conditional tty), ls mount points " {
-    # shellcheck disable=SC1090
-    source ${actions_profile_script}
-    test -t 1 && USE_TTY="-t" && echo "Input Devise is TTY"  ||  echo "Input Device is Not TTY"
-    _docker run  --rm -i ${USE_TTY}  \
-            -v "${PWD}/config":/config \
-            cytopia/ansible:latest-tools bash -c "ls -asl /config"
-   assert_success
-}
-
 @test ".sed - check sed works" {
     common_steps
     local SSH_KEY="id_rsa_${VM_NAME}"
