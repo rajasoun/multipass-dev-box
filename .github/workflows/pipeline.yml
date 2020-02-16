@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  install:
+  validate:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -30,23 +30,12 @@ jobs:
           scoop install git
           scoop install docker
 
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
       - name: Test (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
           bash -c "ci/check_bats.bash   -f .docker"
-      - name: Test (macOS)
-        if: startsWith(runner.os, 'macOS')
-        run: |
-          bats test/test_unit*.bats
-          bats test/test_integ*.bats
 
       ### Test suite for  Docker yet to be ported for Mac & Windows
       ### bash -c "ci/check_bats.bash   -f .docker"
@@ -55,5 +44,11 @@ jobs:
         run: |
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
+
+      - name: Test (macOS)
+        if: startsWith(runner.os, 'macOS')
+        run: |
+          bats test/test_unit*.bats
+          bats test/test_integ*.bats
 
 
