@@ -3,43 +3,25 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  install:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-
     runs-on: ${{ matrix.os }}
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v1
-
       - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
-
-      - name: Install Pre-Requisites for macOS  (Long Running Test for docker)
+      - name: Install Pre-Requisites macOS
         if: startsWith(runner.os, 'macOS')
-        shell: bash
         run: |
-          DOCKER_URL=https://download.docker.com/mac/stable/31259/Docker.dmg
-          curl -O -sSL $DOCKER_URL
-          open -W Docker.dmg && cp -r /Volumes/Docker/Docker.app /Applications
-          # Get docker in first so we can install it and work on other things
-          sudo /Applications/Docker.app/Contents/MacOS/Docker --quit-after-install --unattended
-          nohup /Applications/Docker.app/Contents/MacOS/Docker --unattended &
-
-          while ! docker ps 2>/dev/null ; do
-            sleep 5
-            echo "Waiting for docker to come up: $(date)"
-          done
-          docker ps -a
-
+          brew cask install multipass
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
-
       - name: Install Pre-Requisites Windows
         if: startsWith(runner.os, 'Windows')
         run: |
@@ -48,19 +30,23 @@ jobs:
           scoop install git
           scoop install docker
 
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
       - name: Test (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
           bash -c "ci/check_bats.bash   -f .docker"
-
       - name: Test (macOS)
         if: startsWith(runner.os, 'macOS')
         run: |
           bats test/test_unit*.bats
           bats test/test_integ*.bats
-          bats test/test_docker*.bats
 
       ### Test suite for  Docker yet to be ported for Mac & Windows
       ### bash -c "ci/check_bats.bash   -f .docker"
