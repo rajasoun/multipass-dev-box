@@ -18,20 +18,24 @@ jobs:
         run: git submodule update --init --recursive --remote
       - name: Unit Test
         run:  bash -c "ci/check_bats.bash unit"
+      - name: Integration Test
+        run:  bash -c "ci/check_bats.bash  integration"
 
-  macos:
-    runs-on: macos-latest
-    steps:
-      - name: Install Multipass
-        run: brew cask install multipass docker
-      - name: Install BATS
-        run: brew  install bats
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Checkout Submodules
-        run: git submodule update --init --recursive --remote
-      - name: Unit Test
-        run:  bats test/test_unit*.bats
+  # macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Install Multipass
+  #       run: brew cask install multipass 
+  #     - name: Install Docker
+  #       run: brew cask install docker
+  #     - name: Install BATS
+  #       run: brew  install bats
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
+  #     - name: Checkout Submodules
+  #       run: git submodule update --init --recursive --remote
+  #     - name: Unit Test
+  #       run:  bats test/test_unit*.bats
 
   windows:
     runs-on: windows-latest
