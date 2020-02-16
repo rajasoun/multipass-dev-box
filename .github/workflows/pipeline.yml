@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: run on mac
-          if: startsWith(runner.os, 'macOS')
-          run: |
-            echo runner.os
-            echo matrix.os
+        if: startsWith(runner.os, 'macOS')
+        run: |
+          echo runner.os
+          echo matrix.os
 
 #      - name: Setup Prerequisites for Linux
 #          - if: runner.os == 'Linux'
