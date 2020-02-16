@@ -48,4 +48,10 @@ jobs:
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
 
+      ### 3 Tests Runs only on Linux - To be Validated for Linux & Mac
+      - name: Test Docker (Linux)
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          bats test/test_docker*.bats
+
 
