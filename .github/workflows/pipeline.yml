@@ -10,7 +10,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-
     steps:
       - name: macOS - Setup Prerequisites
         if: startsWith(runner.os, 'macOS')
@@ -37,3 +36,8 @@ jobs:
 
       - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
+
+      - name: Unit Test
+        run:  bash -c "ci/check_bats.bash unit"
+      - name: Integration Test
+        run:  bash -c "ci/check_bats.bash  integration"
