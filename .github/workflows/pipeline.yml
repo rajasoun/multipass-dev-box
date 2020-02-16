@@ -41,11 +41,11 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Install SCOOP
-        run: iwr -useb get.scoop.sh | iex
-#      - name: Install Git Bash
-#        run: choco install git.portable
-#      - name: Install Docker
-#        run: choco install docker
+        run: Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iwr -useb get.scoop.sh | iex
+      - name: Install Git Bash
+        run: scoop install git
+      - name: Install Docker Desktop
+        run: scoop bucket add dev-box-bucket https://github.com/rajasoun/dev-box-bucket; scoop install docker_desktop
 #      - name: Checkout Repository
 #        uses: actions/checkout@v1
 #      - name: Init & Update Submodules
