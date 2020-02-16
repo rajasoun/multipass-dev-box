@@ -47,16 +47,16 @@ jobs:
         #if: matrix.os == 'windows'
       - name: Install Git Bash
         run : scoop install git
-#      - name: Install Docker Desktop
-#        run: scoop bucket add dev-box-bucket https://github.com/rajasoun/dev-box-bucket; scoop install docker_desktop
-#      - name: Checkout Repository
-#        uses: actions/checkout@v1
-#      - name: Init & Update Submodules
-#        run: git submodule update --init --recursive --remote
-#      - name: Unit Test
-#        run: bash -c "ci/check_bats.bash unit"
-#      - name: Integration Test
-#        run:  bash -c "ci/check_bats.bash  integration"
+      - name: Install Docker Desktop
+        run: scoop bucket add dev-box-bucket https://github.com/rajasoun/dev-box-bucket; scoop install docker_desktop
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+      - name: Init & Update Submodules
+        run: git submodule update --init --recursive --remote
+      - name: Unit Test
+        run: bash -c "ci/check_bats.bash unit"
+      - name: Integration Test
+        run:  bash -c "ci/check_bats.bash  integration"
 
 
 
