@@ -11,7 +11,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v1
 
@@ -22,17 +21,13 @@ jobs:
         if: startsWith(runner.os, 'macOS')
         run: |
           brew cask install docker
-          brew  install bats
-          bats test/test_unit*.bats
-          bats test/test_integ*.bats
+          brew install bats
 
       - name: Linux
         if: startsWith(runner.os, 'Linux')
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
-          bash -c "ci/check_bats.bash unit"
-          bash -c "ci/check_bats.bash  integration"
 
       - name: Windows
         if: startsWith(runner.os, 'Windows')
@@ -41,6 +36,12 @@ jobs:
           echo "::add-path::C:\Users\runneradmin\scoop\shims"
           scoop install git
           scoop install docker
-          bash -c "ci/check_bats.bash unit"
-          bash -c "ci/check_bats.bash  integration"
+
+      - name: Unit Test
+        run: bats test/test_unit*.bats
+
+      - name: Integration Test
+        run: bats test/test_integ*.bats
+
+
 
