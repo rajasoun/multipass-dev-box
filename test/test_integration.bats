@@ -36,6 +36,8 @@ function common_steps() {
     # shellcheck disable=SC1090
     source ${instance_env}
     # shellcheck disable=SC1090
+    source ${workspace_env}
+    # shellcheck disable=SC1090
     source ${os_profile_script}
     # shellcheck disable=SC1090
     source ${checks_profile_script}
