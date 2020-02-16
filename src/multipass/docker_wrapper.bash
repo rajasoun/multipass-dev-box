@@ -21,20 +21,14 @@ function _docker() {
   export MSYS2_ARG_CONV_EXCL='*'
 
   case "$OSTYPE" in
-      *msys*|*cygwin*)
-        os="$(uname -o)"
-        platform="--platform linux"
-        ;;
-      *)
-        os="$(uname)"
-        ;;
+      *msys*|*cygwin*) os="$(uname -o)" ;;
+      *) os="$(uname)";;
   esac
 
   if [[ "$os" == "Msys" ]] || [[ "$os" == "Cygwin" ]]; then
       # shellcheck disable=SC2230
       realdocker="$(which -a docker | grep -v "$(readlink -f "$0")" | head -1)"
       printf "%s\0" "$@" > /tmp/args.txt
-      cat /tmp/args.txt
       # --tty or -t requires winpty
       if grep -ZE '^--tty|^-[^-].*t|^-t.*' /tmp/args.txt; then
           #exec winpty /bin/bash -c "xargs -0a /tmp/args.txt '$realdocker'"
