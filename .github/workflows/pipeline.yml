@@ -12,27 +12,27 @@ jobs:
 
     steps:
       - name: Setup Prerequisites for Linux
-        - if: runner.os == 'Linux'
-            run: |
-              sudo snap install multipass --classic
-              sudo snap install docker
-
-      - name: Setup Prerequisites for Windows
-          - if: runner.os == 'Windows'
-            run: |
-              iwr -useb get.scoop.sh | iex
-              echo "::add-path::C:\Users\runneradmin\scoop\shims"
-              scoop install git
-              scoop install docker
-
-      - name: Setup Prerequisites for MacOS
-                - if: runner.os == 'macOS'
-                run: |
-                  brew cask install docker
-                  brew  install bats
-
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Checkout Submodules
-        run: git submodule update --init --recursive --remote
+          - if: runner.os == 'Linux'
+              run: |
+                sudo snap install multipass --classic
+                sudo snap install docker
+#
+#      - name: Setup Prerequisites for Windows
+#          - if: runner.os == 'Windows'
+#            run: |
+#              iwr -useb get.scoop.sh | iex
+#              echo "::add-path::C:\Users\runneradmin\scoop\shims"
+#              scoop install git
+#              scoop install docker
+#
+#      - name: Setup Prerequisites for MacOS
+#                - if: runner.os == 'macOS'
+#                run: |
+#                  brew cask install docker
+#                  brew  install bats
+#
+#      - name: Checkout
+#        uses: actions/checkout@v1
+#
+#      - name: Checkout Submodules
+#        run: git submodule update --init --recursive --remote
