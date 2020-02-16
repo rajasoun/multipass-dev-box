@@ -1,6 +1,9 @@
 # Local Dev Box Setup with Multipass 
 
-[![Build Status](https://travis-ci.org/rajasoun/multipass-dev-box.svg?branch=master)](https://travis-ci.org/rajasoun/multipass-dev-box)
+Travis CI (Linux Only) [![Build Status](https://travis-ci.org/rajasoun/multipass-dev-box.svg?branch=master)](https://travis-ci.org/rajasoun/multipass-dev-box) 
+
+GitHub Actions CI (Linux, Mac & Windows) ![CI](https://github.com/rajasoun/multipass-dev-box/workflows/CI/badge.svg)
+
 
 Eases Dev Box Setup with Multipass compatible to both Windows and MacOS
 
