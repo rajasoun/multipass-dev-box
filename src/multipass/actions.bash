@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC1090
 source "$(dirname "${BASH_SOURCE[0]}")/os.bash"
-source "$(dirname "${BASH_SOURCE[0]}")/wrapper.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/docker_wrapper.bash"
 
 function create_directory_if_not_exists(){
     DIR_NAME=$1
