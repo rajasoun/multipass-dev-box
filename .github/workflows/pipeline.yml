@@ -11,6 +11,33 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Install Multipass
+        run: sudo snap install multipass --classic
+        if: matrix.os == 'linux-latest'
+      - name: Install Docker
+        run: sudo snap install docker
+        if: matrix.os == 'linux-latest'
+
+      - name: Install SCOOP
+        run: iwr -useb get.scoop.sh | iex
+        if: matrix.os == 'windows-latest'
+      - name: Add SCOOP to the PATH
+        run: echo "::add-path::C:\Users\runneradmin\scoop\shims"
+        if: matrix.os == 'windows-latest'
+      - name: Install Git Bash
+        run : scoop install git
+        if: matrix.os == 'windows-latest'
+      - name: Install Docker
+        run: scoop install docker
+        if: matrix.os == 'windows-latest'
+
+      - name: Install Docker
+        run: brew cask install docker
+        if: matrix.os == 'macos-latest'
+      - name: Install BATS
+        run: brew  install bats
+        if: matrix.os == 'macos-latest'
+
       - name: Checkout
         uses: actions/checkout@v1
 
