@@ -17,19 +17,19 @@ jobs:
       - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
 
-      - name: macOS
+      - name: Install Pre-Requisites macOS
         if: startsWith(runner.os, 'macOS')
         run: |
           brew cask install docker
           brew install bats
 
-      - name: Linux
+      - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
 
-      - name: Windows
+      - name: Install Pre-Requisites Windows
         if: startsWith(runner.os, 'Windows')
         run: |
           iwr -useb get.scoop.sh | iex
@@ -47,13 +47,13 @@ jobs:
 
       ### bash -c "ci/check_bats.bash  integration"
         # bash -c "ci/check_bats.bash   -f .docker"
-      ### Two test suites yet to be ported for Mac & Windows
+      ### Two test (Integration & Docker) suites yet to be ported for Mac & Windows
       - name: Test (macOS)
         if: startsWith(runner.os, 'macOS')
         run: |
           bats test/test_unit*.bats
 
-      - name: Test (macOS)
+      - name: Test (Windows)
         if: startsWith(runner.os, 'Windoews')
         run: |
           bash -c "ci/check_bats.bash  unit"
