@@ -53,7 +53,7 @@ jobs:
 #        run: Set-ExecutionPolicy RemoteSigned -scope CurrentUser; scoop install docker_desktop
 #        shell: powershell
       - name: Install Docker
-        run: scoop install docker_desktop
+        run: scoop install docker
       - name: Checkout Repository
         uses: actions/checkout@v1
       - name: Init & Update Submodules
