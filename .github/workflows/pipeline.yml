@@ -40,10 +40,8 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - name: Install SCOOP
-        run: iwr -useb get.scoop.sh | iex
-      - name: Install Git Bash
-        run : scoop install git
+      - name: Install SCOOP and Git Bash
+        run: iwr -useb get.scoop.sh | iex; scoop install git
 #      - name: Install Docker Desktop
 #        run: scoop bucket add dev-box-bucket https://github.com/rajasoun/dev-box-bucket; scoop install docker_desktop
 #      - name: Checkout Repository
