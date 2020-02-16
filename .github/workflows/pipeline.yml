@@ -44,7 +44,7 @@ jobs:
         run: iwr -useb get.scoop.sh | iex
       - name: Add SCOOP to the PATH
         run: echo "::add-path::C:\Users\runneradmin\scoop\shims"
-        if: matrix.os == 'windows'
+        #if: matrix.os == 'windows'
       - name: Install Git Bash
         run : scoop install git
 #      - name: Install Docker Desktop
