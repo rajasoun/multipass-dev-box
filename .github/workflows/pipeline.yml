@@ -38,14 +38,14 @@ jobs:
           scoop install docker
 
       - name: Test
-        if: startsWith(runner.os, 'Windows')
+        if: startsWith(runner.os, 'macOS')
         run: |
           bats test/test_unit*.bats
           bats test/test_integ*.bats
 
-      - name: Test (Linux & macOs)
+      - name: Test (Linux & Windows)
         run: |
-          bash -c "ci/check_bats.bash unit"
+          bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
 
 
