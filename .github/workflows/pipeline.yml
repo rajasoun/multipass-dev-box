@@ -10,12 +10,19 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+
     steps:
-      - name: Setup Prerequisites for Linux
-          - if: runner.os == 'Linux'
-              run: |
-                sudo snap install multipass --classic
-                sudo snap install docker
+      - name: run on mac
+          if: startsWith(runner.os, 'macOS')
+          run: |
+            echo runner.os
+            echo matrix.os
+
+#      - name: Setup Prerequisites for Linux
+#          - if: runner.os == 'Linux'
+#              run: |
+#                sudo snap install multipass --classic
+#                sudo snap install docker
 #
 #      - name: Setup Prerequisites for Windows
 #          - if: runner.os == 'Windows'
