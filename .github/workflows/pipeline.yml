@@ -37,7 +37,7 @@ jobs:
           scoop install git
           scoop install docker
 
-      - name: Test
+      - name: Test (macOS)
         if: startsWith(runner.os, 'macOS')
         run: |
           bats test/test_unit*.bats
