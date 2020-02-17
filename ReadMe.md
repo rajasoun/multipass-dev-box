@@ -35,12 +35,19 @@ For macOS, you can download the installers [from GitHub](https://github.com/cano
 brew cask install multipass
 ```
 
-On Windows, download the installer [from GitHub](https://github.com/canonical/multipass/releases)
+On Windows, download the installer [from GitHub](https://github.com/canonical/multipass/releases) or [use SCOOP](https://scoop.sh/):
+@TODO: SCOOP support to be added in https://github.com/rajasoun/dev-box-bucket
+```
+# 
+scoop install multipass
+```
+
 
 ### Getting Started
 In Terminal Window
 
 ```SHELL
+$ git submodule update --init --recursive --remote
 $ ./multipass.sh
 ```
 
@@ -55,13 +62,32 @@ You will get a menu
 
  Enter your choice [1-4] 
 
+### Automated Tests
+
+In Terminal Window
+
+```SHELL
+$ ci/check_bats.bash unit
+$ ci/check_bats.bash integration
+$ ci/check_bats.bash docker
+```
+
+To run tests based on name 
+```SHELL
+$ ci/check_bats.bash -f .ssh
+```
+
+
 *ToDo*
 
-     1. Explore Limitations of Multipass + Anyconnect Issue
-     2. Configure VM through Ansible
-     3. Add Automated Verification
-     4. Support for ADR
-     5. Adoption of Git Flow
+     1. Adoption of Git Flow  ✅
+     2. Add Automated Verification - CI 
+            a. Travis (Linux Only) ✅
+            b. GitHub Actions (Linux,Mac & Windows) ✅
+     3. Explore Limitations of Multipass + Anyconnect Issue
+     4. Configure VM through Ansible
+     5. Support for ADR
+
 
 ### What does the Script Do
 Automates - Automates - Automates !!!
@@ -69,7 +95,7 @@ Automates - Automates - Automates !!!
 1. Provides Workaround of [Issue](https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901) 
 through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml through script.
     * Refer [cloud-init](config/cloud-init-template.yaml) Template file
-2. Configuration driven provisioning to destroy of VM
+2. Configuration driven - from provisioning to destroy of VM along with SSH Configuration
 3. Ability to connect and configure VM via Bastion Host - Making the experience seamless between Windows & Mac 
 4. Test Driven Development for entire suite
 5. Modularization of Code for Easy Refactoring
