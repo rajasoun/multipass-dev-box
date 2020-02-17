@@ -1,8 +1,6 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
 
-load '../libs/bats-support/load'
-load '../libs/bats-assert/load'
-load '../helpers'
+load 'init_unit_test'
 
 actions_profile_script="./src/multipass/actions.bash"
 workspace_env="workspace.env"

@@ -7,8 +7,10 @@
 
 function include () {
     if [[ -f "dev.$1" ]]; then
+        # shellcheck disable=SC1090
         source "dev.$1"  #source from custom env file if present
     else
+        # shellcheck disable=SC1090
         source "$1" #source from deafult env file
     fi
     # shellcheck source=$pwd/src/load
@@ -47,10 +49,10 @@ function check_vm_running(){
 }
 
 function choose_action_from_menu(){
-    menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion, Destroy"
+    menu "Multipass Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
     choice=$?
     case $choice in 
-        1)  [ $( multipass list | grep -c "$VM_NAME")   -ne 0  ] && raise_error "VM Exists. Exiting..."
+        1)  [ "$( multipass list | grep -c "$VM_NAME")"   -ne 0  ] && raise_error "VM Exists. Exiting..."
             start=$(date +%s)
             provision 
             end=$(date +%s)
@@ -59,13 +61,17 @@ function choose_action_from_menu(){
             ;;
         2)
             check_vm_running
-            multipass shell "$VM_NAME"
-            ;;
-        3) 
-            check_vm_running
             ssh_via_bastion
             ;;
-        4) 
+        3)
+            check_vm_running
+            ansible_ping
+            ;;
+        4)
+            check_vm_running
+            configure_vm
+            ;;
+        5)
             check_vm_running
             destroy
             echo "$VM_NAME Destroyed"
