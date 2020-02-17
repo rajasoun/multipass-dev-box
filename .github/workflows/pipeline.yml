@@ -17,6 +17,8 @@ jobs:
         if: startsWith(runner.os, 'macOS')
         run: |
           brew cask install multipass
+          brew install coreutils
+          alias readlink=greadlink
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
@@ -52,8 +54,8 @@ jobs:
       - name: Test (macOS)
         if: startsWith(runner.os, 'macOS')
         run: |
-          bats test/unit/*.bats
-          bats test/integration/test_integ*.bats
+#          bats test/unit/*.bats
+#          bats test/integration/test_integ*.bats
           bash -c "ci/check_bats.bash  unit"
 
 
