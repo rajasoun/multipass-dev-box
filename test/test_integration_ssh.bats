@@ -1,13 +1,9 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
+
+load 'init_integration_test'
 load 'helpers'
-
-ssh_profile_script="./src/multipass/ssh.bash"
-os_profile_script="./src/multipass/os.bash"
-
-workspace_env="workspace.env"
-instance_env="instance.env"
 
 setup() {
     echo "SetUp"
@@ -31,39 +27,8 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-function common_steps() {
-    # shellcheck disable=SC1090
-    source ${instance_env}
-    # shellcheck disable=SC1090
-    source ${workspace_env}
-    # shellcheck disable=SC1090
-    source ${os_profile_script}
-    # shellcheck disable=SC1090
-    source ${ssh_profile_script}
-
-    unset SSH_KEY_PATH
-    assert_empty "${SSH_KEY_PATH}"
-    SSH_KEY_PATH="$TEST_DATA/keys/multipass"
-    run create_directory_if_not_exists "$SSH_KEY_PATH"
-    assert_success
-
-    unset CONFIG_BASE_PATH
-    assert_empty "${CONFIG_BASE_PATH}"
-    CONFIG_BASE_PATH="$TEST_DATA/config"
-    run create_directory_if_not_exists "$CONFIG_BASE_PATH"
-    assert_success
-
-    unset VM_NAME
-    assert_empty "${VM_NAME}"
-    VM_NAME="TEST_VM"
-
-    unset DOMAIN
-    assert_empty "${DOMAIN}"
-    DOMAIN="test_bizapps.cisco.com_test"
-}
-
 @test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
-    common_steps
+    init_integration_test
 
     run generate_ssh_key
     assert_success
@@ -79,7 +44,7 @@ function common_steps() {
 
 
 @test ".create_ssh_connect_script - Validate SSH Connect Script Generation with multipass (mock)" {
-  common_steps
+  init_integration_test
   multipass_vm_mock_ip="192.168.64.9"
 
   ## Mocking Multipass info

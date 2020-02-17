@@ -28,7 +28,7 @@ teardown() {
 }
 
 @test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
-  common_steps
+  init_integration_test
   unset CLOUD_INIT_TEMPLATE
   assert_empty "${CLOUD_INIT_TEMPLATE}"
   run check_required_workspace_env_vars
@@ -37,7 +37,7 @@ teardown() {
 }
 
 @test ".check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
-  common_steps
+  init_integration_test
   unset VM_NAME
   assert_empty "${VM_NAME}"
   run check_required_instance_env_vars
@@ -46,7 +46,7 @@ teardown() {
 }
 
 @test ".sed - check sed works" {
-    common_steps
+    init_integration_test
     local SSH_KEY="id_rsa_${VM_NAME}"
     local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
     cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
