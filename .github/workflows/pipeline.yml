@@ -54,8 +54,6 @@ jobs:
       - name: Test (macOS)
         if: startsWith(runner.os, 'macOS')
         run: |
-#          bats test/unit/*.bats
-#          bats test/integration/test_integ*.bats
           bash -c "ci/check_bats.bash  unit"
 
 
