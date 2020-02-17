@@ -37,7 +37,11 @@ jobs:
           bash -c "ci/check_bats.bash  integration"
           bash -c "ci/check_bats.bash   -f .docker"
 
-      ### Test suite for  Docker yet to be ported for Mac & Windows
+      ### @TODO: Test suite for  Docker yet to be ported for Mac & Windows
+      ### Its due to the Limitation of GitHub Default Runners
+      ### Mac: https://github.community/t5/GitHub-Actions/Why-is-Docker-not-installed-on-macOS/m-p/39364
+      ### Windows : https://github.community/t5/GitHub-Actions/How-to-use-Linux-Docker-container-on-Windows-VM/m-p/38535
+      ### Paid Self Hosted Runner is Required - so the Technical Debit is Parked
       ### bash -c "ci/check_bats.bash   -f .docker"
       - name: Test (Windows)
         if: startsWith(runner.os, 'Windows')
