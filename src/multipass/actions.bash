@@ -19,6 +19,9 @@ function provision(){
     multipass launch -c"$CPU" -m"$MEMORY" -d"$DISK" -n "$VM_NAME" lts --cloud-init "$CLOUD_INIT_FILE" || exit
     IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
 
+    create_ssh_connect_script
+    create_ansible_inventory_from_template
+
     echo "VM Creation Sucessfull"
     echo "VM Name : $VM_NAME |  IP: $IP "
     echo "Next: SSH to $VM_NAME via Multipass or Bastion Host"
@@ -37,6 +40,7 @@ function clear_workspace(){
     rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
     rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+    rm -fr "$CONFIG_BASE_PATH/hosts"
     rm -fr "$SSH_KEY_PATH"
 }
 

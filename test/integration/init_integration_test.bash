@@ -9,6 +9,7 @@ checks_profile_script="./src/multipass/checks.bash"
 cloud_init_profile_script="./src/multipass/cloud_init.bash"
 os_profile_script="./src/multipass/os.bash"
 ssh_profile_script="./src/multipass/ssh.bash"
+ansible_profile_script="./src/multipass/ansible.bash"
 
 workspace_env="workspace.env"
 instance_env="instance.env"
@@ -28,6 +29,8 @@ function init_integration_test() {
     source ${os_profile_script}
     # shellcheck disable=SC1090
     source ${ssh_profile_script}
+    # shellcheck disable=SC1090
+    source ${ansible_profile_script}
 
     unset SSH_KEY_PATH
     assert_empty "${SSH_KEY_PATH}"
