@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-source "$(dirname "${BASH_SOURCE[0]}")/inventory.bash"
-
 # Generates SSH Key
 function generate_ssh_key() {
     local SSH_KEY="id_rsa_${VM_NAME}"
