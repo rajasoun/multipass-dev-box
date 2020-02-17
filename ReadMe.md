@@ -36,7 +36,7 @@ brew cask install multipass
 ```
 
 On Windows, download the installer [from GitHub](https://github.com/canonical/multipass/releases) or [use SCOOP](https://scoop.sh/):
-
+@TODO: SCOOP support to be added in https://github.com/rajasoun/dev-box-bucket
 ```
 # 
 scoop install multipass

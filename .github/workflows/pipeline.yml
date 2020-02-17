@@ -33,7 +33,6 @@ jobs:
           echo "::add-path::C:\Users\runneradmin\scoop\shims"
           scoop install git
           scoop install docker
-          scoop install multipass
 
       - name: Test
         run: |
