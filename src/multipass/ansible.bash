@@ -16,8 +16,25 @@ function create_ansible_inventory_from_template(){
     echo "Ansibel Inventory -> ${ANSIBLE_INVENTORY_FILE} generated for ${VM_NAME} that is Provisioned with ${IP}"
 }
 
+function ansible_ping(){
+  CMD="source /config/${VM_NAME}-ssh-connect.sh && ansible -i /config/hosts -m ping all"
+  _docker run --rm -it --user ansible \
+            -v "${PWD}/$SSH_KEY_PATH":/keys \
+            -v "${PWD}/$ANSIBLE_BASE_PATH":/ansible \
+            -v "${PWD}/$CONFIG_BASE_PATH":/config \
+            cytopia/ansible:latest-tools bash -c "$CMD"
+
+  case "$?" in
+    0)
+        echo "Connection SUCCESS :: Ansible Control Center -> VM ";;
+    1)
+        echo "Error... Ansible Control Center Can Not Reach VM via SSH" ;;
+  esac
+}
+
 function run_main(){
   create_ansible_inventory_from_template
+  ansible_ping
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]

@@ -1,0 +1,14 @@
+---
+
+- name: Environment Automation
+  hosts: all
+  any_errors_fatal: true
+  max_fail_percentage: 0
+  gather_facts: yes
+  become: yes
+
+  tasks:
+    - name: View Current Distro
+      shell: cat /etc/*-release
+      register: distro
+    - debug: var=distro
