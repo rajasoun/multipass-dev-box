@@ -66,10 +66,7 @@ function common_steps() {
 }
 
 @test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
-  # shellcheck disable=SC1090
-  source ${checks_profile_script}
-  # shellcheck disable=SC1090
-  source ${workspace_env}
+  common_steps
   unset CLOUD_INIT_TEMPLATE
   assert_empty "${CLOUD_INIT_TEMPLATE}"
   run check_required_workspace_env_vars
@@ -78,36 +75,12 @@ function common_steps() {
 }
 
 @test ".check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
-  # shellcheck disable=SC1090
-  source ${checks_profile_script}
-  # shellcheck disable=SC1090
-  source ${instance_env}
+  common_steps
   unset VM_NAME
   assert_empty "${VM_NAME}"
   run check_required_instance_env_vars
   assert_failure
   assert_output --partial "VM_NAME"
-}
-
-@test ".create_cloud_init_config_from_template - create and update cloud-init file - validate text replacements" {
-    common_steps
-
-    run generate_ssh_key
-    assert_success
-    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
-
-    run create_cloud_init_config_from_template
-    assert_output -p "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml Generated for $VM_NAME"
-
-    run file_contains_text "$VM_NAME" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    assert_success
-
-    run file_contains_text "$(cat "$SSH_KEY_PATH/id_rsa_$VM_NAME.pub")" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    assert_success
-
-    run file_contains_text "$(id -un)@$DOMAIN" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
-    assert_success
-
 }
 
 @test ".sed - check sed works" {
