@@ -11,12 +11,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v1
+
       - name: Init & Update Submodules
         run: git submodule update --init --recursive --remote
+
       - name: Install Pre-Requisites macOS
         if: startsWith(runner.os, 'macOS')
         run: |
           brew cask install multipass
+          brew install coreutils
+          alias readlink=greadlink
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
@@ -30,12 +34,10 @@ jobs:
           scoop install git
           scoop install docker
 
-      - name: Test (Linux)
-        if: startsWith(runner.os, 'Linux')
+      - name: Test
         run: |
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
-          bash -c "ci/check_bats.bash   -f .docker"
 
       ### @TODO: Test suite for  Docker yet to be ported for Mac & Windows
       ### Its due to the Limitation of GitHub Default Runners
@@ -43,16 +45,9 @@ jobs:
       ### Windows : https://github.community/t5/GitHub-Actions/How-to-use-Linux-Docker-container-on-Windows-VM/m-p/38535
       ### Paid Self Hosted Runner is Required - so the Technical Debit is Parked
       ### bash -c "ci/check_bats.bash   -f .docker"
-      - name: Test (Windows)
-        if: startsWith(runner.os, 'Windows')
+      - name: Docker Integration Test (Linux)
+        if: startsWith(runner.os, 'Linux')
         run: |
-          bash -c "ci/check_bats.bash  unit"
-          bash -c "ci/check_bats.bash  integration"
-
-      - name: Test (macOS)
-        if: startsWith(runner.os, 'macOS')
-        run: |
-          bats test/test_unit*.bats
-          bats test/test_integ*.bats
+          bash -c "ci/check_bats.bash  docker"
 
 

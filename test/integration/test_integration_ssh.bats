@@ -1,9 +1,7 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
-load 'libs/bats-support/load'
-load 'libs/bats-assert/load'
 
 load 'init_integration_test'
-load 'helpers'
+
 
 setup() {
     echo "SetUp"
@@ -26,6 +24,7 @@ teardown() {
   fi
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
+
 
 @test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
     init_integration_test
@@ -66,9 +65,3 @@ teardown() {
   assert_success
 
 }
-
-
-
-
-
-
