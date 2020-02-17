@@ -78,3 +78,4 @@ dev.*.env
 test/.test_data/
 .idea
 *.iml
+ansible/roles

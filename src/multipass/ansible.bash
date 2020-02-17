@@ -35,7 +35,11 @@ function ansible_ping(){
 function configure_vm(){
   OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=/ansible/ansible.cfg ANSIBLE_GATHERING=smart"
   PLAYBOOK="/ansible/simple_playbook.yml"
-  CMD="source /config/${VM_NAME}-ssh-connect.sh && $OPTS ansible-playbook  -i /config/hosts -v $PLAYBOOK"
+  SOURCE="source /config/${VM_NAME}-ssh-connect.sh"
+  CONFIGURE="$OPTS ansible-playbook  -i /config/hosts -v $PLAYBOOK"
+  INSTALL="$OPTS ansible-galaxy install -r /ansible/requirements.yml --force"
+
+  CMD="$SOURCE && $INSTALL && $CONFIGURE"
 
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \

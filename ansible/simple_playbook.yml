@@ -7,8 +7,31 @@
   gather_facts: yes
   become: yes
 
-  tasks:
-    - name: View Current Distro on  {{ ansible_hostname }}
-      shell: cat /etc/os-release
-      register: distro
-    - debug: var=distro
+  vars_files:
+    - vars/sdkman.yml
+
+  pre_tasks:
+    - name: check apt last update
+      stat: path=/var/cache/apt
+      register: apt_cache_stat
+    - name: update apt if needed # Update if not modified since the last 12 hours
+      apt: update_cache=yes
+      when: ansible_date_time.epoch|float - apt_cache_stat.stat.mtime > 60*60*12
+    - name: Install the package "python-netaddr" # Dependency for Docker Hardening on Controller
+      apt:
+        name: python-netaddr
+    - name: Set discovered Ansible Python interpreter.
+      set_fact:
+        ansible_python_interpreter: "{{ ansible_facts.python.executable }}"
+      when: ansible_python_interpreter is not defined
+
+  roles:
+    - role: sdkman
+
+  post_tasks:
+    - name: Fix permissions on ~/.zshrc created By SDKMan
+      file:
+        path: '/home/{{ sdkman_user }}/.zshrc'
+        owner: '{{ sdkman_user }}'
+        group: '{{ sdkman_group }}'
+        mode: go-w
