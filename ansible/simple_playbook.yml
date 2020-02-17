@@ -8,7 +8,7 @@
   become: yes
 
   tasks:
-    - name: View Current Distro
-      shell: cat /etc/*-release
+    - name: View Current Distro on  {{ ansible_hostname }}
+      shell: cat /etc/os-release
       register: distro
     - debug: var=distro

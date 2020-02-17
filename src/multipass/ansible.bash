@@ -33,8 +33,9 @@ function ansible_ping(){
 }
 
 function configure_vm(){
+  OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=/ansible/ansible.cfg ANSIBLE_GATHERING=smart"
   PLAYBOOK="/ansible/simple_playbook.yml"
-  CMD="source /config/${VM_NAME}-ssh-connect.sh && ansible-playbook  -i /config/hosts -v $PLAYBOOK"
+  CMD="source /config/${VM_NAME}-ssh-connect.sh && $OPTS ansible-playbook  -i /config/hosts -v $PLAYBOOK"
 
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
