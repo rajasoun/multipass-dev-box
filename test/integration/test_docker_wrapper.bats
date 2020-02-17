@@ -1,8 +1,6 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
 
-load 'libs/bats-support/load'
-load 'libs/bats-assert/load'
-load 'helpers'
+load 'init_integration_test'
 
 docker_profile_script="./src/multipass/docker_wrapper.bash"
 os_profile_script="./src/multipass/os.bash"

@@ -1,7 +1,8 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
-load 'libs/bats-support/load'
-load 'libs/bats-assert/load'
-load 'helpers'
+
+load '../libs/bats-support/load'
+load '../libs/bats-assert/load'
+load '../helpers'
 
 profile_script="./src/multipass/os.bash"
 
@@ -72,6 +73,7 @@ teardown() {
 }
 
 @test "file_replace_text empty file" {
+  # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="foo"
   local readonly replacement="bar"
@@ -79,6 +81,7 @@ teardown() {
   run file_replace_text "$original_regex" "$replacement" "$tmp_file"
   assert_success
 
+  # shellcheck disable=SC2155
   local readonly actual=$(cat "$tmp_file")
   local readonly expected=""
   assert_equal "$expected" "$actual"
@@ -87,6 +90,7 @@ teardown() {
 }
 
 @test "file_replace_text non empty file, no match" {
+  # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="foo"
   local readonly replacement="bar"
@@ -97,6 +101,7 @@ teardown() {
   run file_replace_text "$original_regex" "$replacement" "$tmp_file"
   assert_success
 
+  # shellcheck disable=SC2155
   local readonly actual=$(cat "$tmp_file")
   local readonly expected="$file_contents"
   assert_equal "$expected" "$actual"
@@ -105,6 +110,7 @@ teardown() {
 }
 
 @test "file_replace_text non empty file, exact match" {
+  # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="abc foo def"
   local readonly replacement="bar"
@@ -115,6 +121,7 @@ teardown() {
   run file_replace_text "$original_regex" "$replacement" "$tmp_file"
   assert_success
 
+  # shellcheck disable=SC2155
   local readonly actual=$(cat "$tmp_file")
   local readonly expected="$replacement"
   assert_equal "$expected" "$actual"
@@ -123,6 +130,7 @@ teardown() {
 }
 
 @test "file_replace_text non empty file, regex match" {
+  # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex=".*foo.*"
   local readonly replacement="bar"
@@ -133,7 +141,9 @@ teardown() {
   run file_replace_text "$original_regex" "$replacement" "$tmp_file"
   assert_success
 
+  # shellcheck disable=SC2155
   local readonly actual=$(cat "$tmp_file")
+  # shellcheck disable=SC2034
   local readonly expected="$replacement"
   assert_equal "$expected" "$actual"
 
