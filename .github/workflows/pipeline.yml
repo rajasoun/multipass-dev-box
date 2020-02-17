@@ -53,6 +53,6 @@ jobs:
         if: startsWith(runner.os, 'macOS')
         run: |
           bats test/unit/*.bats
-          bats test/integration/*.bats
+          bats test/integration/test_integ*.bats
 
 
