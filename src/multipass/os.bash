@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Create Directory if the given directory does not exists
+# @param $1 The directory to create
+function create_directory_if_not_exists(){
+    DIR_NAME=$1
+    ## Create Directory If Not Exists
+    if [ ! -d "$DIR_NAME"  ]; then
+      mkdir -p "$DIR_NAME"
+    fi
+}
+
 # ls, with chmod-like permissions and more.
 # @param $1 The directory to ls
 function lls() {
@@ -72,6 +82,7 @@ function os_is_darwin {
 }
 
 function run_main() {
+    create_directory_if_not_exists "$@"
     lls "$@"
     os_command_is_installed "$@"
     display_time "$@"

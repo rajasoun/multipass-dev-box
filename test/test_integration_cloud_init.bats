@@ -3,9 +3,9 @@ load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
 load 'helpers'
 
-checks_profile_script="./src/multipass/checks.bash"
-actions_profile_script="./src/multipass/actions.bash"
+cloud_init_profile_script="./src/multipass/cloud_init.bash"
 os_profile_script="./src/multipass/os.bash"
+ssh_profile_script="./src/multipass/ssh.bash"
 
 workspace_env="workspace.env"
 instance_env="instance.env"
@@ -40,9 +40,9 @@ function common_steps() {
     # shellcheck disable=SC1090
     source ${os_profile_script}
     # shellcheck disable=SC1090
-    source ${checks_profile_script}
+    source ${cloud_init_profile_script}
     # shellcheck disable=SC1090
-    source ${actions_profile_script}
+    source ${ssh_profile_script}
 
     unset SSH_KEY_PATH
     assert_empty "${SSH_KEY_PATH}"
@@ -65,40 +65,24 @@ function common_steps() {
     DOMAIN="test_bizapps.cisco.com_test"
 }
 
-@test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
-  common_steps
-  unset CLOUD_INIT_TEMPLATE
-  assert_empty "${CLOUD_INIT_TEMPLATE}"
-  run check_required_workspace_env_vars
-  assert_failure
-  assert_output --partial "CLOUD_INIT_TEMPLATE"
-}
 
-@test ".check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
-  common_steps
-  unset VM_NAME
-  assert_empty "${VM_NAME}"
-  run check_required_instance_env_vars
-  assert_failure
-  assert_output --partial "VM_NAME"
-}
-
-@test ".sed - check sed works" {
+@test ".create_cloud_init_config_from_template - create and update cloud-init file - validate text replacements" {
     common_steps
-    local SSH_KEY="id_rsa_${VM_NAME}"
-    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
-    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
 
-    run file_replace_text "_private_key_" "keys/${SSH_KEY}" "$SSH_CONNECT_FILE"
+    run generate_ssh_key
+    assert_success
+    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
+
+    run create_cloud_init_config_from_template
+    assert_output -p "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml Generated for $VM_NAME"
+
+    run file_contains_text "$VM_NAME" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     assert_success
 
-    run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
+    run file_contains_text "$(cat "$SSH_KEY_PATH/id_rsa_$VM_NAME.pub")" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     assert_success
-    rm -fr $SSH_CONNECT_FILE
+
+    run file_contains_text "$(id -un)@$DOMAIN" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    assert_success
+
 }
-
-
-
-
-
-

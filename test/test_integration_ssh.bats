@@ -3,8 +3,7 @@ load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
 load 'helpers'
 
-checks_profile_script="./src/multipass/checks.bash"
-actions_profile_script="./src/multipass/actions.bash"
+ssh_profile_script="./src/multipass/ssh.bash"
 os_profile_script="./src/multipass/os.bash"
 
 workspace_env="workspace.env"
@@ -40,9 +39,7 @@ function common_steps() {
     # shellcheck disable=SC1090
     source ${os_profile_script}
     # shellcheck disable=SC1090
-    source ${checks_profile_script}
-    # shellcheck disable=SC1090
-    source ${actions_profile_script}
+    source ${ssh_profile_script}
 
     unset SSH_KEY_PATH
     assert_empty "${SSH_KEY_PATH}"
@@ -65,36 +62,44 @@ function common_steps() {
     DOMAIN="test_bizapps.cisco.com_test"
 }
 
-@test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
-  common_steps
-  unset CLOUD_INIT_TEMPLATE
-  assert_empty "${CLOUD_INIT_TEMPLATE}"
-  run check_required_workspace_env_vars
-  assert_failure
-  assert_output --partial "CLOUD_INIT_TEMPLATE"
-}
-
-@test ".check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
-  common_steps
-  unset VM_NAME
-  assert_empty "${VM_NAME}"
-  run check_required_instance_env_vars
-  assert_failure
-  assert_output --partial "VM_NAME"
-}
-
-@test ".sed - check sed works" {
+@test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
     common_steps
-    local SSH_KEY="id_rsa_${VM_NAME}"
-    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
-    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
 
-    run file_replace_text "_private_key_" "keys/${SSH_KEY}" "$SSH_CONNECT_FILE"
+    run generate_ssh_key
     assert_success
+    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
 
-    run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
+    # Check Private Key Permission is Right
+    run lls "$SSH_KEY_PATH/id_rsa_$VM_NAME"
+    assert_output -p "4"
+
+    run file_contains_text "$(id -un)@$DOMAIN" "$SSH_KEY_PATH/id_rsa_$VM_NAME.pub"
     assert_success
-    rm -fr $SSH_CONNECT_FILE
+}
+
+
+@test ".create_ssh_connect_script - Validate SSH Connect Script Generation with multipass (mock)" {
+  common_steps
+  multipass_vm_mock_ip="192.168.64.9"
+
+  ## Mocking Multipass info
+  function multipass(){
+    echo "IPv4:           $multipass_vm_mock_ip"
+  }
+
+  export -f multipass
+  run create_ssh_connect_script
+  assert_success
+
+  assert_output --partial "Generated for $VM_NAME that is Provisioned with $multipass_vm_mock_ip"
+  assert_output --partial "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh & $CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
+
+  run file_contains_text "$VM_NAME" "$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
+  assert_success
+
+  run file_contains_text "$VM_NAME" "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
+  assert_success
+
 }
 
 
