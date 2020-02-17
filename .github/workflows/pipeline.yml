@@ -55,5 +55,6 @@ jobs:
         if: startsWith(runner.os, 'macOS')
         run: |
           bash -c "ci/check_bats.bash  unit"
+          bash -c "ci/check_bats.bash  integration"
 
 
