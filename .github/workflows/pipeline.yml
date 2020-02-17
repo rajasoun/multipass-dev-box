@@ -54,5 +54,6 @@ jobs:
         run: |
           bats test/unit/*.bats
           bats test/integration/test_integ*.bats
+          bash -c "ci/check_bats.bash  unit"
 
 
