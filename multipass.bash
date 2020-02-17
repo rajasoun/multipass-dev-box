@@ -49,7 +49,7 @@ function check_vm_running(){
 }
 
 function choose_action_from_menu(){
-    menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion,AnsiblePing,Destroy"
+    menu "Multipass Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
     choice=$?
     case $choice in 
         1)  [ "$( multipass list | grep -c "$VM_NAME")"   -ne 0  ] && raise_error "VM Exists. Exiting..."
@@ -61,15 +61,15 @@ function choose_action_from_menu(){
             ;;
         2)
             check_vm_running
-            multipass shell "$VM_NAME"
-            ;;
-        3) 
-            check_vm_running
             ssh_via_bastion
+            ;;
+        3)
+            check_vm_running
+            ansible_ping
             ;;
         4)
             check_vm_running
-            ansible_ping
+            configure_vm
             ;;
         5)
             check_vm_running

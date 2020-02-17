@@ -32,9 +32,28 @@ function ansible_ping(){
   esac
 }
 
+function configure_vm(){
+  PLAYBOOK="/ansible/simple_playbook.yml"
+  CMD="source /config/${VM_NAME}-ssh-connect.sh && ansible-playbook  -i /config/hosts -v $PLAYBOOK"
+
+  _docker run --rm -it --user ansible \
+            -v "${PWD}/$SSH_KEY_PATH":/keys \
+            -v "${PWD}/$ANSIBLE_BASE_PATH":/ansible \
+            -v "${PWD}/$CONFIG_BASE_PATH":/config \
+            cytopia/ansible:latest-tools bash -c "$CMD"
+
+  case "$?" in
+    0)
+        echo "VM Configration SUCCESSFULL " ;;
+    1)
+        echo "VM Configration FAILED " ;;
+  esac
+}
+
 function run_main(){
   create_ansible_inventory_from_template
   ansible_ping
+  configure_vm
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
