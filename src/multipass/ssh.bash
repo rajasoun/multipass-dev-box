@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1090
+source "$(dirname "${BASH_SOURCE[0]}")/inventory.bash"
+
 # Generates SSH Key
 function generate_ssh_key() {
     local SSH_KEY="id_rsa_${VM_NAME}"
@@ -38,7 +41,6 @@ function create_ssh_connect_script(){
 }
 
 function ssh_via_bastion(){
-  create_ssh_connect_script
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \

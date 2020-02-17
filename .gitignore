@@ -73,6 +73,7 @@ config/*-cloud-init.yaml
 keys/multipass
 config/*-ssh-config
 config/*-ssh-connect.sh
+config/hosts
 dev.*.env
 test/.test_data/
 .idea

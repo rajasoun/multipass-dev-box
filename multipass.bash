@@ -47,7 +47,7 @@ function check_vm_running(){
 }
 
 function choose_action_from_menu(){
-    menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion, Destroy"
+    menu "Multipass Manager" "Provision,SSH-viaMultipass,SSH-viaBastion,Destroy"
     choice=$?
     case $choice in 
         1)  [ $( multipass list | grep -c "$VM_NAME")   -ne 0  ] && raise_error "VM Exists. Exiting..."
@@ -65,7 +65,7 @@ function choose_action_from_menu(){
             check_vm_running
             ssh_via_bastion
             ;;
-        4) 
+        4)
             check_vm_running
             destroy
             echo "$VM_NAME Destroyed"
