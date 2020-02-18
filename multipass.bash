@@ -18,7 +18,7 @@ function include(){
 }
 
 include "instance.env"
-echo "$MENU"
+echo "MODE -> $MENU"
 case "$MENU" in
     *help*) choose_action_from_help ;;
      *api*) execute_action "$1";;
