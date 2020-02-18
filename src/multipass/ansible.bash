@@ -17,6 +17,7 @@ function create_ansible_inventory_from_template(){
 }
 
 function ansible_ping(){
+  create_ansible_inventory_from_template
   CMD="source /config/${VM_NAME}-ssh-connect.sh && ansible -i /config/hosts -m ping all"
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
@@ -33,6 +34,7 @@ function ansible_ping(){
 }
 
 function configure_vm(){
+  create_ansible_inventory_from_template
   OPTS="ANSIBLE_SCP_IF_SSH=TRUE ANSIBLE_CONFIG=/ansible/ansible.cfg ANSIBLE_GATHERING=smart"
   PLAYBOOK="/ansible/simple_playbook.yml"
   SOURCE="source /config/${VM_NAME}-ssh-connect.sh"

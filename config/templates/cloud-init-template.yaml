@@ -2,18 +2,14 @@
 # vim: syntax=yaml
 
 hostname: AAA..
-manage_etc_hosts: true
-
-# Update our packages on first boot, saves us some time
-# package_update: true
-# package_upgrade: true
-# package_reboot_if_required: true
 
 # Set the locale of the system
 locale: "en_US.UTF-8"
 
 # Set the timezone
 timezone: "America/Denver"
+
+manage_etc_hosts: true
 
 ssh_authorized_keys:
   - ssh-rsa AAA..the-output-of-multipass.pub.. user@host
@@ -26,7 +22,26 @@ runcmd:
   - sed -i -e '14i\\                addresses:\ [8.8.8.8, 8.8.4.4]' /etc/netplan/50-cloud-init.yaml
   - netplan apply
   - systemd-resolve --status | grep 'DNS Servers' -A2
-  - apt-get update -y
-  - DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+  - DEBIAN_FRONTEND=noninteractive  apt-get update -y && apt-get upgrade -y
 
 final_message: "The system is finally up, after $UPTIME seconds"
+
+# ++++++ Experimental (unpredictable) +++++
+# ## Runs Before DNS Server Configuration is Made in runcmd
+# bootcmd:
+#  - echo 91.189.88.173 archive.ubuntu.com  >> /etc/hosts
+#  - echo 91.189.91.14  security.ubuntu.com >> /etc/hosts
+
+# # Update our packages on first boot, saves us some time
+# # Following 3 Lines are Commented Out as DNS Server gets updated only after runcmd in macOS
+# package_update: true
+# package_upgrade: true
+# package_reboot_if_required: true
+
+## Reboot After Upgrades - Having Issues
+#power_state:
+#  delay: "now"
+#  mode: reboot
+#  message: Rebooting the System
+#  timeout: 30
+#  condition: True

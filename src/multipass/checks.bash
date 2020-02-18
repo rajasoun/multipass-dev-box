@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Checks if required env variables for instance is all set
+function raise(){
+  echo "${1}" >&2
+}
+
+function raise_error(){
+  echo "${1}" >&2
+  exit 1
+}
+
 # Checks if the VM_NAME environment variable is not Empty or Null
 function check_vm_name_required() {
     # Check if vm name is passed as a parameter to script or provided in workspace.env - if not raise error
@@ -36,14 +46,8 @@ function check_required_instance_env_vars() {
   done
 }
 
-# Checks if required env variables for instance is all set
-function raise(){
-  echo "${1}" >&2
-}
-
-function raise_error(){
-  echo "${1}" >&2
-  exit 1
+function check_vm_running(){
+  multipass info "$VM_NAME" || raise_error "Exiting.. "
 }
 
 # Wrapper To Aid TDD
@@ -51,14 +55,15 @@ function run_main(){
     check_vm_name_required
     check_required_workspace_env_vars 
     check_required_instance_env_vars
+    check_vm_running
+    raise "$@"
+    raise_error "$@"
 }
 
 # Wrapper To Aid TDD
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-  run_main
-  # shellcheck disable=SC2181
-  if [ $? -gt 0 ]
+  if ! run_main "$@"
   then
     exit 1
   fi
