@@ -33,10 +33,10 @@ runcmd:
 
 final_message: "The system is finally up, after $UPTIME seconds"
 
-## Reboot After Upgrades
-power_state:
-  delay: "now"
-  mode: reboot
-  message: Rebooting the System
-  timeout: 30
-  condition: True
+## Reboot After Upgrades - Having Issues
+#power_state:
+#  delay: "now"
+#  mode: reboot
+#  message: Rebooting the System
+#  timeout: 30
+#  condition: True
