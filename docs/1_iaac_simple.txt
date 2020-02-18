@@ -1,0 +1,19 @@
+                IaaC - Simple
+------------------------------------------------------------------
+       (1)           (3)         (4)        (5)
+    Provision --> Configure --> Check --> Destroy
+        |____________ᐱ___________|
+                     |
+                     | (2b) Check Connection - Ansible Ping
+                Bastion Host
+                    (2a)
+
+             1     Provision VM
+             2a    Provision Bastion Host
+             2b    Check Connection - Ansible Ping
+             3     Configure VM Through Ansible
+             4     Check Provisioned VM Through Automated Tests
+             5     Destroy
+
+--------------------------------------------------------------------
+

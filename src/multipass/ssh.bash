@@ -38,13 +38,13 @@ function create_ssh_connect_script(){
 }
 
 function ssh_via_bastion(){
+  create_ssh_connect_script
   CMD="source /config/${VM_NAME}-ssh-connect.sh && help && bash"
   _docker run --rm -it --user ansible \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \
             cytopia/ansible:latest-tools bash -c "$CMD"
 }
-
 
 function run_main(){
     generate_ssh_key

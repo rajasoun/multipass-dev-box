@@ -39,3 +39,17 @@ function _docker() {
   docker "$@"
   return 0
 }
+
+function run_main(){
+  docker_sed "$@"
+  _docker "$@"
+
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
+then
+  if ! run_main "$@"
+  then
+    exit 1
+  fi
+fi
