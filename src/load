@@ -1,5 +1,6 @@
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/actions.bash"
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/ansible.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/multipass/api.bash"
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/checks.bash"
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/cloud_init.bash"
 source "$(dirname "${BASH_SOURCE[0]}")/multipass/docker_wrapper.bash"

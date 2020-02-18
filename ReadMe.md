@@ -43,7 +43,10 @@ scoop install multipass
 ```
 
 
-### Getting Started
+### Getting Started 
+
+#### Menu Based 
+
 In Terminal Window
 
 ```SHELL
@@ -56,11 +59,37 @@ You will get a menu
   Multipass Manager   
   
           1. Provision                  
-          2. SSH-viaMultipass                 
-          3. SSH-viaBastion                   
-          4. Destroy
+          2. SSH-Bastion                 
+          3. AnsiblePing                   
+          4. ConfigureVM
+          5. Destroy
 
  Enter your choice [1-4] 
+
+#### Help (Flow) Based 
+
+```SHELL
+$ MENU=help && ./multipass.sh
+```
+
+#### API Based - For Automated Testing & Aggregation
+
+| API ID |              API NAME           |
+|--------|---------------------------------|
+| 1      | provision_vm                    |
+| 2      | provision_bastion               |
+| 3      | ansible_ping_from_bastion_to_vm |
+| 4      | ssh_to_bastion_vm               |
+| 5      | configure_vm_from_bastion       |
+| 6      | test_infra                      |
+| 7      | destroy_vm                      | 
+              
+In Terminal 
+   
+```SHELL
+$ OPT=_API_ID_ or _API_NAME_
+$ MENU=api && ./multipass.sh $OPT
+```
 
 ### Automated Tests
 
