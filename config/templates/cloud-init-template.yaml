@@ -5,6 +5,7 @@ hostname: AAA..
 manage_etc_hosts: true
 
 # Update our packages on first boot, saves us some time
+# Following 3 Lines are Commented Out as DNS Server gets updated only after runcmd in macOS
 # package_update: true
 # package_upgrade: true
 # package_reboot_if_required: true
@@ -18,8 +19,9 @@ timezone: "America/Denver"
 ssh_authorized_keys:
   - ssh-rsa AAA..the-output-of-multipass.pub.. user@host
 
-## Below is a Hack for MacOS & Multipass Issue
+## Below is a Hack for MacOS & Multipass Issue & GRUB Menu During Upgrades
 ## Ref: https://discourse.ubuntu.com/t/troubleshooting-networking-on-macos/12901
+## Ref: https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
 runcmd:
   - cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.bak
   - sed -i -e '13i\\            nameservers:' /etc/netplan/50-cloud-init.yaml
@@ -30,3 +32,11 @@ runcmd:
   - DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
 final_message: "The system is finally up, after $UPTIME seconds"
+
+## Reboot After Upgrades
+power_state:
+  delay: "now"
+  mode: reboot
+  message: Rebooting the System
+  timeout: 30
+  condition: True
