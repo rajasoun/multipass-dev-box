@@ -46,11 +46,16 @@ function raise_error(){
   exit 1
 }
 
+function check_vm_running(){
+  multipass info "$VM_NAME" || raise_error "Exiting.. "
+}
+
 # Wrapper To Aid TDD
 function run_main(){
     check_vm_name_required
     check_required_workspace_env_vars 
     check_required_instance_env_vars
+    check_vm_running
 }
 
 # Wrapper To Aid TDD
