@@ -26,6 +26,7 @@ runcmd:
   - sed -i -e '14i\\                addresses:\ [8.8.8.8, 8.8.4.4]' /etc/netplan/50-cloud-init.yaml
   - netplan apply
   - systemd-resolve --status | grep 'DNS Servers' -A2
-  - apt update && apt upgrade -y
+  - apt-get update -y
+  - DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
 final_message: "The system is finally up, after $UPTIME seconds"
