@@ -51,7 +51,7 @@ In Terminal Window
 
 ```SHELL
 $ git submodule update --init --recursive --remote
-$ ./multipass.sh
+$ ./multipass.bash
 ```
 
 You will get a menu 
@@ -69,7 +69,7 @@ You will get a menu
 #### Help (Flow) Based 
 
 ```SHELL
-$ MENU=help && ./multipass.sh
+$ MODE=help && ./multipass.bash
 ```
 
 #### API Based - For Automated Testing & Aggregation
@@ -82,13 +82,15 @@ $ MENU=help && ./multipass.sh
 | 4      | ssh_to_bastion_vm               |
 | 5      | configure_vm_from_bastion       |
 | 6      | test_infra                      |
-| 7      | destroy_vm                      | 
+| 7      | list_all_vms                    | 
+| 8      | destroy_vm                      | 
+
               
 In Terminal 
    
 ```SHELL
 $ OPT=_API_ID_ or _API_NAME_
-$ MENU=api && ./multipass.sh $OPT
+$ MODE=api && ./multipass.bash $OPT
 ```
 
 ### Automated Tests

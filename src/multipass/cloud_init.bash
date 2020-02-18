@@ -24,7 +24,7 @@ function run_main(){
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-  if ! run_main
+  if ! run_main "$@"
   then
     exit 1
   fi

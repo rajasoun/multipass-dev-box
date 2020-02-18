@@ -18,10 +18,11 @@ function include(){
 }
 
 include "instance.env"
-echo "MODE -> $MENU"
-case "$MENU" in
+echo "MODE -> $MODE"
+
+case "$MODE" in
     *help*) choose_action_from_help ;;
-     *api*) execute_action "$1";;
+     *api*) vm_api_execute_action "$1";;
          *) choose_action_from_menu ;;
 esac
 
