@@ -35,16 +35,6 @@ $ git submodule update --init --recursive --remote
 $ ./multipass.bash
 ```
 
-  Multipass Manager   
-  
-          1. Provision                  
-          2. SSH-Bastion                 
-          3. AnsiblePing                   
-          4. ConfigureVM
-          5. Destroy
-
- Enter your choice [1-4] 
-
 #### Help (Flow) Based 
 
 ```SHELL
