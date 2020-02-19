@@ -20,11 +20,15 @@ jobs:
         run: |
           brew cask install multipass
           brew install coreutils
+          brew install bats
           alias readlink=greadlink
 
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
+          sudo add-apt-repository ppa:duggan/bats
+          sudo apt-get update
+          sudo apt-get install bats
           sudo snap install multipass --classic
           sudo snap install docker
 
@@ -33,6 +37,7 @@ jobs:
         run: |
           iwr -useb get.scoop.sh | iex
           echo "::add-path::C:\Users\runneradmin\scoop\shims"
+          scoop install bats
           scoop install git
           scoop install docker
 
