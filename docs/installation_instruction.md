@@ -1,4 +1,5 @@
 # Installation Instruction
+### [Home](../ReadMe.md)
 
 ### Multipass
 
@@ -51,8 +52,6 @@ sudo snap install docker
 For macOS, you can download the installers [Docker Desktop] 
 
 On Windows, download the installer [Docker Desktop]
-
-[Home](../ReadMe.md)
 
 [snap]: https://snapcraft.io/install/docker/ubuntu
 [Docker Desktop]: https://www.docker.com/products/docker-desktop

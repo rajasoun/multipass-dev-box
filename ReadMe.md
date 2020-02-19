@@ -87,17 +87,6 @@ To run tests based on name
 $ ci/check_bats.bash -f .ssh
 ```
 
-*ToDo*
-
-     1. Adoption of Git Flow  ✅
-     2. Add Automated Verification - CI 
-            a. Travis (Linux Only) ✅
-            b. GitHub Actions (Linux,Mac & Windows) ✅
-     3. Explore Limitations of Multipass + Anyconnect Issue
-     4. Configure VM through Ansible ✅
-     5. Support for ADR
-
-
 ### What does the Script Do
 Automates - Automates - Automates !!!
 
@@ -111,38 +100,22 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
 6. Workaround to invoke docker in a common way through wrapper both for windows and mac
 
 
-### SSH Setup Flow 
+*ToDo*
 
-SSH Key Setup Overview 
+     1. Adoption of Git Flow  ✅
+     2. Add Automated Verification - CI 
+            a. Travis (Linux Only) ✅
+            b. GitHub Actions (Linux,Mac & Windows) ✅
+     3. Configure VM through Ansible ✅
+     4. Infrastrcuture Test Automation using py.test & TestInfra
+     5. Support for ADR
+     6. Explore workarounds for  Multipass + Anyconnect Issue
 
-| S.No |               HOST            |                 VM                   |
-|:-----|:------------------------------|:-------------------------------------|
-| 1.   | Generate the SSH Key Pair     | Provision VM with the Public Key     |
-|      | ssh-keygen                    | cloud-int or Vagrant or Packer       |
-| 2    | Start SSH Agent               |                                      |
-|      | eval "$(ssh-agent -s)"        |                                      |
-| 3    | Load Private Key to SSH Agent |                                      |
-|      | ssh-add -K private_key        |                                      |
-| 4    | ssh -F <ssh-config> host or   |                                      |
-|      | ssh -i <private-key>user@ip   |                                      |
 
-##### SSH Keys 
 
-![alt text](docs/images/ssh_connection_explained.jpg "SSH Quick Reference")
+### Flows
 
-### Ansible Concepts
-
-* Controller - the Machine where Ansible installed on it and will manage the whole process
-* Inventory - a file has all servers you will manage and they listed in groups as a category or standalone host
-* Playbook -a file written in YAML format and it’s a human readable language , and it has all tasks that you want to execute it on the targeted machines
-* Task - a block of single procedure to execute something on the remote target like install package (ex:- Nginx)
-* Role - A pre-defined way for organizing playbooks for facilitating the provisioning process
-* Facts - Global variables containing information about the system, like network interfaces
-
-##### Ansible Flow
-
-![alt text](https://miro.medium.com/max/1920/1*XLdN4_LCoASjbArU-ggkTA.png "Ansible Quick Reference")
-
+[SSH & Ansible Flow](docs/ssh_ansible_flows.md)
 
 References:
 ---
