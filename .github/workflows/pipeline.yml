@@ -41,13 +41,13 @@ jobs:
           scoop install git
           scoop install docker
 
+      ## Not the ci/check_bats.bash do not send the failures to the GitHub Actions
       - name: Test
         shell: bash
         run: |
           bats test/pre_conditions/test_pre*.bats -t
           bats test/unit/*.bats -t
           bats test/integration/test_integration*.bats -t
-          bats test/pre_conditions/test_docker*.bats -t
 
       ### @TODO: Test suite for  Docker yet to be ported for Mac & Windows
       ### Its due to the Limitation of GitHub Default Runners
@@ -59,5 +59,6 @@ jobs:
         if: startsWith(runner.os, 'Linux')
         run: |
           bats test/integration/test_docker*.bats  -t
+          bats test/pre_conditions/test_docker*.bats -t
 
 
