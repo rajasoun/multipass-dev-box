@@ -45,7 +45,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          bats test/pre_conditions/test_pre*.bats -t
+          ci/check_bats.bash host_pre_condition
           bats test/unit/*.bats -t
           bats test/integration/test_integration*.bats -t
 

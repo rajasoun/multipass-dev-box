@@ -17,7 +17,7 @@ load '../helpers'
 }
 
 @test ".precondition.host Check curl is  Installed" {
-  run git --version
+  run curl --version
   assert_success
 }
 
