@@ -37,7 +37,8 @@ jobs:
         run: |
           iwr -useb get.scoop.sh | iex
           echo "::add-path::C:\Users\runneradmin\scoop\shims"
-          scoop install bats
+          git clone https://github.com/bats-core/bats-core.git
+          bats-core/install.sh /usr/local
           scoop install git
           scoop install docker
 
