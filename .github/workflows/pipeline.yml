@@ -9,6 +9,11 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Setup BATS
+          uses: mig4/setup-bats@master
+          with:
+            bats-version: 1.1.0
+
       - name: Checkout Repository
         uses: actions/checkout@v1
 
@@ -39,7 +44,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          ci/check_bats.bash  host_precondition
+          bats test/pre_conditions/test_pre*.bats -t
           ci/check_bats.bash  unit
           ci/check_bats.bash  integration
 
