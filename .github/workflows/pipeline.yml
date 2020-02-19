@@ -37,8 +37,7 @@ jobs:
         run: |
           iwr -useb get.scoop.sh | iex
           echo "::add-path::C:\Users\runneradmin\scoop\shims"
-          git clone https://github.com/bats-core/bats-core.git
-          bats-core/install.sh /usr/local
+          npm install -g bats
           scoop install git
           scoop install docker
 
