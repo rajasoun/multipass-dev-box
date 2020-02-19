@@ -45,8 +45,8 @@ jobs:
         shell: bash
         run: |
           bats test/pre_conditions/test_pre*.bats -t
-          ci/check_bats.bash  unit
-          ci/check_bats.bash  integration
+          bats test/unit/*.bats -t
+          bats test/integration/test_integration*.bats -t
 
       ### @TODO: Test suite for  Docker yet to be ported for Mac & Windows
       ### Its due to the Limitation of GitHub Default Runners
@@ -57,6 +57,7 @@ jobs:
       - name: Docker Integration Test (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
-          bash -c "ci/check_bats.bash  docker"
+          bats test/integration/test_docker*.bats  -t
+          bats test/pre_conditions/test_docker*.bats -t
 
 
