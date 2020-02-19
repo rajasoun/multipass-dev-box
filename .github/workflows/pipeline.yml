@@ -67,7 +67,6 @@ jobs:
         shell: bash
         run: |
           ci/check_bats.bash host_docker_precondition
-          ci/check_bats.bash docker
 
 
 
