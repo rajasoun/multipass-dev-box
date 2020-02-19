@@ -94,7 +94,7 @@ $ ci/check_bats.bash -f .ssh
             a. Travis (Linux Only) ✅
             b. GitHub Actions (Linux,Mac & Windows) ✅
      3. Explore Limitations of Multipass + Anyconnect Issue
-     4. Configure VM through Ansible
+     4. Configure VM through Ansible ✅
      5. Support for ADR
 
 
