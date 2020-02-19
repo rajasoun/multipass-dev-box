@@ -22,8 +22,6 @@ jobs:
           brew install coreutils
           brew install bats
           alias readlink=greadlink
-          brew cask install docker
-          open /Applications/Docker.app
 
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
@@ -42,6 +40,7 @@ jobs:
           npm install -g bats
           scoop install git
           scoop install docker
+          scoop install docker-compose
 
       ## Not the ci/check_bats.bash do not send the failures to the GitHub Actions
       - name: Test
@@ -50,7 +49,6 @@ jobs:
           ci/check_bats.bash host_precondition
           ci/check_bats.bash unit
           ci/check_bats.bash integration
-          ci/check_bats.bash host_docker_precondition
 
       ### @TODO: Test suite for  Docker yet to be ported for Mac & Windows
       ### Its due to the Limitation of GitHub Default Runners
@@ -59,9 +57,10 @@ jobs:
       ### Paid Self Hosted Runner is Required - so the Technical Debit is Parked
       ### bash -c "ci/check_bats.bash   -f .docker"
       - name: Docker Integration Test (Linux)
-        if: startsWith(runner.os, 'Linux')
+        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'Windows')
         run: |
           ci/check_bats.bash docker
+          ci/check_bats.bash host_docker_precondition
 
 
 
