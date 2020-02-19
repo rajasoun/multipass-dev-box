@@ -70,7 +70,7 @@ teardown() {
     assert_failure
 }
 
-@test "file_replace_text empty file" {
+@test ".file_replace_text empty file" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="foo"
@@ -87,7 +87,7 @@ teardown() {
   rm -f "$tmp_file"
 }
 
-@test "file_replace_text non empty file, no match" {
+@test ".file_replace_text non empty file, no match" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="foo"
@@ -107,7 +107,7 @@ teardown() {
   rm -f "$tmp_file"
 }
 
-@test "file_replace_text non empty file, exact match" {
+@test ".file_replace_text non empty file, exact match" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="abc foo def"
@@ -127,7 +127,7 @@ teardown() {
   rm -f "$tmp_file"
 }
 
-@test "file_replace_text non empty file, regex match" {
+@test ".file_replace_text non empty file, regex match" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex=".*foo.*"

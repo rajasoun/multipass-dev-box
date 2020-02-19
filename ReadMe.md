@@ -26,11 +26,20 @@ Limitations: Multipass will not work on Mac when connected to Cisco Any Connect.
 
 ### Getting Started 
 
+#### Validate Prerequisite Installations or PreConditions 
+
+In Terminal 
+
+```SHELL
+$ ci/check_bats.bash -f .precondition
+```
+
+All 7 Tests should pass - if you have issues, double check the [Installation Instruction](docs/installation_instruction.md)
 
 #### Help (Flow) Based - Beginners 
 
 ```SHELL
-$ MODE=help && ./multipass.bash
+$ export MODE=help && ./multipass.bash
 ```
 
 #### Menu Based - Intermediate 
@@ -48,7 +57,7 @@ In Terminal
    
 ```SHELL
 $ OPT=_API_ID_ or _API_NAME_
-$ MODE=api && ./multipass.bash $OPT
+$ export MODE=api && ./multipass.bash $OPT
 ```
 
 | API ID |              API NAME           |
@@ -77,6 +86,18 @@ To run tests based on name
 ```SHELL
 $ ci/check_bats.bash -f .ssh
 ```
+
+### VM Configuration & Overriding Options
+
+In order to override the default configuration file instance.env (optional)
+``` SHELL
+$ cp instance.env dev.instance.env
+```
+
+Modify dev.instance.env to suit your needs. multipass.bash will pick up dev.instance.env if it is present else
+will default to instance.env.
+Note: dev.instance.env is excluded from check-in in .gitignore
+
 
 ### What does the Script Do
 Automates - Automates - Automates !!!
