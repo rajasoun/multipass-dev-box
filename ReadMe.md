@@ -26,7 +26,14 @@ Limitations: Multipass will not work on Mac when connected to Cisco Any Connect.
 
 ### Getting Started 
 
-#### Menu Based 
+
+#### Help (Flow) Based - Beginners 
+
+```SHELL
+$ MODE=help && ./multipass.bash
+```
+
+#### Menu Based - Intermediate 
 
 In Terminal Window
 
@@ -35,13 +42,7 @@ $ git submodule update --init --recursive --remote
 $ ./multipass.bash
 ```
 
-#### Help (Flow) Based 
-
-```SHELL
-$ MODE=help && ./multipass.bash
-```
-
-#### API Based - For Automated Testing & Aggregation
+#### API Based - For Automated Testing & Aggregation - Advanced
 
 In Terminal 
    
