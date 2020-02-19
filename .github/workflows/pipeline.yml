@@ -54,7 +54,7 @@ jobs:
       ### Mac: https://github.community/t5/GitHub-Actions/Why-is-Docker-not-installed-on-macOS/m-p/39364
       ### Windows : https://github.community/t5/GitHub-Actions/How-to-use-Linux-Docker-container-on-Windows-VM/m-p/38535
       ### Paid Self Hosted Runner is Required - so the Technical Debit is Parked
-      ### bash -c "ci/check_bats.bash   -f .docker"
+
       - name: Docker Integration Test (Linux)
         if: startsWith(runner.os, 'Linux')
         run: |
