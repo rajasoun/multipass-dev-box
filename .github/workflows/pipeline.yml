@@ -46,7 +46,6 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          ci/check_bats.bash host_precondition
           ci/check_bats.bash unit
           ci/check_bats.bash integration
 
@@ -57,10 +56,17 @@ jobs:
       ### Paid Self Hosted Runner is Required - so the Technical Debit is Parked
       ### bash -c "ci/check_bats.bash   -f .docker"
       - name: Docker Integration Test (Linux)
-        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'Windows')
+        if: startsWith(runner.os, 'Linux')
         run: |
-          ci/check_bats.bash docker
+          ci/check_bats.bash host_precondition
           ci/check_bats.bash host_docker_precondition
+          ci/check_bats.bash docker
+
+      - name: Docker Integration Test (Windows)
+          if: startsWith(runner.os, 'Windows')
+          run: |
+            ci/check_bats.bash host_docker_precondition
+            ci/check_bats.bash docker
 
 
 
