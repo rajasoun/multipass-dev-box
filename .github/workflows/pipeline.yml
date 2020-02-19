@@ -21,11 +21,13 @@ jobs:
           brew cask install multipass
           brew install coreutils
           alias readlink=greadlink
+
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
           sudo snap install multipass --classic
           sudo snap install docker
+
       - name: Install Pre-Requisites Windows
         if: startsWith(runner.os, 'Windows')
         run: |
@@ -36,6 +38,7 @@ jobs:
 
       - name: Test
         run: |
+          bash -c "ci/check_bats.bash  host_precondition"
           bash -c "ci/check_bats.bash  unit"
           bash -c "ci/check_bats.bash  integration"
 
