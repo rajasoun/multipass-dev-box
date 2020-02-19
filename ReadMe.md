@@ -26,11 +26,20 @@ Limitations: Multipass will not work on Mac when connected to Cisco Any Connect.
 
 ### Getting Started 
 
+#### Validate Prerequisite Installations or PreConditions 
+
+In Terminal 
+
+```SHELL
+$ ci/check_bats.bash -f .precondition
+```
+
+All 7 Tests should pass - if you have issues, double check the [Installation Instruction](docs/installation_instruction.md)
 
 #### Help (Flow) Based - Beginners 
 
 ```SHELL
-$ MODE=help && ./multipass.bash
+$ export MODE=help && ./multipass.bash
 ```
 
 #### Menu Based - Intermediate 
@@ -48,7 +57,7 @@ In Terminal
    
 ```SHELL
 $ OPT=_API_ID_ or _API_NAME_
-$ MODE=api && ./multipass.bash $OPT
+$ export MODE=api && ./multipass.bash $OPT
 ```
 
 | API ID |              API NAME           |
