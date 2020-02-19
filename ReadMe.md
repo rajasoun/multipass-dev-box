@@ -87,6 +87,18 @@ To run tests based on name
 $ ci/check_bats.bash -f .ssh
 ```
 
+### VM Configuration & Overriding Options
+
+In order to override the default configuration file instance.env (optional)
+``` SHELL
+$ cp instance.env dev.instance.env
+```
+
+Modify dev.instance.env to suit your needs. multipass.bash will pick up dev.instance.env if it is present else
+will default to instance.env.
+Note: dev.instance.env is excluded from check-in in .gitignore
+
+
 ### What does the Script Do
 Automates - Automates - Automates !!!
 
