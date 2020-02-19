@@ -63,10 +63,13 @@ jobs:
           ci/check_bats.bash docker
 
       - name: Docker Integration Test (Windows)
-          if: startsWith(runner.os, 'Windows')
-          run: |
-            ci/check_bats.bash host_docker_precondition
-            ci/check_bats.bash docker
+        if: startsWith(runner.os, 'Windows')
+        run: |
+          ci/check_bats.bash host_precondition
+          ci/check_bats.bash host_docker_precondition
+          ci/check_bats.bash docker
+
+
 
 
 
