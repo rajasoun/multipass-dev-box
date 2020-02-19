@@ -22,6 +22,8 @@ jobs:
           brew install coreutils
           brew install bats
           alias readlink=greadlink
+          brew cask install docker
+          open /Applications/Docker.app
 
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
