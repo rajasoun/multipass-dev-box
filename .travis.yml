@@ -21,7 +21,7 @@ jobs:
       env: TEST_SUITE="integration"
     - name: "Docker Integration Test"
       env: TEST_SUITE="docker"
-    - name: "API Test"
-      env: TEST_SUITE="api"
+#    - name: "API Test"
+#      env: TEST_SUITE="api"
 
 script: ci/check_bats.bash $TEST_SUITE
