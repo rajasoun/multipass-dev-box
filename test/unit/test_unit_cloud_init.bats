@@ -14,7 +14,7 @@ teardown() {
   echo "teardown"
 }
 
-@test ".create_cloud_init_config_from_template (Mock) - generate Cloud Init File based on VM_NAME varaible" {
+@test ".unit.create_cloud_init_config_from_template (Mock) - generate Cloud Init File based on VM_NAME varaible" {
     source ${instance_env}
     source ${workspace_env}
     unset VM_NAME

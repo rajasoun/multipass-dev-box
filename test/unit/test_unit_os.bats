@@ -16,24 +16,24 @@ teardown() {
 }
 
 
-@test ".create_directory_if_not_exists For Empty Directory Name" {
+@test ".unit.create_directory_if_not_exists For Empty Directory Name" {
   # shellcheck disable=SC1090
   source ${actions_profile_script}
   run create_directory_if_not_exists ""
   assert_failure
 }
 
-@test ".lls List with Permission for ReadMe.md" {
+@test ".unit.lls List with Permission for ReadMe.md" {
   run lls
   assert_output --partial "r--"
 }
 
-@test ".os_command_is_installed - check for cd" {
+@test ".unit.os_command_is_installed - check for cd" {
     run os_command_is_installed cd
     assert_success
 }
 
-@test ".os_command_is_installed - check for ssh-keygen" {
+@test ".unit.os_command_is_installed - check for ssh-keygen" {
     run os_command_is_installed ssh-keygen
     assert_success
 }
@@ -43,42 +43,42 @@ teardown() {
     assert_success
 }
 
-@test ".os_command_is_installed - check for InValid_Command" {
+@test ".unit.os_command_is_installed - check for InValid_Command" {
     run os_command_is_installed InValid_Command
     assert_failure
 }
 
-@test ".display_time - diaplays 60 seconds in mins and seconds" {
+@test ".unit.display_time - diaplays 60 seconds in mins and seconds" {
     run display_time 60
     assert_output --partial "1 minutes and 0 seconds"
 }
 
-@test ".display_time - diaplays 0 seconds in mins and seconds" {
+@test ".unit.display_time - diaplays 0 seconds in mins and seconds" {
     run display_time 0
     assert_output --partial "0 seconds"
 }
 
-@test ".file_exists - Checks if ./src/multipass/os.bash File exists" {
+@test ".unit.file_exists - Checks if ./src/multipass/os.bash File exists" {
     run file_exists  ${profile_script}
     assert_success
 }
 
-@test ".file_exists - Checks if  File SHOULD_NOT_BE_THERE not exists" {
+@test ".unit.file_exists - Checks if  File SHOULD_NOT_BE_THERE not exists" {
     run file_exists  "SHOULD_NOT_BE_THERE"
     assert_failure
 }
 
-@test ".file_contains_text - Checks if text 'Displays Time'  exists in  ./src/multipass/os.bash File" {
+@test ".unit.file_contains_text - Checks if text 'Displays Time'  exists in  ./src/multipass/os.bash File" {
     run file_contains_text "Displays Time" ${profile_script}
     assert_success
 }
 
-@test ".file_contains_text - Checks if text 'SHOULD_NOT_EXIST'  in  ./src/multipass/os.bash File" {
+@test ".unit.file_contains_text - Checks if text 'SHOULD_NOT_EXIST'  in  ./src/multipass/os.bash File" {
     run file_contains_text "SHOULD_NOT_EXIST" ${profile_script}
     assert_failure
 }
 
-@test ".file_replace_text empty file" {
+@test ".unit.file_replace_text empty file" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="foo"
@@ -95,7 +95,7 @@ teardown() {
   rm -f "$tmp_file"
 }
 
-@test ".file_replace_text non empty file, no match" {
+@test ".unit.file_replace_text non empty file, no match" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="foo"
@@ -115,7 +115,7 @@ teardown() {
   rm -f "$tmp_file"
 }
 
-@test ".file_replace_text non empty file, exact match" {
+@test ".unit.file_replace_text non empty file, exact match" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex="abc foo def"
@@ -135,7 +135,7 @@ teardown() {
   rm -f "$tmp_file"
 }
 
-@test ".file_replace_text non empty file, regex match" {
+@test ".unit.file_replace_text non empty file, regex match" {
   # shellcheck disable=SC2155
   local readonly tmp_file=$(mktemp)
   local readonly original_regex=".*foo.*"
