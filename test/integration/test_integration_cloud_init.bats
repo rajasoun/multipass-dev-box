@@ -24,7 +24,7 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-@test ".create_cloud_init_config_from_template - create and update cloud-init file - validate text replacements" {
+@test ".integration.create_cloud_init_config_from_template - create and update cloud-init file - validate text replacements" {
     init_integration_test
 
     run generate_ssh_key

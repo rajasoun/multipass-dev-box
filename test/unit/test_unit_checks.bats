@@ -63,11 +63,11 @@ teardown() {
   # shellcheck disable=SC1090
   source ${profile_script}
   VM_NAME="Test-VM"
-  ## Mocking Multipass info
-  function multipass(){
+    function multipass(){
       echo "$VM_NAME              Running"
   }
   export -f multipass
+
   run check_vm_exists
   assert_success
   assert_output --partial "$VM_NAME is Provisioned"

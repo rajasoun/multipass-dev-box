@@ -26,7 +26,7 @@ teardown() {
 }
 
 
-@test ".generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
+@test ".integration.generate_ssh_key - validate ssk-keygen command available and generate keys with right permission" {
     init_integration_test
 
     run generate_ssh_key
@@ -42,7 +42,7 @@ teardown() {
 }
 
 
-@test ".create_ssh_connect_script - Validate SSH Connect Script Generation with multipass (mock)" {
+@test ".integration.create_ssh_connect_script - Validate SSH Connect Script Generation with multipass (mock)" {
   init_integration_test
   multipass_vm_mock_ip="192.168.64.9"
 
