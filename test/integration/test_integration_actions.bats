@@ -24,16 +24,16 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-@test ".integration.create_cloud_init_config_from_template - create and update cloud-init file - validate text replacements" {
+@test ".integration.actions.provision - Provision VM (Mock Multipass)" {
     init_integration_test
-
-    run generate_ssh_key
+    ### Mock Multipass
+    function multipass(){
+        . test/integration/mocks/multipass.bash
+    }
+    export -f multipass
+    run provision
     assert_success
-    assert_output -p "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated successfully"
-
-    run create_cloud_init_config_from_template
-    assert_output -p "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml Generated for $VM_NAME"
-
+    assert_output --partial "Launched: $VM_NAME"
     run file_contains_text "$VM_NAME" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     assert_success
 
@@ -43,4 +43,31 @@ teardown() {
     run file_contains_text "$(id -un)@$DOMAIN" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     assert_success
 
+}
+
+@test ".integration.actions.list_vms - list_vms (Mock Multipass)" {
+   init_integration_test
+    ### Mock Multipass
+    function multipass(){
+        . test/integration/mocks/multipass.bash
+    }
+    export -f multipass
+    run list_vms
+    assert_success
+    assert_output -p "$VM_NAME"
+    assert_output -p "Running"
+}
+
+@test ".integration.actions.destroy - destroy VM (Mock Multipass)" {
+   init_integration_test
+    ### Mock Multipass
+    function multipass(){
+        . test/integration/mocks/multipass.bash
+    }
+    export -f multipass
+    run destroy
+    assert_success
+    # File should have been deleted
+    run file_exists "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    assert_failure
 }

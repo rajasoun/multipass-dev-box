@@ -14,7 +14,7 @@ teardown() {
   unset VM_NAME
 }
 
-@test ".check_vm_name_required - when VM_NAME environment variable  set" {
+@test ".unit.check_vm_name_required - when VM_NAME environment variable  set" {
   unset VM_NAME
   assert_empty "${VM_NAME}"
   # shellcheck disable=SC2030
@@ -25,7 +25,7 @@ teardown() {
   assert_output --partial "VM Name :: $VM_NAME"
 }
 
-@test ".check_vm_name_required - when VM_NAME environment variable not set" {
+@test ".unit.check_vm_name_required - when VM_NAME environment variable not set" {
   unset VM_NAME
   # shellcheck disable=SC2031
   assert_empty "${VM_NAME}"
@@ -35,7 +35,7 @@ teardown() {
   assert_failure
 }
 
-@test ".check_required_workspace_env_vars - when environment variables not set for SSH_CONFIG" {
+@test ".unit.check_required_workspace_env_vars - when environment variables not set for SSH_CONFIG" {
   unset SSH_CONFIG
   assert_empty "${SSH_CONFIG}"
   # shellcheck disable=SC1090
@@ -45,7 +45,7 @@ teardown() {
   assert_output --partial "missing"
 }
 
-@test ".check_required_instance_env_vars - when environment variables not set for VM_NAME" {
+@test ".unit.check_required_instance_env_vars - when environment variables not set for VM_NAME" {
   unset VM_NAME
   # shellcheck disable=SC2031
   assert_empty "${VM_NAME}"

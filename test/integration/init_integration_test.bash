@@ -46,9 +46,10 @@ function init_integration_test() {
 
     unset VM_NAME
     assert_empty "${VM_NAME}"
-    VM_NAME="TEST_VM"
+    VM_NAME="Integration-TEST-VM"
 
     unset DOMAIN
     assert_empty "${DOMAIN}"
     DOMAIN="test_bizapps.cisco.com_test"
 }
+

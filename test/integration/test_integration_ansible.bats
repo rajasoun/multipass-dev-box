@@ -24,7 +24,7 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-@test ".create_ansible_inventory_from_template - create and update Ansible Inventory - validate text replacements" {
+@test ".integration.ansible.create_ansible_inventory_from_template - create and update Ansible Inventory - validate text replacements" {
     init_integration_test
 
     multipass_vm_mock_ip="192.168.64.9"

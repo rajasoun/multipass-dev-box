@@ -38,7 +38,6 @@ function test_infra(){
 function destroy_vm(){
     check_vm_running
     destroy
-    echo "$VM_NAME Destroyed"
 }
 
 function list_all_vms(){
