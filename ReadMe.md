@@ -48,7 +48,7 @@ $ export MODE=help && ./multipass.bash
 In Terminal Window
 
 ```SHELL
-$ ./multipass.bash
+$ export MODE=menu && ./multipass.bash 
 ```
 
 #### API Based - For Automated Testing & Aggregation - Advanced

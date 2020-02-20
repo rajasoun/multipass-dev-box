@@ -59,7 +59,7 @@ teardown() {
   refute_output  "Running"
 }
 
-@test ".destroy_vm - .failure_check  - destroy_vm on non provision vm should error out" {
+@test ".api.destroy_vm - .failure_check  - destroy_vm on non provision vm should error out" {
   init_api_test
   run vm_api_execute_action destroy_vm
   assert_output --partial "does not exist"

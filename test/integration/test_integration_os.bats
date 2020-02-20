@@ -24,25 +24,7 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-@test ".check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
-  init_integration_test
-  unset CLOUD_INIT_TEMPLATE
-  assert_empty "${CLOUD_INIT_TEMPLATE}"
-  run check_required_workspace_env_vars
-  assert_failure
-  assert_output --partial "CLOUD_INIT_TEMPLATE"
-}
-
-@test ".check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
-  init_integration_test
-  unset VM_NAME
-  assert_empty "${VM_NAME}"
-  run check_required_instance_env_vars
-  assert_failure
-  assert_output --partial "VM_NAME"
-}
-
-@test ".sed - check sed works" {
+@test ".integration.os.file_replace_text - check sed works" {
     init_integration_test
     local SSH_KEY="id_rsa_${VM_NAME}"
     local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
@@ -55,7 +37,6 @@ teardown() {
     assert_success
     rm -fr "$SSH_CONNECT_FILE"
 }
-
 
 
 
