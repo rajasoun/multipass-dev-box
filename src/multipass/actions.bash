@@ -34,6 +34,7 @@ function destroy(){
 
     multipass delete "$VM_NAME" && multipass purge
     clear_workspace
+    echo "$VM_NAME Destroyed"
 }
 
 function clear_workspace(){
@@ -42,6 +43,7 @@ function clear_workspace(){
     rm -fr "$CONFIG_BASE_PATH/${VM_NAME}-ssh-connect.sh"
     rm -fr "$CONFIG_BASE_PATH/hosts"
     rm -fr "$SSH_KEY_PATH"
+    echo "Workspace files cleared"
 }
 
 function list_vms(){

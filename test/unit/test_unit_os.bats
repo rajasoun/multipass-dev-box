@@ -15,6 +15,14 @@ teardown() {
   echo "teardown"
 }
 
+
+@test ".create_directory_if_not_exists For Empty Directory Name" {
+  # shellcheck disable=SC1090
+  source ${actions_profile_script}
+  run create_directory_if_not_exists ""
+  assert_failure
+}
+
 @test ".lls List with Permission for ReadMe.md" {
   run lls
   assert_output --partial "r--"
