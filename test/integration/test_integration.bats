@@ -53,7 +53,7 @@ teardown() {
 
     run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
     assert_success
-    rm -fr $SSH_CONNECT_FILE
+    rm -fr "$SSH_CONNECT_FILE"
 }
 
 

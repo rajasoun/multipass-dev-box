@@ -31,6 +31,7 @@ Limitations: Multipass will not work on Mac when connected to Cisco Any Connect.
 In Terminal 
 
 ```SHELL
+$ git submodule update --init --recursive --remote
 $ ci/check_bats.bash -f .precondition
 ```
 
@@ -47,7 +48,6 @@ $ export MODE=help && ./multipass.bash
 In Terminal Window
 
 ```SHELL
-$ git submodule update --init --recursive --remote
 $ ./multipass.bash
 ```
 
