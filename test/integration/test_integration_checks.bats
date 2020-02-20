@@ -24,7 +24,7 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-@test ".integration.check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
+@test ".integration.checks.check_required_workspace_env_vars fails - when environment variables not set for any of the variables in workspace.env" {
   init_integration_test
   unset CLOUD_INIT_TEMPLATE
   assert_empty "${CLOUD_INIT_TEMPLATE}"
@@ -33,7 +33,7 @@ teardown() {
   assert_output --partial "CLOUD_INIT_TEMPLATE"
 }
 
-@test ".integration.check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
+@test ".integration.checks.check_required_instance_env_vars - when environment variables not set for any of the variables in instance.env" {
   init_integration_test
   unset VM_NAME
   assert_empty "${VM_NAME}"
@@ -42,18 +42,27 @@ teardown() {
   assert_output --partial "VM_NAME"
 }
 
-@test ".integration.sed - check sed works" {
-    init_integration_test
-    local SSH_KEY="id_rsa_${VM_NAME}"
-    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
-    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
+@test ".integration.checks.check_vm_exists - check VM exists (Mock Multipass)" {
+  init_integration_test
+  function multipass(){
+      . test/integration/mocks/multipass.bash
+  }
+  export -f multipass
+  run check_vm_exists
+  assert_success
+  assert_output --partial "$VM_NAME is Provisioned"
+}
 
-    run file_replace_text "_private_key_" "keys/${SSH_KEY}" "$SSH_CONNECT_FILE"
-    assert_success
-
-    run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
-    assert_success
-    rm -fr "$SSH_CONNECT_FILE"
+@test ".integration.checks.check_vm_running - check VM running (Mock Multipass)" {
+  init_integration_test
+  function multipass(){
+      . test/integration/mocks/multipass.bash
+  }
+  export -f multipass
+  run check_vm_running
+  assert_success
+  assert_output --partial "$VM_NAME"
+  assert_output --partial "$Running"
 }
 
 

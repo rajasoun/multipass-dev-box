@@ -14,7 +14,7 @@ teardown() {
   echo "teardown"
 }
 
-@test ".unit.generate_ssh_key (Mock) - generate keys based on VM_NAME varaible" {
+@test ".unit.ssh.generate_ssh_key (Mock) - generate keys based on VM_NAME varaible" {
     source ${instance_env}
     source ${workspace_env}
     unset VM_NAME
@@ -29,7 +29,7 @@ teardown() {
     assert_output --partial "id_rsa_$VM_NAME & id_rsa_$VM_NAME.pub keys generated"
 }
 
-@test ".unit.create_ssh_connect_script - Validate SSH Connect Script Generation" {
+@test ".unit.ssh.create_ssh_connect_script - Validate SSH Connect Script Generation" {
   echo -e "Yet To Implement"
   unset VM_NAME
   unset IP

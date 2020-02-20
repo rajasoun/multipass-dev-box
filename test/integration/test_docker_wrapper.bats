@@ -21,7 +21,7 @@ teardown() {
 }
 
 
-@test "..integration._docker - docker wrapper - interactive mode (conditional tty), with Mount Points - ls mount points" {
+@test ".integration._docker - docker wrapper - interactive mode (conditional tty), with Mount Points - ls mount points" {
     # shellcheck disable=SC1090
     source ${docker_profile_script}
      test -t 1 && USE_TTY="-t" && echo "Input Devise is TTY"  ||  echo "Input Device is Not TTY"

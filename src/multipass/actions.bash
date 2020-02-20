@@ -28,10 +28,6 @@ function provision(){
 }
 
 function destroy(){
-    IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
-    # delete old key from known_hosts
-    #docker_sed "/${IP}/d" /known_hosts
-
     multipass delete "$VM_NAME" && multipass purge
     clear_workspace
     echo "$VM_NAME Destroyed"

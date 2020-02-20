@@ -55,20 +55,3 @@ teardown() {
   assert_failure
   assert_output --partial "VM_NAME"
 }
-
-@test ".unit.check_vm_exists - check VM exists (Mock Multipass)" {
-  unset VM_NAME
-  # shellcheck disable=SC2031
-  assert_empty "${VM_NAME}"
-  # shellcheck disable=SC1090
-  source ${profile_script}
-  VM_NAME="Test-VM"
-    function multipass(){
-      echo "$VM_NAME              Running"
-  }
-  export -f multipass
-
-  run check_vm_exists
-  assert_success
-  assert_output --partial "$VM_NAME is Provisioned"
-}

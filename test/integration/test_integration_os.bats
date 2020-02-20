@@ -24,27 +24,21 @@ teardown() {
   rm -fr $TEST_DATA #Remove Directory created during Test
 }
 
-@test ".integration.create_ansible_inventory_from_template - create and update Ansible Inventory - validate text replacements" {
+@test ".integration.os.file_replace_text - check sed works" {
     init_integration_test
+    local SSH_KEY="id_rsa_${VM_NAME}"
+    local SSH_CONNECT_FILE="$CONFIG_BASE_PATH/${VM_NAME}-temp-ssh-connect.sh"
+    cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
 
-    multipass_vm_mock_ip="192.168.64.9"
-    ## Mocking Multipass info
-    function multipass(){
-      echo "IPv4:           $multipass_vm_mock_ip"
-    }
-    export -f multipass
-
-    run create_ansible_inventory_from_template
-    assert_success
-    assert_output -p "generated for ${VM_NAME} that is Provisioned with ${multipass_vm_mock_ip}"
-
-    run file_contains_text "$VM_NAME" "$CONFIG_BASE_PATH/hosts"
+    run file_replace_text "_private_key_" "keys/${SSH_KEY}" "$SSH_CONNECT_FILE"
     assert_success
 
-    run file_contains_text "$multipass_vm_mock_ip" "$CONFIG_BASE_PATH/hosts"
+    run file_contains_text "$SSH_KEY" "$SSH_CONNECT_FILE"
     assert_success
-
-    run file_contains_text "/keys/${SSH_KEY}" "$CONFIG_BASE_PATH/hosts"
-    assert_success
-
+    rm -fr "$SSH_CONNECT_FILE"
 }
+
+
+
+
+
