@@ -61,6 +61,7 @@ jobs:
           ci/check_bats.bash host_precondition
           ci/check_bats.bash host_docker_precondition
           ci/check_bats.bash docker
+          ci/check_bats.bash api
 
       - name: Docker Integration Test (Windows)
         if: startsWith(runner.os, 'Windows')
