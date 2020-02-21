@@ -72,7 +72,6 @@ teardown() {
   run vm_api_execute_action provision_vm
   assert_success
   assert_output --partial "VM Creation Sucessfull"
-  assert_output --partial "Next: SSH to $VM_NAME via Multipass or Bastion Host"
 }
 
 @test ".api.provision_vm - .failure_check provisioning vm that is already provisioned errors out correctly" {
@@ -102,14 +101,12 @@ teardown() {
   run vm_api_execute_action ansible_ping_from_bastion_to_vm
   assert_success
   assert_output --partial "Connection SUCCESS :: Ansible Control Center -> VM"
-  assert_output --partial "$VM_NAME | SUCCESS"
 }
 
 @test ".api.configure_vm_from_bastion - configure vm from bastion through ansible (Long Running)" {
   init_api_test
   run vm_api_execute_action configure_vm_from_bastion
   assert_success
-  assert_output --partial "failed=0"
   assert_output --partial "VM Configration SUCCESSFULL"
 }
 
