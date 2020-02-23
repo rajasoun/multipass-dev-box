@@ -31,8 +31,26 @@ function configure_vm_from_bastion(){
     configure_vm
 }
 
+function test_base_infra(){
+  check_vm_running
+  ## Explicitly exporting to make it available in docket-compose
+  export CONFIG_BASE_PATH
+  export VM_NAME
+  export SSH_KEY_PATH
+  STAGE="-m base"
+  export STAGE
+  docker-compose -f test/py.test/docker-compose.yml run  --rm service
+}
+
 function test_infra(){
-  echo "Yet To Be Implemented !!!"
+  check_vm_running
+  ## Explicitly exporting to make it available in docket-compose
+  export CONFIG_BASE_PATH
+  export VM_NAME
+  export SSH_KEY_PATH
+  STAGE=
+  export STAGE
+  docker-compose -f test/py.test/docker-compose.yml run  --rm service
 }
 
 function destroy_vm(){
@@ -52,14 +70,15 @@ function vm_api_execute_action(){
     opt="$1"
     choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
     case $choice in
-        1  | provision_vm)                    provision_vm ;;
-        2  | provision_bastion)               provision_bastion ;;
-        3  | ansible_ping_from_bastion_to_vm) ansible_ping_from_bastion_to_vm ;;
-        4  | ssh_to_bastion_vm)               ssh_to_bastion_vm ;;
-        5  | configure_vm_from_bastion)       configure_vm_from_bastion ;;
-        6  | test_infra)                      test_infra ;;
-        7  | list_all_vms)                    list_all_vms ;;
-        8  | destroy_vm)                      destroy_vm ;;
+        10  | provision_vm)                    provision_vm ;;
+        20  | provision_bastion)               provision_bastion ;;
+        30  | ansible_ping_from_bastion_to_vm) ansible_ping_from_bastion_to_vm ;;
+        40  | ssh_to_bastion_vm)               ssh_to_bastion_vm ;;
+        50  | configure_vm_from_bastion)       configure_vm_from_bastion ;;
+        60  | test_base_infra)                 test_base_infra ;;
+        70  | test_infra)                      test_infra ;;
+        80  | list_all_vms)                    list_all_vms ;;
+        90  | destroy_vm)                      destroy_vm ;;
         *)  echo "Invalid Input" ;;
     esac
 }
@@ -70,6 +89,7 @@ function run_main(){
     ssh_to_bastion_vm
     ansible_ping_from_bastion_to_vm
     configure_vm_from_bastion
+    test_base_infra
     test_infra
     list_all_vms
     destroy_vm

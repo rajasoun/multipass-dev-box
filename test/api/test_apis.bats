@@ -46,9 +46,12 @@ teardown() {
 
 @test ".api.test_infra - .failure_check test vm should fail on non existent vm" {
   init_api_test
-  run vm_api_execute_action test_infra
-  assert_success
-  assert_output --partial "Yet To Be Implemented !!!"
+  STAGE=
+  run vm_api_execute_action test_infra "${STAGE}"
+  assert_output --partial "${VM_NAME}"
+  assert_output --partial "does not exist"
+  assert_output --partial "Exiting.."
+  assert_failure
 }
 
 @test ".api.list_all_vms - .failure_check list all vms should not list the VM" {
@@ -89,6 +92,18 @@ teardown() {
   assert_output --partial "Running"
 }
 
+@test ".api.test_infra - .test vm for base tests that is been provisioned" {
+  init_api_test
+  # shellcheck disable=SC2030
+  export VM_NAME
+  # shellcheck disable=SC2030
+  export CONFIG_BASE_PATH
+  # shellcheck disable=SC2030
+  export SSH_KEY_PATH
+  run vm_api_execute_action test_base_infra
+  assert_success
+}
+
 @test ".api.provision_bastion - provision bastion (docker pull)" {
   init_api_test
   run vm_api_execute_action provision_bastion
@@ -110,17 +125,24 @@ teardown() {
   assert_output --partial "VM Configration SUCCESSFULL"
 }
 
-@test ".api.test_infra - test vm that's been configured via ansible - using testinfra" {
+@test ".api.test_infra - .test vm for complete tests that is been provisioned" {
   init_api_test
+  # shellcheck disable=SC2031
+  # shellcheck disable=SC2030
+  export VM_NAME
+  # shellcheck disable=SC2031
+  export CONFIG_BASE_PATH
+  # shellcheck disable=SC2031
+  export SSH_KEY_PATH
   run vm_api_execute_action test_infra
   assert_success
-  assert_output --partial "Yet To Be Implemented !!!"
 }
 
 @test ".api.list_all_vms - list all vms" {
   init_api_test
   run vm_api_execute_action list_all_vms
   assert_success
+  # shellcheck disable=SC2031
   assert_output --partial "$VM_NAME"
   assert_output --partial "Running"
 }
@@ -129,6 +151,7 @@ teardown() {
   init_api_test
   run vm_api_execute_action destroy_vm
   assert_success
+  # shellcheck disable=SC2031
   assert_output --partial "$VM_NAME"
 }
 
@@ -136,6 +159,7 @@ teardown() {
   init_api_test
   run vm_api_execute_action list_all_vms
   assert_success
+  # shellcheck disable=SC2031
   refute_output  "$VM_NAME"
   refute_output  "Running"
 }

@@ -61,15 +61,16 @@ $ export MODE=api && ./multipass.bash $OPT
 ```
 
 | API ID |              API NAME           |
-|--------|---------------------------------|
-| 1      | provision_vm                    |
-| 2      | provision_bastion               |
-| 3      | ansible_ping_from_bastion_to_vm |
-| 4      | ssh_to_bastion_vm               |
-| 5      | configure_vm_from_bastion       |
-| 6      | test_infra                      |
-| 7      | list_all_vms                    | 
-| 8      | destroy_vm                      | 
+|:-------|---------------------------------|
+| 10      | provision_vm                    |
+| 20      | provision_bastion               |
+| 30      | ansible_ping_from_bastion_to_vm |
+| 40      | ssh_to_bastion_vm               |
+| 50      | configure_vm_from_bastion       |
+| 60      | test_base_infra                 |
+| 70      | test_infra                      |
+| 80      | list_all_vms                    | 
+| 90      | destroy_vm                      | 
 
 
 ### Automated Tests
