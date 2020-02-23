@@ -23,6 +23,7 @@ runcmd:
   - netplan apply
   - systemd-resolve --status | grep 'DNS Servers' -A2
   - DEBIAN_FRONTEND=noninteractive  apt-get update -y && apt-get upgrade -y
+  - apt-get -y autoremove
 
 final_message: "The system is finally up, after $UPTIME seconds"
 
