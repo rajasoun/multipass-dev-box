@@ -1,0 +1,21 @@
+version: '3.7'
+
+## VM_NAME is set in the instance.env or dev.instance.env
+## STAGE is passed either as base or postcondition
+## base : executes tests marked as base
+## base : executes tests marked as postcondition
+services:
+  service:
+    container_name: py.test
+    build: docker
+    command: >
+      bash -c "
+      source /config/${VM_NAME}-ssh-connect.sh
+      && py.test --hosts=$VM_NAME --ssh-config=/config/${VM_NAME}-ssh-config \
+                --connection=ssh /test/testinfra/* $STAGE  --tap-stream"
+    volumes:
+      - "${PWD}/test/py.test:/test"
+      - "${PWD}/$CONFIG_BASE_PATH:/config"
+      - "${PWD}/$SSH_KEY_PATH:/keys"
+    environment:
+      - STAGE

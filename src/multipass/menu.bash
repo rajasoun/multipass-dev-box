@@ -37,7 +37,7 @@ function menu() {
 }
 
 function choose_action_from_menu(){
-    menu "Multipass Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
+    menu "Multipass Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,TestInfra,Destroy"
     opt=$?
     choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
     case $choice in
@@ -45,7 +45,8 @@ function choose_action_from_menu(){
         2) ssh_to_bastion_vm ;;
         3) ansible_ping_from_bastion_to_vm ;;
         4) configure_vm_from_bastion ;;
-        5) destroy_vm ;;
+        5) test_infra ;;
+        6) destroy_vm ;;
         *) echo "Invalid Input" ;;
     esac
 }

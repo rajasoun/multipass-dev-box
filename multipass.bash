@@ -22,7 +22,7 @@ echo "MODE -> $MODE"
 
 case "$MODE" in
     *help*) choose_action_from_help ;;
-     *api*) vm_api_execute_action "$1";;
+     *api*) vm_api_execute_action "$@";;
          *) choose_action_from_menu ;;
 esac
 
