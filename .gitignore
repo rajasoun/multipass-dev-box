@@ -80,3 +80,4 @@ test/.test_data/
 *.iml
 ansible/roles
 !**/__pycache__/
+test/py.test/testinfra/__pycache__
