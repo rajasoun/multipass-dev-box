@@ -79,3 +79,4 @@ test/.test_data/
 .idea
 *.iml
 ansible/roles
+!**/__pycache__/
