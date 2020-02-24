@@ -18,16 +18,26 @@ function provision_bastion(){
 
 function ssh_to_bastion_vm(){
     check_vm_running
+    export CONFIG_BASE_PATH
+    export VM_NAME
+    export SSH_KEY_PATH
     ssh_via_bastion
 }
 
 function ansible_ping_from_bastion_to_vm(){
     check_vm_running
+    export CONFIG_BASE_PATH
+    export VM_NAME
+    export SSH_KEY_PATH
     ansible_ping
 }
 
 function configure_vm_from_bastion(){
     check_vm_running
+    ## Explicitly exporting to make it available in docket-compose
+    export CONFIG_BASE_PATH
+    export VM_NAME
+    export SSH_KEY_PATH
     configure_vm
 }
 
