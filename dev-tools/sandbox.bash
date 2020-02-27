@@ -4,6 +4,7 @@ set -eo pipefail
 IFS=$'\n\t'
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# shellcheck disable=SC1090
 source "$(dirname "${BASH_SOURCE[0]}")/../src/multipass/os.bash"
 
 function check_preconditions() {
@@ -25,7 +26,7 @@ function enter() {
     docker-compose -f "$TOOLS_DIR/rsyslog.yml" exec rsyslog bash
     ;;
   *)
-    echo "sandbox enter (ryslog)"
+    echo "sandbox enter (ryslog | grafana)"
     ;;
   esac
 }
@@ -41,7 +42,7 @@ function logs() {
     docker-compose -f "$TOOLS_DIR/portainer.yml" logs -f
     ;;
   *)
-    echo "sandbox logs (rsyslog | portainer)"
+    echo "sandbox logs (rsyslog | portainer | grafana)"
     ;;
   esac
 }
@@ -55,14 +56,18 @@ function sandbox() {
   up)
     echo "Spinning up Docker Images..."
     echo "If this is your first time starting sandbox this might take a minute..."
-    docker-compose -f "$TOOLS_DIR/rsyslog.yml" -f "$TOOLS_DIR/portainer.yml" up -d --build
+    docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
+                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" up -d --build
     ;;
   send_msg)
     send_msg_to_syslog "$@"
     ;;
   down)
     echo "Stopping sandbox containers..."
-    docker-compose -f "$TOOLS_DIR/rsyslog.yml" -f "$TOOLS_DIR/portainer.yml"  down -v  --remove-orphans
+    docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
+                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
+                    down -v  --remove-orphans
+    docker container prune -f
     echo "Removing file $TOOLS_DIR/logs/syslog ..."
     rm -fr "$TOOLS_DIR/logs/syslog"
     ;;

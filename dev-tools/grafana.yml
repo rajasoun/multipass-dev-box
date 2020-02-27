@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  grafana:
+    image: grafana/grafana:master
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+        GF_SECURITY_ADMIN_USER: "admin"
+        GF_SECURITY_ADMIN_PASSWORD: "admin"
+        GF_PATHS_PROVISIONING: "/config/provisioning"
+    volumes:
+        - ./config/grafana:/config
+    networks:
+      - loki
