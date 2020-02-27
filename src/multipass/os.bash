@@ -93,7 +93,7 @@ function get_local_ip(){
                  return 0
                  ;;
         cygwin* | mingw* | msys*)
-                IP=$(netstat -rn | grep -w '0.0.0.0' | awk '{ print $4 )}')
+                IP=$(netstat -rn | grep -w '0.0.0.0' | awk '{ print $4 }')
                  echo "$IP"
                  return 0
                  ;;
