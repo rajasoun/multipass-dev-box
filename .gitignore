@@ -81,3 +81,4 @@ test/.test_data/
 ansible/roles
 !**/__pycache__/
 test/py.test/testinfra/__pycache__
+logs/
