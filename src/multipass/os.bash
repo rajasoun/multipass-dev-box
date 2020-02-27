@@ -88,7 +88,7 @@ function get_local_ip(){
                  echo "$IP"
                  return 0
                  ;;
-        linux*)  IP=$(hostname -I)
+        linux*)  IP=$(hostname -I |  cut -d" " -f1)
                  echo "$IP"
                  return 0
                  ;;
