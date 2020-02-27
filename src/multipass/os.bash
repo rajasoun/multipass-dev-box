@@ -81,6 +81,28 @@ function os_is_darwin {
   [[ $(uname -s) == "Darwin" ]]
 }
 
+# Returns the IP or .
+function get_local_ip(){
+    case "$OSTYPE" in
+        darwin*) IP=$(ifconfig en0 | grep inet | grep -v inet6 | cut -d" " -f2)
+                 echo "$IP"
+                 return 0
+                 ;;
+        linux*)  IP=$(hostname -I |  cut -d" " -f1)
+                 echo "$IP"
+                 return 0
+                 ;;
+        cygwin* | mingw* | msys*)
+                IP=$(netstat -rn | grep -w '0.0.0.0' | awk '{ print $4 }')
+                 echo "$IP"
+                 return 0
+                 ;;
+        *)echo "unknown: $OSTYPE"
+                 return 1
+                 ;;
+    esac
+}
+
 function run_main() {
     create_directory_if_not_exists "$@"
     lls "$@"
@@ -90,6 +112,7 @@ function run_main() {
     file_contains_text "$@"
     file_replace_text "$@"
     os_is_darwin
+    get_local_ip
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
