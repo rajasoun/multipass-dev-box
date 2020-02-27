@@ -14,6 +14,7 @@ function create_cloud_init_config_from_template() {
 
     file_replace_text "ssh-rsa.*$" "$(cat "$SSH_KEY_PATH"/"${SSH_KEY}".pub)" "$CLOUD_INIT_FILE"
     file_replace_text "hostname:.*$" "hostname:\ $VM_NAME" "$CLOUD_INIT_FILE"
+    file_replace_text "_rsyslog_ip_port_" "$(get_local_ip):5514" "$CLOUD_INIT_FILE"
 
     echo "$CLOUD_INIT_FILE Generated for $VM_NAME"
 }

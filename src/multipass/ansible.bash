@@ -19,7 +19,7 @@ function create_ansible_inventory_from_template(){
 function ansible_ping(){
   create_ansible_inventory_from_template
   CMD="source /config/${VM_NAME}-ssh-connect.sh && ansible -i /config/hosts -m ping all"
-  _docker run --rm -it --user ansible \
+  _docker run --rm -it --user ansible --name ansible_ping \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$ANSIBLE_BASE_PATH":/ansible \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \
@@ -43,7 +43,7 @@ function configure_vm(){
 
   CMD="$SOURCE && $INSTALL && $CONFIGURE"
 
-  _docker run --rm -it --user ansible \
+  _docker run --rm -it --user ansible --name ansible_configure_vm \
             -v "${PWD}/$SSH_KEY_PATH":/keys \
             -v "${PWD}/$ANSIBLE_BASE_PATH":/ansible \
             -v "${PWD}/$CONFIG_BASE_PATH":/config \

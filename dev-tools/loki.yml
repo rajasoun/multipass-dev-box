@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  ## log shipper
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    command: -config.file=/etc/promtail/promtail.yaml
+    volumes:
+      - ./config:/etc/promtail
+      - ./logs:/var/log
+    networks:
+      - loki
+
+  ## log aggregator
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki.yaml
+    volumes:
+      - ./config:/etc/loki
+    networks:
+      - loki
+
+networks:
+  loki:

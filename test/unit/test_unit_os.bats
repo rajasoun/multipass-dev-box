@@ -155,4 +155,10 @@ teardown() {
   rm -f "$tmp_file"
 }
 
+@test ".unit.os.get_local_ip - Print IP Address of the Host - Windows, Mac or Linux" {
+    run get_local_ip
+    assert_success
+    assert_output $(get_local_ip)
+}
+
 

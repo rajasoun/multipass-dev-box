@@ -43,4 +43,8 @@ teardown() {
     run file_contains_text "$(id -un)@$DOMAIN" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
     assert_success
 
+    #run cat "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    run file_contains_text "$(get_local_ip):5514" "$CONFIG_BASE_PATH/${VM_NAME}-cloud-init.yaml"
+    assert_success
+
 }
