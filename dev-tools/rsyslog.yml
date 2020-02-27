@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  rsyslog:
+    container_name: rsyslog
+    build: docker/rsyslog
+    ports:
+      - "5514:514/tcp"
+      - "5514:514/udp"
+    volumes:
+      - ./config/rsyslog.conf:/etc/rsyslog.conf
+      - ./logs:/var/log
+    networks:
+      - rsyslog
+
+networks:
+  rsyslog:
