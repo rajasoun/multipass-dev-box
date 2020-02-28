@@ -54,7 +54,8 @@ function choose_action_from_menu(){
 function choose_action_from_help(){
     clear
     #cat docs/1_iaac_simple.txt
-    docker-compose -f dev-tools/ccat.yml run --rm ccat docs/1_iaac_simple.txt
+    #docker-compose -f dev-tools/ccat.yml run --rm ccat docs/1_iaac_simple.txt
+    _docker run --rm -it  -v "${PWD}:/ccat" rajasoun/ccat docs/1_iaac_simple.txt
     echo "Enter your choice: "
     read -r opt
     choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
