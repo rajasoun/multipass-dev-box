@@ -13,6 +13,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
+#Reference: https://github.com/mvanholsteijn/docker-makefile
 REGISTRY_HOST=docker.io
 USERNAME=$(USER)
 NAME=$(shell basename $(CURDIR))
