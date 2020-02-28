@@ -133,7 +133,7 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
 
 ### API List 
 
-![alt text](docs/2_apis.txt "API List")
+![alt text](docs/2_apis.md "API List")
 
 References:
 ---
