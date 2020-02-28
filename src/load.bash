@@ -10,7 +10,7 @@ source "$SCRIPT_DIR/lib/cloud_init.bash"
 # shellcheck source=src/lib/docker_wrapper.bash
 source "$SCRIPT_DIR/lib/docker_wrapper.bash"
 # shellcheck source=src/lib/menu.bash
-source "$SCRIPT_DIR/lib/menu.bash"
+source "$SCRIPT_DIR/lib/cli_builder.bash"
 # shellcheck source=src/lib/os.bash
 source "$SCRIPT_DIR/lib/os.bash"
 # shellcheck source=src/lib/ssh.bash

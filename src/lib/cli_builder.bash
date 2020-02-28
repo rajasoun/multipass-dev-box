@@ -2,8 +2,8 @@
 
 ## Menu
 ## Parameters Title and Options
-## Usage: menu "VM Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
-function menu() {
+## Usage: menu_builder "VM Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
+function menu_builder() {
     tput clear
     title=$1
     in=$2
@@ -37,7 +37,7 @@ function menu() {
 }
 
 function choose_action_from_menu(){
-    menu "VM Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,TestInfra,Destroy"
+    menu_builder "VM Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,TestInfra,Destroy"
     opt=$?
     choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
     case $choice in
@@ -51,11 +51,15 @@ function choose_action_from_menu(){
     esac
 }
 
-function choose_action_from_help(){
+function help_builder(){
     clear
     #cat docs/1_iaac_simple.txt
     #docker-compose -f dev-tools/ccat.yml run --rm ccat docs/1_iaac_simple.txt
-    _docker run --rm -it  -v "${PWD}:/ccat" rajasoun/ccat docs/1_iaac_simple.txt
+    _docker run --rm -it  -v "${PWD}:/ccat" rajasoun/ccat "$@"
+}
+
+function choose_action_from_help(){
+    help_builder "docs/1_iaac_simple.txt"
     echo "Enter your choice: "
     read -r opt
     choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
@@ -71,9 +75,10 @@ function choose_action_from_help(){
 }
 
 function run_main(){
-    menu "$@"
+    menu_builder "$@"
+    help_builder "$@"
     choose_action_from_menu
-    choose_action_from_help
+    choose_action_from_help "$@"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]

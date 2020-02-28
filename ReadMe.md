@@ -130,6 +130,11 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
 
 [SSH & Ansible Flow](docs/ssh_ansible_flows.md)
 
+
+### API List 
+
+![alt text](docs/2_apis.txt "API List")
+
 References:
 ---
     1. https://github.com/canonical/multipass/issues/961
