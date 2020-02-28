@@ -110,9 +110,12 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
             a. Travis (Linux Only) ✅
             b. GitHub Actions (Linux,Mac & Windows) ✅
      3. Configure VM through Ansible ✅
-     4. Infrastrcuture Test Automation using py.test & TestInfra
-     5. Support for ADR
-     6. Explore workarounds for  Multipass + Anyconnect Issue
+     4. Infrastrcuture Test Automation using py.test & TestInfra  ✅
+     5. Centralized Logging ✅
+     6. Log Shipper and Aggregation ✅
+     7. System Monitoring
+     8. Support for ADR
+     9. Explore workarounds for  Multipass + Anyconnect Issue
 
 
 
