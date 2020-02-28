@@ -14,7 +14,7 @@ function include(){
         source "$1" #source from deafult env file
     fi
     # shellcheck source=$pwd/src/load
-    source "$WORKSPACE/src/load"
+    source "src/load.bash"
 }
 
 include "instance.env"

@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
 # shellcheck disable=SC1090
-source "$(dirname "${BASH_SOURCE[0]}")/os.bash"
-source "$(dirname "${BASH_SOURCE[0]}")/ssh.bash"
-source "$(dirname "${BASH_SOURCE[0]}")/cloud_init.bash"
-source "$(dirname "${BASH_SOURCE[0]}")/docker_wrapper.bash"
+
+SCRIPT_LIB_DIR="$(dirname "${BASH_SOURCE[0]}")/../lib/"
+source "$SCRIPT_LIB_DIR/cloud_init.bash"
+source "$SCRIPT_LIB_DIR/docker_wrapper.bash"
+source "$SCRIPT_LIB_DIR/os.bash"
+source "$SCRIPT_LIB_DIR/ssh.bash"
+
+
 
 function provision(){
     check_required_workspace_env_vars

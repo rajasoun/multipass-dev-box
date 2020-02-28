@@ -2,7 +2,7 @@
 
 ## Menu
 ## Parameters Title and Options
-## Usage: menu "Multipass Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
+## Usage: menu "VM Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,Destroy"
 function menu() {
     tput clear
     title=$1
@@ -37,7 +37,7 @@ function menu() {
 }
 
 function choose_action_from_menu(){
-    menu "Multipass Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,TestInfra,Destroy"
+    menu "VM Manager" "Provision,SSH-Bastion,AnsiblePing,ConfigureVM,TestInfra,Destroy"
     opt=$?
     choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
     case $choice in
