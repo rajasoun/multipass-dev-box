@@ -5,7 +5,7 @@ IFS=$'\n\t'
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC1090
-source "$(dirname "${BASH_SOURCE[0]}")/../src/multipass/os.bash"
+source "$(dirname "${BASH_SOURCE[0]}")/../src/lib/os.bash"
 
 function check_preconditions() {
   if ! [ -x "$(command -v docker)" ]; then
