@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=dev-tools/src/load.bash
-source "$SCRIPT_DIR/dev-tools/src/load.bash"
+set -eo pipefail
+TIMING_LOG_FILE="dev-tools/logs/sandbox_execution.log"
+LOCAL_DEBUG_LOG_FILE="dev-tools/logs/local_debug.log"
 
-# Usage: ./assist.bash how2 setup workspace for bizapps
-# Add Question and Answer in the StackOverflow
-function how2(){
-  docker run --rm rajasoun/how2 how2 "$@"
+function include(){
+    if [[ -f "dev.$1" ]]; then
+        # shellcheck disable=SC1090
+        source "dev.$1"  #source from custom env file if present
+    else
+        # shellcheck disable=SC1090
+        source "$1" #source from deafult env file
+    fi
+    # shellcheck source=$pwd/src/load
+    source "src/load.bash"
 }
-
 
 function help(){
     echo "Usage: $0  {up|down|status|logs}" >&2
@@ -22,12 +27,41 @@ function help(){
     return 1
 }
 
+function execute_api_action(){
+    start=$(date +%s)
+    vm_api_execute_action "$1" >> "$LOCAL_DEBUG_LOG_FILE" || return 1
+    end=$(date +%s)
+    runtime=$((end-start))
+     >&2  echo -e "$(date +"%Y-%m-%d %H:%M:%S") | $1 | $(display_time $runtime)" >> "$TIMING_LOG_FILE"
+}
+
+include "instance.env"
+MODE="api"
+export $MODE
+
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
 case $choice in
-    up) echo "UP TBD" ;;
-    down)echo "DOWN TBD" ;;
-    status)echo "STATUS TBD" ;;
-    logs)echo "LOGS TBD" ;;
+    up)
+      echo "Bring Up Application Stack"
+      echo "Local Debug Logs available at @Observability Dashboard"
+      echo "GoTo: http://localhost:3000/explore"
+      execute_api_action "provision_vm"
+      execute_api_action "configure_vm_from_bastion"
+      execute_api_action "test_infra"
+      execute_api_action "list_all_vms"
+      ;;
+    down)
+      echo "Destroy Application Stack & Services"
+      execute_api_action "destroy_vm"
+      ;;
+    status)
+      echo "Application Stack and Services Status available at @Observability Dashboard"
+      echo "GoTo: http://localhost:3000"
+      ;;
+    logs)
+      echo "Application Logs available at @Observability Dashboard"
+      echo "GoTo: http://localhost:3000/explore"
+      ;;
     *)  help ;;
 esac

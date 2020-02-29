@@ -54,6 +54,8 @@ function dev_tools_sandbox() {
     docker container prune -f
     echo "Removing file $TOOLS_DIR/logs/syslog ..."
     rm -fr "$TOOLS_DIR/logs/syslog"
+    echo "Removing file $TOOLS_DIR/logs/local_debug.log ..."
+    rm -fr "$TOOLS_DIR/logs/local_debug.log"
     ;;
   status)
     echo "Querying sandbox containers status..."
