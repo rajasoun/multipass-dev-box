@@ -26,7 +26,7 @@ function enter() {
     docker-compose -f "$TOOLS_DIR/rsyslog.yml" exec rsyslog bash
     ;;
   *)
-    echo "sandbox enter (ryslog | grafana)"
+    echo "sandbox enter (ryslog )"
     ;;
   esac
 }
@@ -42,7 +42,7 @@ function logs() {
     docker-compose -f "$TOOLS_DIR/portainer.yml" logs -f
     ;;
   *)
-    echo "sandbox logs (rsyslog | portainer | grafana)"
+    echo "sandbox logs (rsyslog | portainer )"
     ;;
   esac
 }
@@ -71,6 +71,12 @@ function sandbox() {
     echo "Removing file $TOOLS_DIR/logs/syslog ..."
     rm -fr "$TOOLS_DIR/logs/syslog"
     ;;
+  status)
+    echo "Querying sandbox containers status..."
+    docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
+                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
+                    ps
+    ;;
   enter)
     enter "$@"
     ;;
@@ -83,6 +89,7 @@ sandbox commands:
 ----------------
   up                 -> spin up the dev-tools sandbox environment
   down               -> tear down the dev-tools sandbox environment
+  status             -> displays status of  services
   send_msg           -> sends message to syslog
   enter (rsyslog | portainer)    -> enter the specified container
   logs  (rsyslog | portainer)    -> stream logs for the specified container
