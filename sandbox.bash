@@ -37,7 +37,7 @@ function execute_api_action(){
 
 include "instance.env"
 MODE="api"
-export $MODE
+export MODE
 
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )

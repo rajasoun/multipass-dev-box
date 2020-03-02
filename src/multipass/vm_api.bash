@@ -4,7 +4,8 @@
 source "$(dirname "${BASH_SOURCE[0]}")/actions.bash"
 
 function provision_vm(){
-   [ "$( multipass list | grep -c "$VM_NAME")"   -ne 0  ] && raise_error "VM Exists. Exiting..."
+    #[ "$( multipass list | grep -c "$VM_NAME")"   -ne 0  ] && raise_error "VM Exists. Exiting..."
+    check_and_exit_if_vm_exists
     start=$(date +%s)
     provision
     end=$(date +%s)
@@ -17,7 +18,7 @@ function provision_bastion(){
 }
 
 function ssh_to_bastion_vm(){
-    check_vm_running
+    check_and_exit_if_vm_not_running
     export CONFIG_BASE_PATH
     export VM_NAME
     export SSH_KEY_PATH
@@ -25,7 +26,7 @@ function ssh_to_bastion_vm(){
 }
 
 function ansible_ping_from_bastion_to_vm(){
-    check_vm_running
+    check_and_exit_if_vm_not_running
     export CONFIG_BASE_PATH
     export VM_NAME
     export SSH_KEY_PATH
@@ -33,7 +34,7 @@ function ansible_ping_from_bastion_to_vm(){
 }
 
 function configure_vm_from_bastion(){
-    check_vm_running
+    check_and_exit_if_vm_not_running
     ## Explicitly exporting to make it available in docket-compose
     export CONFIG_BASE_PATH
     export VM_NAME
@@ -42,7 +43,7 @@ function configure_vm_from_bastion(){
 }
 
 function test_base_infra(){
-  check_vm_running
+  check_and_exit_if_vm_not_running
   ## Explicitly exporting to make it available in docket-compose
   export CONFIG_BASE_PATH
   export VM_NAME
@@ -53,7 +54,7 @@ function test_base_infra(){
 }
 
 function test_infra(){
-  check_vm_running
+  check_and_exit_if_vm_not_running
   ## Explicitly exporting to make it available in docket-compose
   export CONFIG_BASE_PATH
   export VM_NAME
@@ -64,7 +65,7 @@ function test_infra(){
 }
 
 function destroy_vm(){
-    check_vm_running
+    check_and_exit_if_vm_not_running
     destroy
 }
 
