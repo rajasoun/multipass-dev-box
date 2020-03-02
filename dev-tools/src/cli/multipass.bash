@@ -5,7 +5,8 @@ function _multipass() {
   case $action in
   purge)
     echo "Deleting/Purging all Multipass VMs..."
-    multipass ls  | grep Running |awk '{print $1}' | xargs multipass delete --purge
+    #multipass ls  | grep Running |awk '{print $1}' | xargs multipass delete --purge
+    multipass ls  | awk '{print $1}' | xargs multipass delete --purge
     multipass purge
     ;;
   status)
