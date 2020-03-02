@@ -11,6 +11,7 @@ function help(){
     echo "Usage: $0  {sandbox|git|docker}" >&2
     echo
     echo "   sandbox               Manage dev-tools sandbox environment"
+    echo "   multipass             Manage multipass - virtualization orchestrator"
     echo "   git                   House Keep Git"
     echo "   docker                House Keep Docker"
     echo
@@ -26,8 +27,9 @@ export TOOLS_DIR
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
 case $choice in
-    sandbox)        dev_tools_sandbox "$@" ;;
-    git)              _git "$@" ;;
+    multipass) _multipass "$@" ;;
+    sandbox)   dev_tools_sandbox "$@" ;;
+    git)       _git "$@" ;;
     docker)
       check_preconditions
       _docker "$@"

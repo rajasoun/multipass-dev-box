@@ -3,6 +3,8 @@
 ## To get all functions : bash -c "source src/load.bash && declare -F"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# shellcheck source=dev-tools/src/cli/multipass.bash
+source "$SCRIPT_DIR/cli/multipass.bash"
 # shellcheck source=dev-tools/src/cli/_docker.bash
 source "$SCRIPT_DIR/cli/_docker.bash"
 # shellcheck source=dev-tools/src/cli/dev_tools_sandbox.bash
