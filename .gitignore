@@ -82,3 +82,5 @@ ansible/roles
 !**/__pycache__/
 test/py.test/testinfra/__pycache__
 dev-tools/logs/
+.env_secrets
+certs
