@@ -21,3 +21,15 @@ function generate_letsencrypt_cert_for_route53_dns_challenge_on_production(){
     gen_certificate
 }
 
+function run_main() {
+  generate_letsencrypt_cert_for_route53_dns_challenge_on_staging
+  generate_letsencrypt_cert_for_route53_dns_challenge_on_production
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
+then
+  if ! run_main "$@"
+  then
+    exit 1
+  fi
+fi
