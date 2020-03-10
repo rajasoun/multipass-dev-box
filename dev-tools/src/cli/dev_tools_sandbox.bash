@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eo pipefail
+
 function enter() {
   container_name="$3"
   case $container_name in
@@ -41,7 +43,8 @@ function dev_tools_sandbox() {
     echo "Spinning up Docker Images..."
     echo "If this is your first time starting sandbox this might take a minute..."
     docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
-                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" up -d --build
+                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
+                    -f "$TOOLS_DIR/webtail.yml" up -d --build
     ;;
   send_msg)
     send_msg_to_syslog "$@"
@@ -50,7 +53,7 @@ function dev_tools_sandbox() {
     echo "Stopping sandbox containers..."
     docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
                     -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
-                    down -v  --remove-orphans
+                    -f "$TOOLS_DIR/webtail.yml" down -v  --remove-orphans
     docker container prune -f
     echo "Removing file $TOOLS_DIR/logs/syslog ..."
     rm -fr "$TOOLS_DIR/logs/syslog"
@@ -61,7 +64,7 @@ function dev_tools_sandbox() {
     echo "Querying sandbox containers status..."
     docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
                     -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
-                    ps
+                    -f "$TOOLS_DIR/webtail.yml" ps
     ;;
   enter)
     enter "$@"

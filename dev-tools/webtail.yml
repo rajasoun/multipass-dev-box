@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  webtail:
+    image: rajasoun/webtail:latest
+    container_name: webtail
+    command:  --theme dark --disable-usage-stats /logs/local_debug.log
+    ports:
+      - "9040:9001"
+    volumes:
+      - ./logs:/logs
+    networks:
+      - webtail
+
+networks:
+  webtail:
