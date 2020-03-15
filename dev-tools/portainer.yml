@@ -15,6 +15,19 @@ services:
       - portainer_data:/data
     networks:
       - portainer
+    labels:
+      - traefik.enable=true
+      - traefik.backend=portainer
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      - traefik.http.services.portainer.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.portainer-ssl.entryPoints=https
+      - traefik.http.routers.portainer-ssl.rule=host(`portainer.${BASE_DOMAIN}`)
+      - traefik.http.routers.portainer-ssl.tls=true
+      - traefik.http.routers.portainer-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.portainer-ssl.middlewares=sso@file
 
 networks:
   portainer:

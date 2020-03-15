@@ -14,3 +14,16 @@ services:
         - ./config/grafana:/config
     networks:
       - loki
+    labels:
+      - traefik.enable=true
+      - traefik.backend=grafana
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.grafana.loadbalancer.server.port=9040
+      - traefik.http.services.grafana.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.grafana-ssl.entryPoints=https
+      - traefik.http.routers.grafana-ssl.rule=host(`portainer.${BASE_DOMAIN}`)
+      - traefik.http.routers.grafana-ssl.tls=true
+      - traefik.http.routers.grafana-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.grafana-ssl.middlewares=sso@file

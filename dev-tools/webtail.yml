@@ -11,6 +11,19 @@ services:
       - ./logs:/logs
     networks:
       - webtail
+    labels:
+      - traefik.enable=true
+      - traefik.backend=webtail
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.webtail.loadbalancer.server.port=9040
+      - traefik.http.services.webtail.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.webtail-ssl.entryPoints=https
+      - traefik.http.routers.webtail-ssl.rule=host(`portainer.${BASE_DOMAIN}`)
+      - traefik.http.routers.webtail-ssl.tls=true
+      - traefik.http.routers.webtail-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.webtail-ssl.middlewares=sso@file
 
 networks:
   webtail:
