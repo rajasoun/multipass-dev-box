@@ -86,4 +86,5 @@ certs
 aws.env
 oidc.env
 acme.json
+traefik-fa.env
 
