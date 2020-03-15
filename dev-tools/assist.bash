@@ -31,8 +31,8 @@ export COMPOSE_FILES
 export SERVICES
 
 export BASE_DOMAIN=htddev.org
-#export $(cat config/ssl)
-#export $(cat config/sso)
+export "$(cat "$TOOLS_DIR"/config/secrets/aws.env)"
+export "$(cat "$TOOLS_DIR"/config/secrets/oidc.env)"
 
 
 
