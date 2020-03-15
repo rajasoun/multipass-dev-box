@@ -85,4 +85,5 @@ dev-tools/logs/
 certs
 aws.env
 oidc.env
+acme.json
 

@@ -22,8 +22,8 @@ function help(){
 IP="$(get_local_ip)"
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 #COMPOSE_FILES=" -f portainer.yml -f rsyslog.yml -f loki.yml -f grafana.yml -f webtail.yml"
-COMPOSE_FILES="  -f $TOOLS_DIR/portainer.yml -f $TOOLS_DIR/rsyslog.yml  -f $TOOLS_DIR/loki.yml -f $TOOLS_DIR/grafana.yml -f $TOOLS_DIR/webtail.yml"
-SERVICES=(portainer grafana webtail)
+COMPOSE_FILES="  -f $TOOLS_DIR/portainer.yml -f $TOOLS_DIR/rsyslog.yml  -f $TOOLS_DIR/loki.yml -f $TOOLS_DIR/grafana.yml -f $TOOLS_DIR/webtail.yml -f $TOOLS_DIR/traefik.yml"
+SERVICES=(traefik portainer grafana webtail)
 
 export IP
 export TOOLS_DIR
@@ -31,6 +31,7 @@ export COMPOSE_FILES
 export SERVICES
 
 export BASE_DOMAIN=htddev.org
+export DOCKER_NETWORK=dev-tools_traefik
 export "$(cat "$TOOLS_DIR"/config/secrets/aws.env)"
 export "$(cat "$TOOLS_DIR"/config/secrets/oidc.env)"
 
