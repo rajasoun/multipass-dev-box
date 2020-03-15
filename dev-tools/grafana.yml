@@ -4,6 +4,8 @@ services:
   grafana:
     image: grafana/grafana:master
     container_name: grafana
+    env_file:
+      - ${TOOLS_DIR}/config/secrets/oidc.env
     ports:
       - "3000:3000"
     environment:

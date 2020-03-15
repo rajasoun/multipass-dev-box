@@ -1,0 +1,32 @@
+[log]
+  level = "INFO"
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+  [entryPoints.https]
+    address = ":443"
+
+[api]
+  dashboard = true
+  # Exposes the api without TLS, fine for our setup with TLS termination
+  insecure = true
+
+[providers]
+  [providers.file]
+    filename = "/etc/traefik/dynamic_conf.toml"
+    watch = true
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    watch = true
+    exposedbydefault = false
+    # Adds a default routing rule for new containers 
+    # defaultrule = "Host(`.htddev.org`)"
+
+# Used for certificate acquisition - explained later
+[certificatesResolvers.le.acme]
+  email = "rajasoun@icloud.com"
+  storage = "/etc/traefik/acme.json"
+  [certificatesResolvers.le.acme.dnsChallenge]
+    provider = "route53"
+    delayBeforeCheck = 0

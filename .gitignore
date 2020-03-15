@@ -83,5 +83,6 @@ ansible/roles
 test/py.test/testinfra/__pycache__
 dev-tools/logs/
 certs
-grafana.ini
+aws.env
+oidc.env
 
