@@ -43,6 +43,7 @@ function dev_tools_sandbox() {
     echo "Spinning up Docker Images..."
     echo "If this is your first time starting sandbox this might take a minute..."
     eval docker-compose  "${COMPOSE_FILES}" up -d --build
+    add_host_entries
     ;;
   send_msg)
     send_msg_to_syslog "$@"
@@ -50,6 +51,7 @@ function dev_tools_sandbox() {
   down)
     echo "Stopping sandbox containers..."
     eval docker-compose   "${COMPOSE_FILES}" down -v  --remove-orphans
+    remove_host_entries
     docker container prune -f
     echo "Removing file $TOOLS_DIR/logs/syslog ..."
     rm -fr "$TOOLS_DIR/logs/syslog"
