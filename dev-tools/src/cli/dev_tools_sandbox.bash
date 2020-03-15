@@ -42,9 +42,6 @@ function dev_tools_sandbox() {
   up)
     echo "Spinning up Docker Images..."
     echo "If this is your first time starting sandbox this might take a minute..."
-#    docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
-#                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
-#                    -f "$TOOLS_DIR/webtail.yml" up -d --build
     eval docker-compose  "${COMPOSE_FILES}" up -d --build
     ;;
   send_msg)
@@ -52,9 +49,6 @@ function dev_tools_sandbox() {
     ;;
   down)
     echo "Stopping sandbox containers..."
-#    docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
-#                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
-#                    -f "$TOOLS_DIR/webtail.yml" down -v  --remove-orphans
     eval docker-compose   "${COMPOSE_FILES}" down -v  --remove-orphans
     docker container prune -f
     echo "Removing file $TOOLS_DIR/logs/syslog ..."
@@ -64,9 +58,6 @@ function dev_tools_sandbox() {
     ;;
   status)
     echo "Querying sandbox containers status..."
-#    docker-compose  -f "$TOOLS_DIR/portainer.yml" -f "$TOOLS_DIR/rsyslog.yml" \
-#                    -f "$TOOLS_DIR/loki.yml" -f "$TOOLS_DIR/grafana.yml" \
-#                    -f "$TOOLS_DIR/webtail.yml" ps
     eval docker-compose "${COMPOSE_FILES}"  ps
     ;;
   enter)
