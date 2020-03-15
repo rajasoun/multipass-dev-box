@@ -12,6 +12,7 @@ services:
         GF_PATHS_PROVISIONING: "/config/provisioning"
     volumes:
         - ./config/grafana:/config
+        - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
     networks:
       - loki
     labels:
@@ -25,5 +26,3 @@ services:
       - traefik.http.routers.grafana-ssl.rule=host(`portainer.${BASE_DOMAIN}`)
       - traefik.http.routers.grafana-ssl.tls=true
       - traefik.http.routers.grafana-ssl.tls.certResolver=le
-      # Single Sign On middleware
-      - traefik.http.routers.grafana-ssl.middlewares=sso@file

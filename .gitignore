@@ -83,3 +83,5 @@ ansible/roles
 test/py.test/testinfra/__pycache__
 dev-tools/logs/
 certs
+dev-tools/config/grafana/grafana.ini
+
