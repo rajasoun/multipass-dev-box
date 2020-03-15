@@ -46,15 +46,6 @@ function backup_etc_hosts(){
     try sudo cp "$hostsFile" "$hostsFile.bak"
 }
 
-# Fucntion requires the services array to be initialized and exported
-function execute_action(){
-  action=$1
-  for service in "${SERVICES[@]}"
-  do
-    $action "$service.${BASE_DOMAIN}"
-  done
-}
-
 function add_host_entries(){
   execute_action "add_entry"
 }
