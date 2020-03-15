@@ -20,7 +20,7 @@ services:
       - traefik.enable=true
       - traefik.backend=traefik-api
       # Which network traefik should listen on
-      - traefik.docker.network=${DOCKER_NETWORK} #traefik2-demo_traefik
+      - traefik.docker.network=${DOCKER_NETWORK}
       - traefik.http.services.traefik.loadbalancer.server.port=8080
       # SSL configuration
       - traefik.http.routers.traefik-ssl.entryPoints=https

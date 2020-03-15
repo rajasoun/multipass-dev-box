@@ -10,7 +10,6 @@ services:
     volumes:
       - ./logs:/logs
     networks:
-      - webtail
       - traefik
     labels:
       - traefik.enable=true
@@ -29,4 +28,4 @@ services:
       # - traefik.http.routers.webtail-ssl.middlewares=sso@file
 
 networks:
-  webtail:
+  traefik:
