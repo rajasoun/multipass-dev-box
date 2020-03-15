@@ -60,6 +60,7 @@ function dev_tools_sandbox() {
     ;;
   status)
     echo "Querying sandbox containers status..."
+    display_app_status
     eval docker-compose "${COMPOSE_FILES}"  ps
     ;;
   enter)

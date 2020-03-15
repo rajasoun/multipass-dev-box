@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    ## AWS Credentials to Get Letsencrypt SSL Certificate via Route53 DNS Challenge
+    env_file: config/secrets/aws.env
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # mount static (traefik.yml) and dynamic (dynamic_conf.yml) configurations for traefik
+      - ./config/traefik:/etc/traefik
+    environment:
+      - TZ=Asia/Kolkatta
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.backend=traefik-api
+      # Which network traefik should listen on
+      - traefik.docker.network=${DOCKER_NETWORK} #traefik2-demo_traefik
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      # SSL configuration
+      - traefik.http.routers.traefik-ssl.entryPoints=https
+      - traefik.http.routers.traefik-ssl.rule=host(`traefik.${BASE_DOMAIN}`)
+      - traefik.http.routers.traefik-ssl.tls=true
+      - traefik.http.routers.traefik-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      # - traefik.http.routers.traefik-ssl.middlewares=sso@file
+
+networks:
+  traefik:
