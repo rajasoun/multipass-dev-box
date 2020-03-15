@@ -6,7 +6,7 @@ services:
     container_name: webtail
     command:  --theme dark --disable-usage-stats /logs/local_debug.log
     ports:
-      - "9040:9001"
+      - "9001"
     volumes:
       - ./logs:/logs
     networks:
@@ -18,7 +18,7 @@ services:
       # Which network traefik should listen on
       - traefik.docker.network=${DOCKER_NETWORK}
       # Reverse proxy configuration - expose the container port
-      - traefik.http.services.webtail.loadbalancer.server.port=9040
+      - traefik.http.services.webtail.loadbalancer.server.port=9001
       - traefik.http.services.webtail.loadbalancer.passhostheader=true
       # SSL configuration
       - traefik.http.routers.webtail-ssl.entryPoints=https
