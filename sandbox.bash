@@ -58,6 +58,7 @@ case $choice in
     status)
       echo "Application Stack and Services Status available at @Observability Dashboard"
       echo "TBD : StatPing"
+      echo "Quering DevTools Sanbox Status..."
       dev-tools/assist.bash sandbox status
       ;;
     logs)
