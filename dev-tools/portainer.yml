@@ -5,7 +5,7 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer:latest
-    command: -H unix:///var/run/docker.sock
+    command: -H unix:///var/run/docker.sock --no-auth
     restart: always
     ports:
       - "0.0.0.0:9000:9000"
@@ -30,7 +30,7 @@ services:
       - traefik.http.routers.portainer-ssl.tls=true
       - traefik.http.routers.portainer-ssl.tls.certResolver=le
       # Single Sign On middleware
-      # - traefik.http.routers.portainer-ssl.middlewares=sso@file
+      - traefik.http.routers.portainer-ssl.middlewares=sso@file
 
 networks:
   portainer:
