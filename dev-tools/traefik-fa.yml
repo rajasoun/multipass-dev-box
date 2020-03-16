@@ -1,7 +1,8 @@
 version: "3.7"
 services:
   traefik-fa:
-    image: thomseddon/traefik-forward-auth:2
+    #image: thomseddon/traefik-forward-auth:2
+    image: rajasoun/traefik-forward-auth:latest
     # OIDC Crendentials
     env_file:
       - ./config/secrets/oidc.env
