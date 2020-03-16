@@ -87,4 +87,5 @@ aws.env
 oidc.env
 acme.json
 traefik-fa.env
+*.log
 
