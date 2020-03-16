@@ -28,7 +28,7 @@ services:
       - traefik.http.routers.traefik-ssl.tls=true
       - traefik.http.routers.traefik-ssl.tls.certResolver=le
       # Single Sign On middleware
-      # - traefik.http.routers.traefik-ssl.middlewares=sso@file
+      - traefik.http.routers.traefik-ssl.middlewares=sso@file
 
 networks:
   traefik:
