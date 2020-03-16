@@ -20,7 +20,7 @@ services:
       - traefik.http.routers.whoami-ssl.tls=true
       - traefik.http.routers.whoami-ssl.tls.certResolver=le
       # Single Sign On middleware
-      # - traefik.http.routers.whoami-ssl.middlewares=sso@file
+      - traefik.http.routers.whoami-ssl.middlewares=sso@file
 
 networks:
   traefik:
