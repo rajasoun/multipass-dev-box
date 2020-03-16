@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  status:
+    # A container that exposes an API to show its IP address
+    image: hunterlong/statping
+    container_name: status
+    volumes:
+      - status_data:/app
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      DB_CONN: sqlite
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      # Which network traefik should listen on
+      - traefik.docker.network=${DOCKER_NETWORK}
+      - traefik.backend=status
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.status.loadbalancer.server.port=8080
+      - traefik.http.services.status.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.status-ssl.entryPoints=https
+      - traefik.http.routers.status-ssl.rule=host(`status.${BASE_DOMAIN}`)
+      - traefik.http.routers.status-ssl.tls=true
+      - traefik.http.routers.status-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.status-ssl.middlewares=sso@file
+
+networks:
+  traefik:
+
+volumes:
+  status_data:
