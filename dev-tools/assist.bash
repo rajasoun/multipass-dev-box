@@ -22,7 +22,7 @@ function help(){
 IP="$(get_local_ip)"
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 #COMPOSE_FILES=" -f portainer.yml -f rsyslog.yml -f loki.yml -f grafana.yml -f webtail.yml"
-COMPOSE_FILES="  -f $TOOLS_DIR/portainer.yml -f $TOOLS_DIR/rsyslog.yml  -f $TOOLS_DIR/loki.yml -f $TOOLS_DIR/grafana.yml -f $TOOLS_DIR/webtail.yml -f $TOOLS_DIR/traefik.yml -f $TOOLS_DIR/traefik-fa.yml -f $TOOLS_DIR/whoami.yml"
+COMPOSE_FILES="  -f $TOOLS_DIR/portainer.yml -f $TOOLS_DIR/rsyslog.yml  -f $TOOLS_DIR/loki.yml -f $TOOLS_DIR/grafana.yml -f $TOOLS_DIR/webtail.yml -f $TOOLS_DIR/traefik.yml -f $TOOLS_DIR/traefik-fa.yml -f $TOOLS_DIR/whoami.yml "
 SERVICES=(traefik portainer grafana webtail whoami)
 
 export IP
