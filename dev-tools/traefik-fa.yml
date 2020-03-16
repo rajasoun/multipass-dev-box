@@ -12,10 +12,10 @@ services:
       - ./config/traefik/forward.ini:/forward.ini
     environment:
       - CONFIG=/forward.ini
-      - default-provider=${DEFAULT_PROVIDER}
-      - providers.oidc.issuer-url=${PROVIDERS_OIDC_ISSUER_URL}
-      - providers.oidc.client-id=${PROVIDERS_OIDC_CLIENT_ID}
-      - providers.oidc.client-secret=${PROVIDERS_OIDC_CLIENT_SECRET}
+#      - default-provider=${DEFAULT_PROVIDER}
+#      - providers.oidc.issuer-url=${PROVIDERS_OIDC_ISSUER_URL}
+#      - providers.oidc.client-id=${PROVIDERS_OIDC_CLIENT_ID}
+#      - providers.oidc.client-secret=${PROVIDERS_OIDC_CLIENT_SECRET}
     networks:
       - traefik
     labels:
