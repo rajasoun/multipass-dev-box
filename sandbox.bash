@@ -45,7 +45,7 @@ case $choice in
     up)
       echo "Bring Up Application Stack"
       echo "Local Debug Logs available at Web Tail"
-      echo "GoTo: http://localhost:9040"
+      echo "GoTo: https://webtail.htddev.org"
       execute_api_action "provision_vm"
       execute_api_action "configure_vm_from_bastion"
       execute_api_action "test_infra"
@@ -57,11 +57,12 @@ case $choice in
       ;;
     status)
       echo "Application Stack and Services Status available at @Observability Dashboard"
-      echo "GoTo: http://localhost:3000"
+      echo "TBD : StatPing"
+      dev-tools/assist.bash sandbox status
       ;;
     logs)
       echo "Application Logs available at @Observability Dashboard"
-      echo "GoTo: http://localhost:3000/explore"
+      echo "GoTo: Log Aggregator -> https://grafana.httddev.org/explore"
       ;;
     *)  help ;;
 esac
