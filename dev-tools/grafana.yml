@@ -12,6 +12,7 @@ services:
         GF_SECURITY_ADMIN_USER: "admin"
         GF_SECURITY_ADMIN_PASSWORD: "admin"
         GF_PATHS_PROVISIONING: "/config/provisioning"
+        LOGSPOUT: ignore
     volumes:
         - ./config/grafana:/config
         - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini

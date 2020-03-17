@@ -9,6 +9,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       DB_CONN: sqlite
+      LOGSPOUT: ignore
     networks:
       - traefik
     labels:

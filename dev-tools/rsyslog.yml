@@ -5,6 +5,8 @@ services:
   rsyslog:
     container_name: rsyslog
     build: docker/rsyslog
+    environment:
+      LOGSPOUT: ignore
     ports:
       - "5514:514/tcp"
       - "5514:514/udp"
