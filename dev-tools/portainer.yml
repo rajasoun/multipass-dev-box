@@ -6,6 +6,8 @@ services:
     container_name: portainer
     image: portainer/portainer:latest
     command: -H unix:///var/run/docker.sock --no-auth
+    environment:
+      LOGSPOUT: ignore
     restart: always
     ports:
       - "0.0.0.0:9000:9000"

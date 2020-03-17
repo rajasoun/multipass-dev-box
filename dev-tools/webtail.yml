@@ -5,6 +5,8 @@ services:
     image: rajasoun/webtail:latest
     container_name: webtail
     command:  --theme dark --disable-usage-stats /logs/local_debug.log
+    environment:
+      LOGSPOUT: ignore
     ports:
       - "9001"
     volumes:
