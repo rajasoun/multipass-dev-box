@@ -103,7 +103,7 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
 6. Workaround to invoke docker in a common way through wrapper both for windows and mac
 
 
-*ToDo*
+*Features*
 
      1. Adoption of Git Flow  ✅
      2. Add Automated Verification - CI 
@@ -113,9 +113,21 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
      4. Infrastrcuture Test Automation using py.test & TestInfra  ✅
      5. Centralized Logging ✅
      6. Log Shipper and Aggregation ✅
-     7. System Monitoring
-     8. Support for ADR
-     9. Explore workarounds for  Multipass + Anyconnect Issue
+     7. HTTPS Support ✅
+     8. CLI Builder ✅
+     9. WebTail  ✅
+     10. Edge Routing or Reverse Proxy Support  ✅
+     11. Edge Routing or Reverse Proxy Support  ✅
+     12. Dev Tools Container Mgmt  ✅
+     13. OAuth2 + SSO -> Authentication Support  ✅
+     14. System Monitoring
+     15. Support for ADR
+     16. Explore workarounds for  Multipass + Anyconnect Issue
+     17. Authorization or Policy Mgmt
+     18. Key or Secrets Management
+     19. Status Aggregator
+     20. AWS Support
+     21 vSphere Support
 
 
 
