@@ -56,10 +56,12 @@ case $choice in
       execute_api_action "destroy_vm"
       ;;
     status)
-      echo "Application Stack and Services Status available at @Observability Dashboard"
-      echo "TBD : StatPing"
-      echo "Quering DevTools Sanbox Status..."
+      echo -e "\nQuering Sanbox Status..."
+      dev-tools/assist.bash multipass status
+      echo -e "\nQuering DevTools Sanbox Status..."
       dev-tools/assist.bash sandbox status
+      echo -e "\nApplication Stack and Services Status available at @Observability Dashboard"
+      echo "Goto -> StatPing -> Yet To Be Implemented"
       ;;
     logs)
       echo "Application Logs available at @Observability Dashboard"
