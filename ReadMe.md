@@ -127,7 +127,7 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
      18. Key or Secrets Management
      19. Status Aggregator
      20. AWS Support
-     21 vSphere Support
+     21. vSphere Support
 
 
 
