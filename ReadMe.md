@@ -49,12 +49,12 @@ Usage: ./sandbox.bash  {up|down|status|logs}
 
 #### Dev Tools
 
-[Dev Tools](dev-tools/ReadMe.md)
+[Dev Tools](dev-tools/ReadMe.md)  cookie-cutter solution for cross cutting concerns like (Logging, Monitoring, Authentication etc)
 
 
 #### Learn Mode 
 
-[Learn Mode](docs/3_learn_mode.md)
+[Learn Mode](docs/3_learn_mode.md) for step by step self learning
 
 
 ### VM Configuration & Overriding Options
