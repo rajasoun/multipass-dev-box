@@ -37,46 +37,25 @@ $ ci/check_bats.bash -f .precondition
 
 All 7 Tests should pass - if you have issues, double check the [Installation Instruction](docs/installation_instruction.md)
 
-#### Help (Flow) Based - Beginners 
-
 ```SHELL
-$ export MODE=help && ./multipass.bash
+$ ./sandbox.bash
+Usage: ./sandbox.bash  {up|down|status|logs}
+
+   up               Provision, Configure, Validate Application Stack
+   down             Application Stack
+   status           Displays Status of Application Stack
+   logs             Application Stack Log Dashboard
 ```
 
-#### Menu Based - Intermediate 
+#### Dev Tools
 
-In Terminal Window
-
-```SHELL
-$ export MODE=menu && ./multipass.bash 
-```
-
-#### API Based - For Automated Testing & Aggregation - Advanced
-
-In Terminal 
-   
-```SHELL
-$ OPT=_API_ID_ or _API_NAME_
-$ export MODE=api && ./multipass.bash $OPT
-```
-
-[API List](docs/2_apis.md)
+[Dev Tools](dev-tools/ReadMe.md)
 
 
-### Automated Tests
+#### Learn Mode 
 
-In Terminal Window
+[Learn Mode](docs/3_learn_mode.md)
 
-```SHELL
-$ ci/check_bats.bash unit
-$ ci/check_bats.bash integration
-$ ci/check_bats.bash docker
-```
-
-To run tests based on name 
-```SHELL
-$ ci/check_bats.bash -f .ssh
-```
 
 ### VM Configuration & Overriding Options
 
