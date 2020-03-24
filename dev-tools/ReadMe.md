@@ -17,6 +17,15 @@ The choice of the tools are aimed towards simplicity and of apps of small to med
 
 ### In Terminal 
 
+### AWS & OIDC Configuration
+
+```SHELL
+$ cp dev-tools/config/secrets/aws.env.template    dev-tools/config/secrets/aws.env
+$ cp dev-tools/config/secrets/oidc.env.template   dev-tools/config/secrets/oidc.env
+```
+
+Populate the values in both dev-tools/config/secrets/aws.env and dev-tools/config/secrets/oidc.env
+
 ### To bring up the sandbox
 
 ```SHELL
