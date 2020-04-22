@@ -17,14 +17,14 @@ teardown() {
     function provision(){
         echo "VM Creation Sucessfull"
         echo "VM Name : $VM_NAME |  IP: $IP "
-        echo "Next: SSH to $VM_NAME via Multipass or Bastion Host"
+        echo "Next: SSH to $VM_NAME"
     }
     export -f provision
     run provision
     assert_success
     assert_output -p  "VM Creation Sucessfull"
     assert_output -p  "VM Name : $VM_NAME |  IP: $IP "
-    assert_output -p  "Next: SSH to $VM_NAME via Multipass or Bastion Host"
+    assert_output -p  "Next: SSH to $VM_NAME"
 }
 
 @test ".unit.destroy - test destroy vm (Stub destroy) " {

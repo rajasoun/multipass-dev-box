@@ -2,7 +2,7 @@
 
 load 'init_unit_test'
 
-profile_script="./src/multipass/os.bash"
+profile_script="./src/lib/os.bash"
 
 setup() {
     echo "SetUp"
@@ -57,7 +57,7 @@ teardown() {
     assert_output --partial "0 seconds"
 }
 
-@test ".unit.os.file_exists - Checks if ./src/multipass/os.bash File exists" {
+@test ".unit.os.file_exists - Checks if ./src/lib/os.bash File exists" {
     run file_exists  ${profile_script}
     assert_success
 }
@@ -67,12 +67,12 @@ teardown() {
     assert_failure
 }
 
-@test ".unit.os.file_contains_text - Checks if text 'Displays Time'  exists in  ./src/multipass/os.bash File" {
+@test ".unit.os.file_contains_text - Checks if text 'Displays Time'  exists in  ./src/lib/os.bash File" {
     run file_contains_text "Displays Time" ${profile_script}
     assert_success
 }
 
-@test ".unit.os.file_contains_text - Checks if text 'SHOULD_NOT_EXIST'  in  ./src/multipass/os.bash File" {
+@test ".unit.os.file_contains_text - Checks if text 'SHOULD_NOT_EXIST'  in  ./src/lib/os.bash File" {
     run file_contains_text "SHOULD_NOT_EXIST" ${profile_script}
     assert_failure
 }

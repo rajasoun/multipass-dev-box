@@ -5,16 +5,34 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer:latest
-    command: -H unix:///var/run/docker.sock
+    command: -H unix:///var/run/docker.sock --no-auth
+    environment:
+      LOGSPOUT: ignore
     restart: always
     ports:
-      - 9000:9000
-      - 8000:8000
+      - "0.0.0.0:9000:9000"
+      - 8000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
       - portainer
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.backend=portainer
+      # Which network traefik should listen on
+      - traefik.docker.network=${DOCKER_NETWORK}
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      - traefik.http.services.portainer.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.portainer-ssl.entryPoints=https
+      - traefik.http.routers.portainer-ssl.rule=host(`portainer.${BASE_DOMAIN}`)
+      - traefik.http.routers.portainer-ssl.tls=true
+      - traefik.http.routers.portainer-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.portainer-ssl.middlewares=sso@file
 
 networks:
   portainer:

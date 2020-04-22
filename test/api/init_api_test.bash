@@ -4,9 +4,11 @@ load '../libs/bats-support/load'
 load '../libs/bats-assert/load'
 load '../helpers'
 
-ansible_profile_script="./src/multipass/ansible.bash"
-checks_profile_script="./src/multipass/checks.bash"
-os_profile_script="./src/multipass/os.bash"
+ansible_profile_script="./src/lib/ansible.bash"
+os_profile_script="./src/lib/os.bash"
+checks_profile_script="./src/lib/checks.bash"
+
+multipass_checks_profile_script="./src/multipass/checks.bash"
 api_profile_script="./src/multipass/vm_api.bash"
 
 instance_env="instance.env"
@@ -16,6 +18,8 @@ function init_api_test() {
   source "$api_profile_script"
   # shellcheck disable=SC1090
   source "$checks_profile_script"
+  # shellcheck disable=SC1090
+  source "$multipass_checks_profile_script"
   # shellcheck disable=SC1090
   source "$ansible_profile_script"
   # shellcheck disable=SC1090

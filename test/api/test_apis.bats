@@ -86,7 +86,7 @@ teardown() {
 
 @test ".api.provision_vm - check vm running" {
   init_api_test
-  run check_vm_running
+  run check_and_exit_if_vm_not_running
   assert_success
   assert_output --partial "$VM_VM_NAME"
   assert_output --partial "Running"

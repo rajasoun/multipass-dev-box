@@ -42,24 +42,24 @@ teardown() {
   assert_output --partial "VM_NAME"
 }
 
-@test ".integration.checks.check_vm_exists - check VM exists (Mock Multipass)" {
+@test ".integration.checks.check_and_exit_if_vm_exists - check VM exists (Mock Multipass)" {
   init_integration_test
   function multipass(){
       . test/integration/mocks/multipass.bash
   }
   export -f multipass
-  run check_vm_exists
-  assert_success
-  assert_output --partial "$VM_NAME is Provisioned"
+  run check_and_exit_if_vm_exists
+  assert_failure
+  assert_output --partial "VM -> $VM_NAME Exists. Exiting..."
 }
 
-@test ".integration.checks.check_vm_running - check VM running (Mock Multipass)" {
+@test ".integration.checks.check_and_exit_if_vm_not_running - check VM running (Mock Multipass)" {
   init_integration_test
   function multipass(){
       . test/integration/mocks/multipass.bash
   }
   export -f multipass
-  run check_vm_running
+  run check_and_exit_if_vm_not_running
   assert_success
   assert_output --partial "$VM_NAME"
   assert_output --partial "$Running"

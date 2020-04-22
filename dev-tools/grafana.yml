@@ -4,13 +4,30 @@ services:
   grafana:
     image: grafana/grafana:master
     container_name: grafana
+    env_file:
+      - ${TOOLS_DIR}/config/secrets/oidc.env
     ports:
-      - "3000:3000"
+      - "3000"
     environment:
         GF_SECURITY_ADMIN_USER: "admin"
         GF_SECURITY_ADMIN_PASSWORD: "admin"
         GF_PATHS_PROVISIONING: "/config/provisioning"
+        LOGSPOUT: ignore
     volumes:
         - ./config/grafana:/config
+        - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
     networks:
       - loki
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.backend=grafana
+      - traefik.docker.network=${DOCKER_NETWORK}
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+      - traefik.http.services.grafana.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.grafana-ssl.entryPoints=https
+      - traefik.http.routers.grafana-ssl.rule=host(`grafana.${BASE_DOMAIN}`)
+      - traefik.http.routers.grafana-ssl.tls=true
+      - traefik.http.routers.grafana-ssl.tls.certResolver=le
