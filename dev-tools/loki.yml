@@ -6,6 +6,8 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     command: -config.file=/etc/promtail/promtail.yaml
+    environment:
+      LOGSPOUT: ignore
     volumes:
       - ./config:/etc/promtail
       - ./logs:/var/log
@@ -16,6 +18,8 @@ services:
   loki:
     image: grafana/loki:latest
     container_name: loki
+    environment:
+      LOGSPOUT: ignore
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/loki.yaml

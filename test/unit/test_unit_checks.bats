@@ -2,7 +2,7 @@
 
 load 'init_unit_test'
 
-profile_script="./src/multipass/checks.bash"
+profile_script="./src/lib/checks.bash"
 
 setup() {
     echo "SetUp"

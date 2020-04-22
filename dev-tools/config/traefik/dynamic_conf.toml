@@ -1,0 +1,22 @@
+[http.routers]
+  # HTTP catchall router, matches all HTTP traffic and applies the httpsredirect middleware 
+  [http.routers.https-only]
+    entryPoints = ["http"]
+    middlewares = ["httpsredirect"]
+    rule = "HostRegexp(`{host:.+}`)"
+    # Only here so the router is valid, is never actually used
+    service = "noop"
+
+[http.services]
+  [http.services.noop.loadBalancer]
+    [[http.services.noop.loadBalancer.servers]]
+      url = "http://127.0.0.1"
+
+[http.middlewares]
+  # Used for SSO - explained later
+  [http.middlewares.sso.forwardAuth]
+    address = "http://traefik-fa:4181"
+    authResponseHeaders = ["X-Forwarded-User"]
+  # Does as it says on the tin
+  [http.middlewares.httpsredirect.redirectScheme]
+    scheme = "https"

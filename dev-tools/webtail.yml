@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  webtail:
+    image: rajasoun/webtail:latest
+    container_name: webtail
+    command:  --theme dark --disable-usage-stats /logs/local_debug.log
+    environment:
+      LOGSPOUT: ignore
+    ports:
+      - "9001"
+    volumes:
+      - ./logs:/logs
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.backend=webtail
+      # Which network traefik should listen on
+      - traefik.docker.network=${DOCKER_NETWORK}
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.webtail.loadbalancer.server.port=9001
+      - traefik.http.services.webtail.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.webtail-ssl.entryPoints=https
+      - traefik.http.routers.webtail-ssl.rule=host(`webtail.${BASE_DOMAIN}`)
+      - traefik.http.routers.webtail-ssl.tls=true
+      - traefik.http.routers.webtail-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.webtail-ssl.middlewares=sso@file
+
+networks:
+  traefik:

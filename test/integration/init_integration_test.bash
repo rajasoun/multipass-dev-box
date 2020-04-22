@@ -4,12 +4,15 @@ load '../libs/bats-assert/load'
 load '../helpers'
 
 
-actions_profile_script="./src/multipass/actions.bash"
-checks_profile_script="./src/multipass/checks.bash"
-cloud_init_profile_script="./src/multipass/cloud_init.bash"
-os_profile_script="./src/multipass/os.bash"
-ssh_profile_script="./src/multipass/ssh.bash"
-ansible_profile_script="./src/multipass/ansible.bash"
+multipass_actions_profile_script="./src/multipass/actions.bash"
+multipass_checks_profile_script="./src/multipass/checks.bash"
+
+
+cloud_init_profile_script="./src/lib/cloud_init.bash"
+checks_profile_script="./src/lib/checks.bash"
+os_profile_script="./src/lib/os.bash"
+ssh_profile_script="./src/lib/ssh.bash"
+ansible_profile_script="./src/lib/ansible.bash"
 
 workspace_env="workspace.env"
 instance_env="instance.env"
@@ -20,7 +23,9 @@ function init_integration_test() {
     # shellcheck disable=SC1090
     source ${workspace_env}
     # shellcheck disable=SC1090
-    source ${actions_profile_script}
+    source ${multipass_actions_profile_script}
+    # shellcheck disable=SC1090
+    source ${multipass_checks_profile_script}
     # shellcheck disable=SC1090
     source ${checks_profile_script}
     # shellcheck disable=SC1090

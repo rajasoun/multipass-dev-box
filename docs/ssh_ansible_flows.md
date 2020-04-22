@@ -16,7 +16,7 @@ SSH Key Setup Overview
 
 ### SSH Keys 
 
-![alt text](docs/images/ssh_connection_explained.jpg "SSH Quick Reference")
+![alt text](images/ssh_connection_explained.jpg "SSH Quick Reference")
 
 ## Ansible Concepts
 
@@ -30,3 +30,5 @@ SSH Key Setup Overview
 ### Ansible Flow
 
 ![alt text](https://miro.medium.com/max/1920/1*XLdN4_LCoASjbArU-ggkTA.png "Ansible Quick Reference")
+
+

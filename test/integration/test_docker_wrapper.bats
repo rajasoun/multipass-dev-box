@@ -2,8 +2,8 @@
 
 load 'init_integration_test'
 
-docker_profile_script="./src/multipass/docker_wrapper.bash"
-os_profile_script="./src/multipass/os.bash"
+docker_profile_script="./src/lib/docker_wrapper.bash"
+os_profile_script="./src/lib/os.bash"
 
 setup() {
     echo "SetUp"

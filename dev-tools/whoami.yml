@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  whoami:
+    # A container that exposes an API to show its IP address
+    image: containous/whoami
+    container_name: whoami
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      # Which network traefik should listen on
+      - traefik.docker.network=${DOCKER_NETWORK}
+      - traefik.backend=whoami
+      # Reverse proxy configuration - expose the container port
+      - traefik.http.services.whoami.loadbalancer.server.port=80
+      - traefik.http.services.whoami.loadbalancer.passhostheader=true
+      # SSL configuration
+      - traefik.http.routers.whoami-ssl.entryPoints=https
+      - traefik.http.routers.whoami-ssl.rule=host(`whoami.${BASE_DOMAIN}`)
+      - traefik.http.routers.whoami-ssl.tls=true
+      - traefik.http.routers.whoami-ssl.tls.certResolver=le
+      # Single Sign On middleware
+      - traefik.http.routers.whoami-ssl.middlewares=sso@file
+
+networks:
+  traefik:

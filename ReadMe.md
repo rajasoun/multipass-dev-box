@@ -37,56 +37,25 @@ $ ci/check_bats.bash -f .precondition
 
 All 7 Tests should pass - if you have issues, double check the [Installation Instruction](docs/installation_instruction.md)
 
-#### Help (Flow) Based - Beginners 
-
 ```SHELL
-$ export MODE=help && ./multipass.bash
+$ ./sandbox.bash
+Usage: ./sandbox.bash  {up|down|status|logs}
+
+   up               Provision, Configure, Validate Application Stack
+   down             Application Stack
+   status           Displays Status of Application Stack
+   logs             Application Stack Log Dashboard
 ```
 
-#### Menu Based - Intermediate 
+#### Dev Tools
 
-In Terminal Window
-
-```SHELL
-$ export MODE=menu && ./multipass.bash 
-```
-
-#### API Based - For Automated Testing & Aggregation - Advanced
-
-In Terminal 
-   
-```SHELL
-$ OPT=_API_ID_ or _API_NAME_
-$ export MODE=api && ./multipass.bash $OPT
-```
-
-| API ID |              API NAME           |
-|:-------|---------------------------------|
-| 10      | provision_vm                    |
-| 20      | provision_bastion               |
-| 30      | ansible_ping_from_bastion_to_vm |
-| 40      | ssh_to_bastion_vm               |
-| 50      | configure_vm_from_bastion       |
-| 60      | test_base_infra                 |
-| 70      | test_infra                      |
-| 80      | list_all_vms                    | 
-| 90      | destroy_vm                      | 
+[Dev Tools](dev-tools/ReadMe.md)  cookie-cutter solution for cross cutting concerns like (Logging, Monitoring, Authentication etc)
 
 
-### Automated Tests
+#### Learn Mode 
 
-In Terminal Window
+[Learn Mode](docs/3_learn_mode.md) for step by step self learning
 
-```SHELL
-$ ci/check_bats.bash unit
-$ ci/check_bats.bash integration
-$ ci/check_bats.bash docker
-```
-
-To run tests based on name 
-```SHELL
-$ ci/check_bats.bash -f .ssh
-```
 
 ### VM Configuration & Overriding Options
 
@@ -113,16 +82,31 @@ through cloud-init configuration by editing the /etc/netplan/50-cloud-init.yaml 
 6. Workaround to invoke docker in a common way through wrapper both for windows and mac
 
 
-*ToDo*
+*Features*
 
      1. Adoption of Git Flow  ✅
      2. Add Automated Verification - CI 
             a. Travis (Linux Only) ✅
             b. GitHub Actions (Linux,Mac & Windows) ✅
      3. Configure VM through Ansible ✅
-     4. Infrastrcuture Test Automation using py.test & TestInfra
-     5. Support for ADR
-     6. Explore workarounds for  Multipass + Anyconnect Issue
+     4. Infrastrcuture Test Automation using py.test & TestInfra  ✅
+     5. Centralized Logging ✅
+     6. Log Shipper and Aggregation ✅
+     7. HTTPS Support ✅
+     8. CLI Builder ✅
+     9. WebTail  ✅
+     10. Edge Routing or Reverse Proxy Support  ✅
+     11. Edge Routing or Reverse Proxy Support  ✅
+     12. Dev Tools Container Mgmt  ✅
+     13. OAuth2 + SSO -> Authentication Support  ✅
+     14. System Monitoring
+     15. Support for ADR
+     16. Explore workarounds for  Multipass + Anyconnect Issue
+     17. Authorization or Policy Mgmt
+     18. Key or Secrets Management
+     19. Status Aggregator
+     20. AWS Support
+     21. vSphere Support
 
 
 
