@@ -17,3 +17,5 @@ source "$SCRIPT_DIR/lib/os.bash"
 source "$SCRIPT_DIR/lib/etc_hosts.bash"
 # shellcheck source=dev-tools/src/lib/web.bash
 source "$SCRIPT_DIR/lib/web.bash"
+# shellcheck source=dev-tools/src/cli/aws_env.bash
+source "$SCRIPT_DIR/cli/aws_env.bash"

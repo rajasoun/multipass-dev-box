@@ -8,12 +8,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/src/load.bash"
 
 function help(){
-    echo "Usage: $0  {sandbox|git|docker}" >&2
+    echo "Usage: $0  {sandbox|git|docker|env-get|env-put}" >&2
     echo
     echo "   sandbox               Manage dev-tools sandbox environment"
     echo "   multipass             Manage multipass - virtualization orchestrator"
     echo "   git                   House Keep Git"
     echo "   docker                House Keep Docker"
+    echo "   env-get               Get Variables from AWS parameter store and store it in oidc.env file"
+    echo "   env-put               Put Variables and values to AWS parameter store which mentioned in oidc.env"
     echo
     return 1
 }
@@ -32,20 +34,30 @@ export SERVICES
 
 export BASE_DOMAIN=htddev.org
 export DOCKER_NETWORK=dev-tools_traefik
-export "$(cat "$TOOLS_DIR"/config/secrets/aws.env)"
-export "$(cat "$TOOLS_DIR"/config/secrets/oidc.env)"
-
-
-
+#export "$(cat "$TOOLS_DIR"/config/secrets/aws.env)"
+#export "$(cat "$TOOLS_DIR"/config/secrets/oidc.env)"
 opt="$1"
 choice=$( tr '[:upper:]' '[:lower:]' <<<"$opt" )
 case $choice in
-    multipass) _multipass "$@" ;;
-    sandbox)   dev_tools_sandbox "$@" ;;
+    multipass)
+       oidc_exists
+      _multipass "$@"
+       ;;
+    sandbox)
+      oidc_exists
+      dev_tools_sandbox "$@"
+       ;;
     git)       _git "$@" ;;
     docker)
       check_preconditions
       _docker "$@"
+      ;;
+    env-get)
+      aws_get
+      ;;
+    env-put)
+      oidc_exists
+      aws_put
       ;;
     *)  help ;;
 esac
