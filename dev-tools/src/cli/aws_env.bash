@@ -2,13 +2,14 @@
 
 CUR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+
 cmd_exists(){
  [[ "$(command -v $1 )" ]] || { echo "$1 is not installed.Please install $1 and start again." 1>&2 ; exit 1; }
 }
 
 awsenv_exists(){
 [[ -f ${CUR_DIR}/../../config/secrets/aws.env ]] || { echo "${CUR_DIR}/../../config/secrets/aws.env file does not exist!" ; exit 1; }
-export "$(cat ${CUR_DIR}/../../config/secrets/aws.env)"
+#export "$(cat ${CUR_DIR}/../../config/secrets/aws.env)"
 }
 
 oidc_exists(){
@@ -38,26 +39,34 @@ echo "You are good to go"
 
 function aws_put() {
   cmd_exists aws
-  variable_check
+ # variable_check
 
   while read -r line; do
     var=`echo $line | cut -d '=' -f1`
     value=`echo $line | cut -d '=' -f2`
     echo $var : $value
-    aws ssm put-parameter --name "$var" --value "$value" --type SecureString --overwrite
+    test=$(echo $value)
+   if [ ! -z "$test" ];
+    then
+        aws ssm put-parameter --name "$var" --value "$value" --type SecureString --overwrite
+    fi
+
 done < $CUR_DIR/../../config/secrets/oidc.env
-echo "Register the AWS parameter store variable values from oidc.env file "
+echo "Register the AWS parameter store key values from oidc.env file "
 }
 
+function get_para(){
+  value=$(aws ssm get-parameter --name "$1" --with-decryption | jq -r ".Parameter.Value")
+  echo "$1=$value" >> $CUR_DIR/../../config/secrets/oidc.env
+}
 function aws_get(){
   cmd_exists aws
   oidc_template
  > $CUR_DIR/../../config/secrets/oidc.env
  while read -r line; do
     var=`echo $line | cut -d '=' -f1`
-    value=`aws ssm get-parameter --name "$var" --with-decryption | jq -r ".Parameter.Value"`
-    echo "$var=$value" >> $CUR_DIR/../../config/secrets/oidc.env
-done < $CUR_DIR/../../config/secrets/oidc.env.template
+    get_para $var
+ done < $CUR_DIR/../../config/secrets/oidc.env.template
 export "$(cat "$CUR_DIR"/../../config/secrets/oidc.env)"
-echo "Retrived the AWS parameter store variable values to oidc.env file "
+echo "Retrived the AWS parameter store key values to oidc.env file "
 }

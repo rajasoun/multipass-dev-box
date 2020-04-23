@@ -14,8 +14,8 @@ function help(){
     echo "   multipass             Manage multipass - virtualization orchestrator"
     echo "   git                   House Keep Git"
     echo "   docker                House Keep Docker"
-    echo "   env-get               Get Variables from AWS parameter store and store it in oidc.env file"
-    echo "   env-put               Put Variables and values to AWS parameter store which mentioned in oidc.env"
+    echo "   env-get               Get Keys from AWS parameter store and store it in oidc.env file"
+    echo "   env-put               Put Keys to AWS parameter store which mentioned in oidc.env"
     echo
     return 1
 }
