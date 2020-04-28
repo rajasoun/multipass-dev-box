@@ -22,13 +22,15 @@ function help(){
 
 function mount_exist(){
     multipass transfer ${WORKSPACE}/app_scripts/$APPL_NAME.sh $VMS_NAME:/tmp
+    echo "transfer complete"
+    multipass exec $VMS_NAME -- chmod +x /tmp/$APPL_NAME.sh
     multipass exec $VMS_NAME -- sh /tmp/$APPL_NAME.sh down
     multipass unmount $VMS_NAME
     multipass exec $VMS_NAME -- sudo rm -rf /bizapps/
    # multipass exec $VMS_NAME -- sudo find /bizapps/ -type d -empty -delete
     multipass mount ${WORKSPACE}/../$APPL_NAME $VMS_NAME:/bizapps/$APPL_NAME
-
-    multipass exec $VMS_NAME -- sh /tmp/$APPL_NAME.sh
+    echo "mount complete"
+    multipass exec $VMS_NAME -- sh /tmp/$APPL_NAME.sh up
 }
 
 if [ "$( multipass list | grep -c "$VMS_NAME")" -ne 0 ]
@@ -41,7 +43,7 @@ then
       echo "unmounted"
     multipass mount ${WORKSPACE}/../$APPL_NAME $VMS_NAME:/bizapps/$APPL_NAME
     multipass transfer ${WORKSPACE}/app_scripts/$APPL_NAME.sh $VMS_NAME:/tmp
-    multipass exec $VMS_NAME -- sh /tmp/$APPL_NAME.sh
+    multipass exec $VMS_NAME -- sh /tmp/$APPL_NAME.sh up
     fi
 else
  echo "$VMS_NAME machine not found"

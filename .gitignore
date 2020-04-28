@@ -88,4 +88,6 @@ oidc.env
 acme.json
 traefik-fa.env
 *.log
+app_scripts/*.sh
+scripts/*.sh
 

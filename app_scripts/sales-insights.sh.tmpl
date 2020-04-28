@@ -7,6 +7,7 @@ doc_up(){
 echo "**************************************Updating apt update  *******************************"
 apt-get update -y
 echo "**************************************Installing docker  *******************************"
+
 apt install -y docker.io
 echo "**************************************Installing docker-compose *******************************"
 sudo apt install -y docker-compose
@@ -26,12 +27,25 @@ echo "PRE_APP_CODE=$APP_CODE" > /tmp/preapp.sh
 }
 
 
-doc_down(){
-echo "**************************************Starting docker-compose down*******************************"
-source /tmp/preapp.sh
-cd $APP_CODE && sudo docker-compose down
+doc_down ()
+{
+echo "**************************************   Starting docker-compose down  *******************************"
+[ -f ${APP_CODE}/docker-compose.yaml ] &&  cd $APP_CODE && sudo docker-compose down ||  echo "${APP_CODE}/docker-compose.yaml file does not exist!"
 
-cd $PRE_APP_CODE && sudo docker-compose down
+#[ -f /etc/resolv.conf ] && echo "$FILE exist" || echo "$FILE does not exist"
+}
+pre_app (){
+
+echo "**************************************   Starting docker-compose down pre-app  *******************************"
+[ -f /tmp/preapp.sh ]  || ( echo "/tmp/preapp.sh file does not exist!" && exit 0 ) && . /tmp/preapp.sh
+
+[ -z "$PRE_APP_CODE" ] && ( echo "$PRE_APP_CODE not set" ; exit 1 ) || echo "$PRE_APP_CODE"
+
+if [ "$APP_CODE" -ef "$PRE_APP_CODE" ]; then
+  echo "previous App and current App both are same"
+  exit 0
+fi
+[ -f ${PRE_APP_CODE}/docker-compose.yaml ] || echo "${PRE_APP_CODE}/docker-compose.yaml file does not exist!" && ( cd $PRE_APP_CODE && sudo docker-compose down )
 
 }
 
@@ -42,6 +56,7 @@ cd $PRE_APP_CODE && sudo docker-compose down
 case "$1" in
         down)
                 doc_down
+                pre_app
                 ;;
 
         up)
