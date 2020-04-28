@@ -47,6 +47,17 @@ Usage: ./sandbox.bash  {up|down|status|logs}
    logs             Application Stack Log Dashboard
 ```
 
+Application deployment:
+
+```SHELL
+$ scripts/update_config.sh {salesinsights|leads|rmt}|{clean} <AWS Profile Name>"
+$ scripts/provision.sh
+
+For IP address:
+
+$ multipass info microcloud
+```
+
 #### Dev Tools
 
 [Dev Tools](dev-tools/ReadMe.md)  cookie-cutter solution for cross cutting concerns like (Logging, Monitoring, Authentication etc)

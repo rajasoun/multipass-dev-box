@@ -1,0 +1,20 @@
+{
+  "salesinsights": [
+    {
+      "Application": "sales-insights",
+      "ip": "172.16.50.210"
+    }
+  ],
+  "leads": [
+    {
+      "Application": "leads",
+      "ip": "172.16.50.212"
+    }
+  ],
+  "rmt": [
+    {
+      "Application": "resource-management",
+      "ip": "172.16.50.213"
+    }
+  ]
+}

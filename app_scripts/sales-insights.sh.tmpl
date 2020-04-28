@@ -1,0 +1,53 @@
+#!/usr/bin/env sh
+
+WORKSPACE=${HOME}/workspace/bizapps/htd/infrastructure-as-code
+APP_CODE=/bizapps/sales-insights
+
+doc_up(){
+echo "**************************************Updating apt update  *******************************"
+apt-get update -y
+echo "**************************************Installing docker  *******************************"
+apt install -y docker.io
+echo "**************************************Installing docker-compose *******************************"
+sudo apt install -y docker-compose
+echo "**************************************Starting Config changes *******************************"
+echo MSSQL_DB_PASSWORD=SALESINSIGHTS_MYSQL_DB_PASSWORD > $APP_CODE/.env
+echo MSSQL_DB_USER=SA >> $APP_CODE/.env
+
+
+echo "**************************************Starting docker-compose build *******************************"
+cd $APP_CODE && sudo docker-compose build
+echo "**************************************Starting docker-compose up *******************************"
+cd $APP_CODE && sudo docker-compose up -d
+
+echo "************************************** Software and application deployment done *******************************"
+
+echo "PRE_APP_CODE=$APP_CODE" > /tmp/preapp.sh
+}
+
+
+doc_down(){
+echo "**************************************Starting docker-compose down*******************************"
+source /tmp/preapp.sh
+cd $APP_CODE && sudo docker-compose down
+
+cd $PRE_APP_CODE && sudo docker-compose down
+
+}
+
+###################################
+# Main Script Logic Starts Here   #
+###################################
+
+case "$1" in
+        down)
+                doc_down
+                ;;
+
+        up)
+                doc_up
+                ;;
+        *)
+                echo " "
+                ;;
+esac
