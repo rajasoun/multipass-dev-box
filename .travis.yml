@@ -1,21 +1,19 @@
-os:
-  - linux
-
+os: linux
+dist: bionic
 language: bash
 
 services:
   - docker
-
-before_install:
+         
+#before_install:
   # - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap refresh && sudo snap install multipass --classic ; fi
-   dist: bionic
-   addons:
+
+jobs:
+  addons:
      snaps:
        - name: multipass
          confinement: classic # or devmode
          channel: latest/edge # will be passed to --channel flag
-
-jobs:
   include:
     - name: "Host Precondition"
       env: TEST_SUITE="host_precondition"
