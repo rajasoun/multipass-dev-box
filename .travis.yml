@@ -7,7 +7,7 @@ services:
          
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap refresh ; fi
-#  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap install multipass --classic ; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo snap install multipass --classic ; fi
 
   include:
     - name: "Host Precondition"
