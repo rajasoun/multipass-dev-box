@@ -1,6 +1,5 @@
 # Local Dev Box Setup with Multipass 
 
-[![Travis CI](https://img.shields.io/travis/rajasoun/multipass-dev-box/master.svg?label=TravisCI&style=flat-square)](https://travis-ci.org/rajasoun/multipass-dev-box) 
 [![GitHub Actions Status](https://img.shields.io/github/workflow/status/rajasoun/multipass-dev-box/CI?label=GithubActions&style=flat-square)](https://github.com/rajasoun/multipass-dev-box/actions)
 
 Eases Dev Box Setup with Multipass, Docker & Ansible compatible with Windows, MacOS and Linux.
