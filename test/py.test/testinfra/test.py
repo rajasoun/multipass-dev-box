@@ -76,7 +76,7 @@ def test_service_running_enabled_and_listening(host, name, tcp_socket):
 
 @pytest.mark.base
 def test_internet_connection(host):
-    cisco = host.addr("cisco.com")
+    cisco = host.addr("developer.cisco.com")
     assert cisco.is_resolvable
     assert cisco.is_reachable
     assert cisco.port(443).is_reachable
