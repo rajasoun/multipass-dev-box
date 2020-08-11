@@ -81,31 +81,28 @@ def test_internet_connection(host):
     assert cisco.is_reachable
     assert cisco.port(443).is_reachable
 
-
 @pytest.mark.postcondition
-def test_config_file_for_sdkman(host):
-    result = host.run(script_wrap(host, ['echo $SDKMAN_DIR']))
-    config_file_path = "{0}/etc/config".format(result.stdout.rstrip())
-
-    f = host.file(config_file_path)
-    assert f.exists
-    assert f.is_file
-    assert f.user == sdkman_user
-    assert f.contains('sdkman_auto_answer=true')
-
-
-@pytest.mark.postcondition
-def test_java_installed(host):
-    cmds = ['java --version']
-    expected = 'OpenJDK'
+def test_lynis_installed(host):
+    cmds = ['lynis --version']
+    expected = '3.0.0'
     check_run_for_rc_and_result(cmds, expected, host)
 
+# @pytest.mark.postcondition
+# def test_config_file_for_sdkman(host):
+#     result = host.run(script_wrap(host, ['echo $SDKMAN_DIR']))
+#     config_file_path = "{0}/etc/config".format(result.stdout.rstrip())
 
-@pytest.mark.postcondition
-def test_sdk_installed(host):
-    cmds = ['sdk version']
-    expected = 'SDKMAN'
-    check_run_for_rc_and_result(cmds, expected, host)
+#     f = host.file(config_file_path)
+#     assert f.exists
+#     assert f.is_file
+#     assert f.user == sdkman_user
+#     assert f.contains('sdkman_auto_answer=true')
+
+# @pytest.mark.postcondition
+# def test_sdk_installed(host):
+#     cmds = ['sdk version']
+#     expected = 'SDKMAN'
+#     check_run_for_rc_and_result(cmds, expected, host)
 
 
 # @pytest.mark.postcondition
