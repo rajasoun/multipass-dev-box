@@ -8,7 +8,7 @@
   become: yes
 
   vars_files:
-    - vars/sdkman.yml
+    - vars/lynis.yml
 
   pre_tasks:
     - name: check apt last update
@@ -26,12 +26,9 @@
       when: ansible_python_interpreter is not defined
 
   roles:
-    - role: sdkman
+    - role: sa-secure-audit-lynis
 
   post_tasks:
-    - name: Fix permissions on ~/.zshrc created By SDKMan
-      file:
-        path: '/home/{{ sdkman_user }}/.zshrc'
-        owner: '{{ sdkman_user }}'
-        group: '{{ sdkman_group }}'
-        mode: go-w
+    - name: Post Task Completion Message
+      shell:
+        echo 'I":" Done configuring the VM ...'

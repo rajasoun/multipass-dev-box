@@ -1,5 +1,5 @@
 ---
 
-- src: https://github.com/Comcast/ansible-sdkman
-  name: sdkman
+- src: https://github.com/softasap/sa-secure-audit-lynis
+  name: sa-secure-audit-lynis
   version: master
