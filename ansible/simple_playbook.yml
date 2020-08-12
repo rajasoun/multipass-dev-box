@@ -1,3 +1,4 @@
+## Refernce: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html?#using-roles
 ---
 
 - name: Environment Automation
@@ -10,6 +11,7 @@
   vars_files:
     - vars/lynis.yml
 
+  # pre_tasks is a task which Ansible executes before executing any tasks mentioned in .yml file.
   pre_tasks:
     - name: check apt last update
       stat: path=/var/cache/apt
@@ -28,6 +30,7 @@
   roles:
     - role: sa-secure-audit-lynis
 
+  # post_tasks is a task which Ansible executes after executing any tasks mentioned in .yml file.
   post_tasks:
     - name: Post Task Completion Message
       shell:
