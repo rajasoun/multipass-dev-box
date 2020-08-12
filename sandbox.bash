@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
-TIMING_LOG_FILE="dev-tools/logs/sandbox_execution.log"
-LOCAL_DEBUG_LOG_FILE="dev-tools/logs/local_debug.log"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TIMING_LOG_FILE="$SCRIPT_DIR/dev-tools/logs/sandbox_execution.log"
+LOCAL_DEBUG_LOG_FILE="$SCRIPT_DIR/dev-tools/logs/local_debug.log"
 
 function include(){
     if [[ -f "dev.$1" ]]; then
         # shellcheck disable=SC1090
-        source "dev.$1"  #source from custom env file if present
+        source "$SCRIPT_DIR/dev.$1"  #source from custom env file if present
     else
         # shellcheck disable=SC1090
-        source "$1" #source from deafult env file
+        source "$SCRIPT_DIR/$1" #source from deafult env file
     fi
     # shellcheck source=$pwd/src/load
-    source "src/load.bash"
+    source "$SCRIPT_DIR/src/load.bash"
 }
 
 function help(){
