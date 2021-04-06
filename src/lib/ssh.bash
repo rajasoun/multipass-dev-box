@@ -17,7 +17,8 @@ function create_ssh_connect_script(){
     cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
     chmod a+x "$SSH_CONNECT_FILE"
 
-    IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
+    #IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
+    IP=$(multipass info "$VM_NAME" | grep IPv4 | tr --delete "\r"| awk '{print $2}')
     #@ToDo: Optimize Edits
     #docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-ssh-connect.sh"
     #docker_sed "s,_vm_name_,${VM_NAME},g" "/config/${VM_NAME}-ssh-connect.sh"
