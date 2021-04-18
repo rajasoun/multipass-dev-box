@@ -17,8 +17,27 @@ function create_ssh_connect_script(){
     cp "$SSH_CONNECT_TEMPLATE" "$SSH_CONNECT_FILE"
     chmod a+x "$SSH_CONNECT_FILE"
 
-    #IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
-    IP=$(multipass info "$VM_NAME" | grep IPv4 | tr --delete "\r"| awk '{print $2}')
+    
+    case "$(uname -s)" in
+       Darwin)
+         echo 'Mac OS X'
+         IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
+         ;;
+       Linux)
+         echo 'Linux'
+         IP=$(multipass info "$VM_NAME" | grep IPv4 | awk '{print $2}')
+         ;;
+       CYGWIN*|MINGW32*|MSYS*|MINGW*)
+         echo 'MS Windows'
+         IP=$(multipass info "$VM_NAME" | grep IPv4 | tr --delete "\r"| awk '{print $2}')
+         ;;
+       # Add here more strings to compare
+       # See correspondence table at the bottom of this answer
+       *)
+         echo 'Other OS' 
+         ;;
+    esac
+    
     #@ToDo: Optimize Edits
     #docker_sed "s,_private_key_,/keys/${SSH_KEY},g" "/config/${VM_NAME}-ssh-connect.sh"
     #docker_sed "s,_vm_name_,${VM_NAME},g" "/config/${VM_NAME}-ssh-connect.sh"
@@ -34,7 +53,6 @@ function create_ssh_connect_script(){
     local SSH_CONFIG="$CONFIG_BASE_PATH/${VM_NAME}-ssh-config"
     ## create ssh-config
     echo -e "Host $VM_NAME\n\tHostname ${IP}\n\tUser ubuntu\n\tIdentityFile /keys/${SSH_KEY}\n" > "$SSH_CONFIG"
-
     echo "$SSH_CONNECT_FILE & $SSH_CONFIG Generated for $VM_NAME that is Provisioned with $IP"
 }
 
