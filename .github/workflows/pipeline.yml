@@ -26,11 +26,10 @@ jobs:
       - name: Install Pre-Requisites Linux
         if: startsWith(runner.os, 'Linux')
         run: |
-          sudo add-apt-repository ppa:duggan/bats -y
           sudo apt-get update -y
-          sudo apt-get install bats -y
-          sudo snap install multipass --classic -y
-          sudo snap install docker -y
+          sudo apt-get install -y bats 
+          sudo snap install -y multipass --classic 
+          sudo snap install -y docker 
 
       - name: Install Pre-Requisites Windows
         if: startsWith(runner.os, 'Windows')
