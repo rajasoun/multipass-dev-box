@@ -37,7 +37,8 @@ jobs:
         if: startsWith(runner.os, 'Windows')
         run: |
           iwr -useb get.scoop.sh | iex
-          echo "::add-path::C:\Users\runneradmin\scoop\shims"
+          #echo "::add-path::C:\Users\runneradmin\scoop\shims"
+          Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
           npm install -g bats
           scoop install git
           scoop install docker
