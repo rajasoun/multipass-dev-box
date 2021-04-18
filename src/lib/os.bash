@@ -19,7 +19,37 @@ function lls() {
   ls -AHl "$LLS_PATH" | awk "{k=0;for(i=0;i<=8;i++)k+=((substr(\$1,i+2,1)~/[rwx]/) \
                             *2^(8-i));if(k)printf(\"%0o \",k);print}"
 }
-
+################################################################################
+# 👉                            Color                                      👈 #
+################################################################################
+function function_Color {
+    export BLUE='\033[1;34m'
+    export GREEN='\033[0;32m'
+    export RED='\033[0;31m'
+    export NC='\033[0m'
+}
+################################################################################
+# 👉                            multipass                                  👈 #
+################################################################################
+function multipass(){
+## Nothing to change after this line
+function_Color
+if [ -x "$(command -v multipass.exe)" > /dev/null 2>&1 ]; then
+  # Windows
+  MULTIPASSCMD="multipass.exe"
+elif [ -x "$(command -v multipass)" > /dev/null 2>&1 ]; then
+  # Linux/MacOS
+  MULTIPASSCMD="multipass"
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    SET="sed -i \"\""
+  fi
+else
+   echo -e "${RED} Error: ${GREEN} (multipass or multipass.exe)  not found. Please install by yourself ${NC}"
+   echo -e "PATH ${GREEN}\$PATH${NC}"
+   exit 1
+fi
+  ${MULTIPASSCMD} "$@"
+}
 # Returns true (0) if this the given command/app is installed and on the PATH or false (1) otherwise.
 function os_command_is_installed {
   local -r name="$1"
