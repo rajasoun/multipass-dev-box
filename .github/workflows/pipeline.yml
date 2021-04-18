@@ -28,8 +28,8 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y bats 
-          sudo snap install -y multipass --classic 
-          sudo snap install -y docker 
+          sudo snap install multipass --classic 
+          sudo snap install docker 
 
       - name: Install Pre-Requisites Windows
         if: startsWith(runner.os, 'Windows')
