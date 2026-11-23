@@ -1,9 +1,0 @@
-version: '3.7'
-
-services:
-
-  ccat:
-    container_name: ccat
-    build: docker/ccat
-    volumes:
-      - "${PWD}:/ccat"
